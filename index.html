@@ -87,7 +87,7 @@
           .attr("class", "land")
           .attr("d", path)
           .on("mouseover", (event, d) => {
-            tooltip.style("display", "block").html("Country ID: " + d.id);
+            tooltip.style("display", "block").html("Country: " + d.properties.name);
           })
           .on("mousemove", (event) => {
             tooltip
