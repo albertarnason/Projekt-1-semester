@@ -1,4 +1,4 @@
-Country/Region,Item,Tariff Rate,Application Date
+Country,Item,Tariff Rate,Effective Date
 China,Lithium-ion EV Batteries,25%,"09-27-2024"
 China,Battery Components,25%,"09-27-2024"
 China,Natural Graphite,25%,"06-15-2024"

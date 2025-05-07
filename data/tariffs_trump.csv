@@ -1,4 +1,4 @@
-Entity,Tariff Rate (%),Effective Date,Tariff Type,Notes
+Entity,Tariff Rate,Effective Date,Tariff Type,Notes
 All Countries,10%,2025-04-05,Universal Tariff,Applies to all countries unless exempted or overridden
 China,145%,2025-02-04,Country-Specific Tariff,Includes 20% fentanyl tariff and 125% reciprocal tariff
 Cambodia,49%,2025-07-09,Country-Specific Tariff,Delayed implementation
