@@ -1,0 +1,61 @@
+Category,Component,Supplier,Origin
+Battery Components,Lithium (refined),Piedmont Lithium,USA
+Battery Components,Lithium (refined),Liontown,Australien
+Battery Components,Nickel,BHP,Australien
+Battery Components,Cobalt,Glencore,DR Congo
+Battery Components,Cobalt,Glencore,Schweiz
+Battery Components,Graphite,Syrah Resources,Mozambique
+Battery Components,Graphite,Syrah Resources,USA
+Battery Components,Electrolyte,LG Chem,Sydkorea
+Battery Components,Electrolyte,Panasonic,Japan
+Battery Components,Separator Film,UBE Industries,Japan
+Battery Components,Separator Film,SK Innovation,Sydkorea
+Battery Components,Battery Cells,Panasonic,Japan
+Battery Components,Battery Cells,Panasonic,USA
+Battery Components,Battery Cells,Tesla,USA
+Battery Components,Battery Modules,Tesla,USA
+Battery Components,Battery Packs,Tesla,USA
+Battery Components,Recycled Materials,Redwood Materials,USA
+Powertrain and Electrical Components,Electric Motors,Tesla,USA
+Powertrain and Electrical Components,Inverters,Tesla,USA
+Powertrain and Electrical Components,Gearboxes,Tesla,USA
+Powertrain and Electrical Components,Gearboxes,Magna,Canada
+Powertrain and Electrical Components,Gearboxes,Magna,USA
+Powertrain and Electrical Components,Transmissions,Futronic,Sydkorea
+Powertrain and Electrical Components,Transmissions,Futronic,USA
+Powertrain and Electrical Components,Electronic Control Units (ECUs),STMicroelectronics,Europa
+Powertrain and Electrical Components,Power Electronics,Infineon,Tyskland
+Powertrain and Electrical Components,Power Electronics,ON Semiconductor,USA
+Powertrain and Electrical Components,Wiring Harnesses,Yazaki,Japan
+Powertrain and Electrical Components,Wiring Harnesses,Aptiv,Irland
+Powertrain and Electrical Components,Wiring Harnesses,Aptiv,Global
+Body and Structural Parts,Body Panels,Tesla,USA
+Body and Structural Parts,Body Panels,Hydro,Norge
+Body and Structural Parts,Body Panels,Hydro,USA
+Body and Structural Parts,Giga-Casting Parts,Tesla,USA
+Body and Structural Parts,Giga-Casting Parts,IDRA Group,Italien
+Body and Structural Parts,Doors and Hinges,Gestamp,Spanien
+Body and Structural Parts,Windows and Glass,AGC,Japan
+Body and Structural Parts,Windows and Glass,Fuyao Glass,Kina
+Body and Structural Parts,Windows and Glass,Fuyao Glass,USA
+Body and Structural Parts,Seat Frames,Brose,Tyskland
+Body and Structural Parts,Seat Frames,Brose,USA
+Body and Structural Parts,Chassis,Magna,Tyskland
+Body and Structural Parts,Chassis,ZF Friedrichshafen,Tyskland
+Interior and Software Components,Displays & Infotainment,LG Display,Sydkorea
+Interior and Software Components,Displays & Infotainment,Tesla,USA
+Interior and Software Components,Cameras and Sensors,Tesla,USA
+Interior and Software Components,Cameras and Sensors,Aptiv,Global
+Interior and Software Components,Cameras and Sensors,Continental,Tyskland
+Interior and Software Components,Speakers & Microphones,Harman,Sydkorea
+Interior and Software Components,Speakers & Microphones,Bose,USA
+Interior and Software Components,Cabin Lights and Connectors,Lear Corporation,USA
+Interior and Software Components,Cabin Lights and Connectors,Valeo,Frankrig
+Production Equipment,Giga Press,IDRA Group,Italien
+Production Equipment,Robot Arms,KUKA Robotics,Tyskland
+Production Equipment,Robot Arms,FANUC,Japan
+Production Equipment,Robot Arms,FANUC,USA
+Production Equipment,Conveyors/AGVs,Tesla,USA
+Production Equipment,Conveyors/AGVs,Dematic,USA
+Production Equipment,Test Equipment,National Instruments,USA
+Production Equipment,Test Equipment,Keysight,USA
