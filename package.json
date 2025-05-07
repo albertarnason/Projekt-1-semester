@@ -1,0 +1,15 @@
+{
+    "private": true,
+    "type": "module",
+    "scripts": {
+        "createDb": "node db/createDb.js",
+        "dev": "nodemon backend/server.js"
+    },
+    "dependencies": {
+        "express": "4.21.2",
+        "nodemon": "3.1.9",
+        "pg": "8.13.1",
+        "dotenv": "16.4.7",
+        "pg-upload": "0.0.3"
+    }
+}
