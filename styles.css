@@ -3,7 +3,8 @@ body {
     overflow: hidden;
     background: gray;
     color: black;
-    font-family: sans-serif;
+    font-family: 'Cinzel', serif;
+
   }
   
   h1 {
@@ -18,7 +19,7 @@ body {
   }
   
   .land {
-    fill: rgb(180, 34, 10);
+    fill: rgb(33,33,33);
     stroke: #111;
     stroke-width: 0.3px;
   }
