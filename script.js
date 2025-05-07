@@ -36,42 +36,45 @@ svg.append("defs")
 d3.json("https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json").then(world => {
   const countries = topojson.feature(world, world.objects.countries).features;
 
-  // Tegn landene
-  svg.selectAll(".land")
-    .data(countries)
-    .enter()
-    .append("path")
-    .attr("class", "land")
-    .attr("d", path)
-    .on("mouseover", (event, d) => {
-      tooltip
-        .style("display", "block")
-        .html("Country: " + (d.properties.name || "Unknown"));
-    })
-    .on("mousemove", (event) => {
-      tooltip
-        .style("left", event.pageX + 10 + "px")
-        .style("top", event.pageY - 20 + "px");
-    })
-    .on("mouseout", () => {
-      tooltip.style("display", "none");
+   // Filtrer Antarktis fra baseret på landets navn (sikker metode)
+   const filteredCountries = countries.filter(country => country.properties.name !== "Antarctica");
 
-      // Tegn en linje med pil (fra USA til Beijing)
-      const from = [-100, 40];     // USA
-      const to = [116.4, 39.9];    // Beijing
-
-      const line = {
-        type: "LineString",
-        coordinates: [from, to],
-      };
-
-      svg.append("path")
-        .datum(line)
-        .attr("fill", "none")
-        .attr("stroke", "black")
-        .attr("stroke-width", 2)
-        .attr("d", path)
-        .attr("marker-end", "url(#arrow)");
+   // Tegn landene
+   svg.selectAll(".land")
+     .data(filteredCountries)
+     .enter()
+     .append("path")
+     .attr("class", "land")
+     .attr("d", path)
+     .on("mouseover", (event, d) => {
+       tooltip
+         .style("display", "block")
+         .html("Country: " + (d.properties.name || "Unknown"));
+     })
+     .on("mousemove", (event) => {
+       tooltip
+         .style("left", event.pageX + 10 + "px")
+         .style("top", event.pageY - 20 + "px");
+     })
+     .on("mouseout", () => {
+       tooltip.style("display", "none");
+     });
+ 
+   // Tegn pil fra USA til Beijing
+   const from = [-100, 40];     // USA
+   const to = [116.4, 39.9];    // Beijing
+ 
+   const line = {
+     type: "LineString",
+     coordinates: [from, to],
+   };
+ 
+   svg.append("path")
+     .datum(line)
+     .attr("fill", "none")
+     .attr("stroke", "black")
+     .attr("stroke-width", 2)
+     .attr("d", path)
+     .attr("marker-end", "url(#arrow)");
     });
 
-});
