@@ -1,8 +1,8 @@
 body {
     margin: 0;
     overflow: hidden;
-    background: #111;
-    color: white;
+    background: gray;
+    color: black;
     font-family: sans-serif;
   }
   
@@ -11,12 +11,6 @@ body {
     text-align: center;
   }
   
-  #map {
-    display: flex;
-    justify-content: center;
-    align-items: start; /* <- Skubber kortet op */
-    height: calc(100vh - 60px); /* Justér højden så det ikke fylder hele skærmen */
-  }
   
   svg {
     width: 100vw;
@@ -24,17 +18,12 @@ body {
   }
   
   .land {
-    fill: rgb(218, 135, 27);
+    fill: rgb(180, 34, 10);
     stroke: #111;
     stroke-width: 0.3px;
   }
   
-  .graticule {
-    fill: none;
-    stroke: #444;
-    stroke-width: 0.5px;
-    stroke-opacity: 0.5;
-  }
+ 
   
   .tooltip {
     position: absolute;
