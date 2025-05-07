@@ -1,0 +1,14 @@
+Kategori,Land/Region,Toldtype,Sats,Omfang/Bemærkning
+Told,USA,Told på importerede biler,25%,Gælder alle biler inkl. elbiler
+Told,USA,Told på bildele,25%,Gælder importerede dele
+Told,USA,Generel importtold,10%,Gælder fleste importerede varer
+Told,USA,Undtagelse USMCA-dele,0%,Gælder dele fra Mexico/Canada
+Told,USA,Undtagelse U.S.-producerede dele,0%,Gælder indenlandske dele
+Told,Kina,Told på kinesiske varer,145%,Kombineret fentanyl og gengældelsestold
+Told,Canada,Gengældelsestold,25%,På amerikanske biler
+Told,Mexico,Gengældelsestold,25%,På amerikanske biler
+
+Kategori,Model,Detalje,Sats,Kommentar
+Modelpåvirkning,Tesla Model 3,Komponentandel fra Kina,40%,Høj eksponering for told
+Modelpåvirkning,Tesla Model Y,Komponentandel fra USA,25%,Mindre påvirket
+Modelpåvirkning,Tesla batterier,Import fra Kina,145%,Omfattet af høj kinesisk told
