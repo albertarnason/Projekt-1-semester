@@ -1,0 +1,27 @@
+Entity,Tariff Rate (%),Effective Date,Tariff Type,Notes
+All Countries,10%,2025-04-05,Universal Tariff,Applies to all countries unless exempted or overridden
+China,145%,2025-02-04,Country-Specific Tariff,Includes 20% fentanyl tariff and 125% reciprocal tariff
+Cambodia,49%,2025-07-09,Country-Specific Tariff,Delayed implementation
+Vietnam,46%,2025-07-09,Country-Specific Tariff,Delayed implementation
+Sri Lanka,44%,2025-07-09,Country-Specific Tariff,Delayed implementation
+Bangladesh,37%,2025-07-09,Country-Specific Tariff,Delayed implementation
+Thailand,36%,2025-07-09,Country-Specific Tariff,Delayed implementation
+Taiwan,32%,2025-07-09,Country-Specific Tariff,Delayed implementation
+Indonesia,32%,2025-07-09,Country-Specific Tariff,Delayed implementation
+Switzerland,31%,2025-07-09,Country-Specific Tariff,Delayed implementation
+South Africa,30%,2025-07-09,Country-Specific Tariff,Delayed implementation
+Pakistan,29%,2025-07-09,Country-Specific Tariff,Delayed implementation
+India,26%,2025-07-09,Country-Specific Tariff,Delayed implementation
+South Korea,25%,2025-07-09,Country-Specific Tariff,Delayed implementation
+Japan,24%,2025-07-09,Country-Specific Tariff,Delayed implementation
+European Union,20%,2025-07-09,Country-Specific Tariff,Delayed implementation
+Israel,17%,2025-04-02,Country-Specific Tariff,Implemented as scheduled
+Australia,10%,2025-04-05,Universal Tariff,Subject to universal tariff only
+Ukraine,10%,2025-04-05,Universal Tariff,Subject to universal tariff only
+United Kingdom,10%,2025-04-05,Universal Tariff,Subject to universal tariff only
+Singapore,10%,2025-04-05,Universal Tariff,Subject to universal tariff only
+Russia,0%,N/A,Exempt,Exempted due to sanctions
+North Korea,0%,N/A,Exempt,Exempted due to sanctions
+Steel & Aluminum,25%,2025-03-12,Product-Specific Tariff,Includes beer cans and aluminum containers
+Automobiles,25%,2025-04-03,Product-Specific Tariff,Applies to vehicles; USMCA exemptions
+Auto Parts,25%,2025-05-03,Product-Specific Tariff,Applies to parts; USMCA exemptions

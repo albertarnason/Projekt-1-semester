@@ -1,0 +1,55 @@
+Kategori,Komponent,Leverandør,Oprindelse
+Batterikomponenter,Lithium (raffineret),Piedmont Lithium,USA
+Batterikomponenter,Lithium (raffineret),Liontown,Australien
+Batterikomponenter,Nikkel,BHP,Australien
+Batterikomponenter,Kobolt,Glencore,"DR Congo, Schweiz"
+Batterikomponenter,Grafit,Syrah Resources,"Mozambique, USA"
+Batterikomponenter,Elektrolyt,LG Chem,Sydkorea
+Batterikomponenter,Elektrolyt,Panasonic,Japan
+Batterikomponenter,Separatorfilm,UBE Industries,Japan
+Batterikomponenter,Separatorfilm,SK Innovation,Sydkorea
+Batterikomponenter,Battericeller,Panasonic,"Japan, USA"
+Batterikomponenter,Battericeller,Tesla,USA
+Batterikomponenter,Batterimoduler,Tesla,USA
+Batterikomponenter,Batteripakker,Tesla,USA
+Batterikomponenter,Genbrugsmaterialer,Redwood Materials,USA
+
+Drivlinje og el-komponenter,Elmotorer,Tesla,USA
+Drivlinje og el-komponenter,Invertere,Tesla,USA
+Drivlinje og el-komponenter,Gearkasser,Tesla,USA
+Drivlinje og el-komponenter,Gearkasser,Magna,"Canada, USA"
+Drivlinje og el-komponenter,Transmissioner,Futronic,"Sydkorea, USA"
+Drivlinje og el-komponenter,Elektriske styreenheder (ECUs),STMicroelectronics,Europa
+Drivlinje og el-komponenter,Power electronics,Infineon,Tyskland
+Drivlinje og el-komponenter,Power electronics,ON Semiconductor,USA
+Drivlinje og el-komponenter,Ledningsnet,Yazaki,Japan
+Drivlinje og el-komponenter,Ledningsnet,Aptiv,"Irland, Global"
+
+Karrosseri og strukturdele,Karrosseripaneler,Tesla,USA
+Karrosseri og strukturdele,Karrosseripaneler,Hydro,"Norge, USA"
+Karrosseri og strukturdele,Giga-casting dele,Tesla,USA
+Karrosseri og strukturdele,Giga-casting dele,IDRA Group,Italien
+Karrosseri og strukturdele,Døre og hængsler,Gestamp,Spanien
+Karrosseri og strukturdele,Vinduer og glas,AGC,Japan
+Karrosseri og strukturdele,Vinduer og glas,Fuyao Glass,"Kina, USA"
+Karrosseri og strukturdele,Sæderammer,Brose,"Tyskland, USA"
+Karrosseri og strukturdele,Understel,Magna,Tyskland
+Karrosseri og strukturdele,Understel,ZF Friedrichshafen,Tyskland
+
+Interiør og softwarekomponenter,Skærme & infotainment,LG Display,Sydkorea
+Interiør og softwarekomponenter,Skærme & infotainment,Tesla,USA
+Interiør og softwarekomponenter,Kameraer og sensorer,Tesla,USA
+Interiør og softwarekomponenter,Kameraer og sensorer,Aptiv,Global
+Interiør og softwarekomponenter,Kameraer og sensorer,Continental,Tyskland
+Interiør og softwarekomponenter,Højttalere & mikrofoner,Harman,Sydkorea
+Interiør og softwarekomponenter,Højttalere & mikrofoner,Bose,USA
+Interiør og softwarekomponenter,Kabinelys og stik,Lear Corporation,USA
+Interiør og softwarekomponenter,Kabinelys og stik,Valeo,Frankrig
+
+Produktionsudstyr,Giga Press,IDRA Group,Italien
+Produktionsudstyr,Robotarme,KUKA Robotics,Tyskland
+Produktionsudstyr,Robotarme,FANUC,"Japan, USA"
+Produktionsudstyr,Transportbånd/AGVs,Tesla,USA
+Produktionsudstyr,Transportbånd/AGVs,Dematic,USA
+Produktionsudstyr,Testudstyr,National Instruments,USA
+Produktionsudstyr,Testudstyr,Keysight,USA
