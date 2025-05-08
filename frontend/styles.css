@@ -4,6 +4,12 @@ body {
   background: rgb(194, 194, 194);
   color: black;
   font-family: "Cinzel", serif;
+
+  display: flex; /* Bruger Flexbox til layout */
+  justify-content: center; /* Centrerer indholdet vandret */
+  align-items: center; /* Centrerer indholdet lodret */
+  height: 100vh; /* Hele viewportens højde bruges */
+  font-family: sans-serif; /* Bruger en sans-serif skrifttype */ 
 }
 
 h1 {
@@ -54,4 +60,68 @@ svg.map-svg {
   letter-spacing: 2px;
   text-transform: uppercase;
   text-shadow: 0 0 0px #e82127, 0 0 0px #ff3b3b, 4px 4px 6px rgba(0, 0, 0, 0.6);
+}
+
+
+/* === Container til hele toggle-knappen === */
+.switch {
+  position: relative; /* Gør det muligt at positionere indre elementer absolut */
+  display: inline-block; /* Gør elementet inline, men med block-egenskaber */
+  width: 700px; /* Bredden på hele knappen – LANG */
+  height: 70px;  /* Højden på knappen – TYND */
+}
+
+/* === Selve checkboxen (input) skjules === */
+.switch input {
+  display: none; /* Skjuler checkboxen, så den ikke er synlig */
+}
+
+/* === Baggrund og layout for slideren === */
+.slider {
+  position: relative; /* For at kunne positionere child-elementer absolut */
+  width: 100%; /* Fylder hele switch-containerens bredde */
+  height: 100%; /* Fylder hele højden */
+  background-color: rgb(255, 255, 255); /* Baggrundsfarve: hvid */
+  border-radius: 20px; /* Afrundede hjørner */
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.3); /* Let skygge omkring knappen */
+  display: flex; /* Flexbox bruges til layout */
+  align-items: center; /* Centrerer indholdet vertikalt */
+  justify-content: space-between; /* Lige stor afstand mellem venstre og højre tekst */
+  padding: 0 30px; /* Indvendig margen i siderne */
+  box-sizing: border-box; /* Padding inkluderes i elementets samlede størrelse */
+  color: rgb(166, 47, 47); /* Farven på label-teksten */
+  font-size: 24px; /* Skriftstørrelse på "Produktion" og "Salg" */
+  font-weight: bold; /* Gør teksten fed */
+}
+
+/* === Teksten på venstre og højre side af knappen === */
+.label-left, .label-right {
+  z-index: 1; /* Sørger for, at teksten ikke bliver dækket af andre elementer */
+  width: 50%; /* Hver label fylder halvdelen af slideren */
+  text-align: center; /* Centrerer teksten */
+  pointer-events: none; /* Teksten reagerer ikke på klik eller mus */
+}
+
+/* === Den bevægelige del (thumb) af knappen === */
+.toggle-thumb {
+  position: absolute; /* Gør det muligt at flytte elementet frit inde i slideren */
+  top: 5px; /* Lidt ned fra toppen */
+  left: 5px; /* Lidt ind fra venstre kant */
+  width: 320px;  /* Lidt mindre end halvdelen af den samlede bredde */
+  height: 60px;  /* Matcher næsten højden på containeren */
+  background-color: rgb(154, 33, 33); /* Rød baggrund */
+  color: rgb(255, 255, 255); /* Hvid tekst */
+  border-radius: 10px; /* Let afrundede hjørner */
+  display: flex; /* Flexbox for at centrere tekst i midten */
+  align-items: center; /* Centrerer teksten lodret */
+  justify-content: center; /* Centrerer teksten vandret */
+  font-weight: bold; /* Gør teksten fed */
+  font-size: 24px; /* Skriftstørrelse inde i thumb */
+  transition: transform 0.4s; /* Giver en glidende animation ved skift */
+  z-index: 2; /* Sørger for at thumb ligger ovenpå labels */
+}
+
+/* === Når input-checkboxen er tændt (checked) flyttes thumb til højre === */
+.switch input:checked + .slider .toggle-thumb {
+  transform: translateX(350px); /* Flytter thumb fra venstre til højre */
 }
