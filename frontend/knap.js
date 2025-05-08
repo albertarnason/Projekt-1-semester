@@ -14,11 +14,3 @@ toggle.addEventListener('change', function () {
   }
 });
 
-// Optional: Ændre tekst ved at lytte på sliderens position
-toggle.addEventListener('input', function () {
-  if (this.checked) {
-    thumbText.textContent = "Salg"; // Sætter teksten til Salg når slideren er på højre
-  } else {
-    thumbText.textContent = "Produktion"; // Sætter teksten til Produktion når slideren er på venstre
-  }
-});
