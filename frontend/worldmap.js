@@ -36,6 +36,7 @@ svg.append("defs")
 d3.json("https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json").then(world => {
   const countries = topojson.feature(world, world.objects.countries).features;
   console.log(countries)
+  
    // Filtrer Antarktis fra baseret på landets navn (sikker metode)
    const filteredCountries = countries.filter(country => country.properties.name !== "Antarctica");
 
