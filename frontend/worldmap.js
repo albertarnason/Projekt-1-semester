@@ -30,12 +30,12 @@ svg.append("defs")
   .attr("orient", "auto")
   .append("path")
   .attr("d", "M0,-5L10,0L0,5")
-  .attr("fill", "black"); // Sort pil
+  .attr("fill", "red"); // Sort pil
 
 // Hent og tegn verdenskort
 d3.json("https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json").then(world => {
   const countries = topojson.feature(world, world.objects.countries).features;
-
+  console.log(countries)
    // Filtrer Antarktis fra baseret på landets navn (sikker metode)
    const filteredCountries = countries.filter(country => country.properties.name !== "Antarctica");
 
@@ -85,5 +85,44 @@ d3.json("https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json").then(w
     .attr("stroke-width", 2)
     .attr("d", path)
     .attr("marker-end", "url(#arrow)");
+   // Tegn landene
+   svg.selectAll(".land")
+     .data(filteredCountries)
+     .enter()
+     .append("path")
+     .attr("class", "land")
+     .attr("d", path)
+     .on("mouseover", (event, d) => {
+       tooltip
+         .style("display", "block")
+         .html("Country: " + (d.properties.name || "Unknown") + d.id);
+     })
+     .on("mousemove", (event) => {
+       tooltip
+         .style("left", event.pageX + 10 + "px")
+         .style("top", event.pageY - 20 + "px");
+     })
+     .on("mouseout", () => {
+       tooltip.style("display", "none");
+     });
+ 
+   // Tegn pil fra USA til Beijing
+   const from = [filteredCountries[4].geometry.coordinates[0][0][0][0], filteredCountries[4].geometry.coordinates[0][0][0][1]]
+
+   console.log(from)
+   const to = [116.4, 39.9];    // Beijing
+ 
+   const line = {
+     type: "LineString",
+     coordinates: [from, to],
+   };
+ 
+   svg.append("path")
+     .datum(line)
+     .attr("fill", "none")
+     .attr("stroke", "red")
+     .attr("stroke-width", 2)
+     .attr("d", path)
+     .attr("marker-end", "url(#arrow)");
     });
 
