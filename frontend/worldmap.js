@@ -49,6 +49,27 @@ d3.json("https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json").then(w
   // Brug opdateret path
   const path = d3.geoPath().projection(projection);
 
+  // Tegn landene
+  svg.selectAll(".land")
+    .data(filteredCountries)
+    .enter()
+    .append("path")
+    .attr("class", "land")
+    .attr("d", path)
+    .on("mouseover", (event, d) => {
+      tooltip
+        .style("display", "block")
+        .html("Country: " + (d.properties.name || "Unknown"));
+    })
+    .on("mousemove", (event) => {
+      tooltip
+        .style("left", event.pageX + 10 + "px")
+        .style("top", event.pageY - 20 + "px");
+    })
+    .on("mouseout", () => {
+      tooltip.style("display", "none");
+    });
+
    // Tegn landene
    svg.selectAll(".land")
      .data(filteredCountries)
