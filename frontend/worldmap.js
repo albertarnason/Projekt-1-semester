@@ -7,16 +7,60 @@ const svg = d3
   .attr("width", width)
   .attr("height", height);
 
+// Hent og tegn verdenskort
+d3.json("https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json").then(world => {
+  const countries = topojson.feature(world, world.objects.countries).features;
+  console.log(countries)
+  
+// Filtrer Antarktis fra baseret på landets navn (sikker metode)
+  const filteredCountries = countries.filter(country => country.properties.name !== "Antarctica");
+
 // Opsæt projektion og path
 const projection = d3.geoNaturalEarth1()
   .scale(width / 6.5)
   .translate([width / 2, height / 2]);
 
 const path = d3.geoPath().projection(projection);
-const graticule = d3.geoGraticule();
+
+// Dynamisk opsæt projektion baseret på landenes bounds
+d3.geoPath().projection(projection.fitSize([width, height], {
+  type: "FeatureCollection",
+  features: filteredCountries
+}));
+
+   // Tegn landene
+   svg.selectAll(".land")
+     .data(filteredCountries)
+     .enter()
+     .append("path")
+     .attr("class", "land")
+     .attr("d", path);
+
+     
+
 
 // Tooltip
 const tooltip = d3.select(".tooltip");
+
+// Hover over tooltip FUNGERER KUN EFTER "Tegn landene"
+svg
+.selectAll(".land")
+.data(filteredCountries)
+.on("mouseover", (event, d) => {
+  tooltip
+    .style("display", "block")
+    .html("Country: " + (d.properties.name || "Unknown") + d.id);
+})
+.on("mousemove", (event) => {
+  tooltip
+    .style("left", event.pageX + 10 + "px")
+    .style("top", event.pageY - 20 + "px");
+})
+.on("mouseout", () => {
+  tooltip.style("display", "none");
+});
+
+
 
 // Tilføj pil-definition én gang
 svg.append("defs")
@@ -32,44 +76,7 @@ svg.append("defs")
   .attr("d", "M0,-5L10,0L0,5")
   .attr("fill", "red"); // Sort pil
 
-// Hent og tegn verdenskort
-d3.json("https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json").then(world => {
-  const countries = topojson.feature(world, world.objects.countries).features;
-  console.log(countries)
-  
-   // Filtrer Antarktis fra baseret på landets navn (sikker metode)
-   const filteredCountries = countries.filter(country => country.properties.name !== "Antarctica");
 
-     // Dynamisk opsæt projektion baseret på landenes bounds
-  const boundsPath = d3.geoPath().projection(projection.fitSize([width, height], {
-    type: "FeatureCollection",
-    features: filteredCountries,
-  }));
-
-  // Brug opdateret path
-  const path = d3.geoPath().projection(projection);
-
-   // Tegn landene
-   svg.selectAll(".land")
-     .data(filteredCountries)
-     .enter()
-     .append("path")
-     .attr("class", "land")
-     .attr("d", path)
-     .on("mouseover", (event, d) => {
-       tooltip
-         .style("display", "block")
-         .html("Country: " + (d.properties.name || "Unknown") + d.id);
-     })
-     .on("mousemove", (event) => {
-       tooltip
-         .style("left", event.pageX + 10 + "px")
-         .style("top", event.pageY - 20 + "px");
-     })
-     .on("mouseout", () => {
-       tooltip.style("display", "none");
-     });
- 
    // Tegn pil fra USA til Beijing
    const from = [filteredCountries[4].geometry.coordinates[0][0][0][0], filteredCountries[4].geometry.coordinates[0][0][0][1]]
 
