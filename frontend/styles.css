@@ -1,15 +1,9 @@
 body {
   margin: 0;
-  overflow: hidden;
+  overflow: auto;
   background: rgb(194, 194, 194);
   color: black;
   font-family: "Cinzel", serif;
-
-  display: flex; /* Bruger Flexbox til layout */
-  justify-content: center; /* Centrerer indholdet vandret */
-  align-items: center; /* Centrerer indholdet lodret */
-  height: 100vh; /* Hele viewportens højde bruges */
-  font-family: sans-serif; /* Bruger en sans-serif skrifttype */ 
 }
 
 h1 {
