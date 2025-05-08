@@ -69,22 +69,6 @@ d3.json("https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json").then(w
       tooltip.style("display", "none");
     });
 
-  // Tegn pil fra USA til Beijing
-  const from = [-100, 40];     // USA
-  const to = [116.4, 39.9];    // Beijing
-
-  const line = {
-    type: "LineString",
-    coordinates: [from, to],
-  };
-
-  svg.append("path")
-    .datum(line)
-    .attr("fill", "none")
-    .attr("stroke", "black")
-    .attr("stroke-width", 2)
-    .attr("d", path)
-    .attr("marker-end", "url(#arrow)");
    // Tegn landene
    svg.selectAll(".land")
      .data(filteredCountries)
