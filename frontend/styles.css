@@ -1,8 +1,8 @@
 body {
   margin: 0;
   overflow: auto;
-  background: rgb(194, 194, 194);
-  color: black;
+  background: rgb(242, 241, 239);
+  color: rgb(114, 29, 29);
   font-family: "Cinzel", serif;
 }
 
@@ -17,7 +17,7 @@ svg.map-svg {
 }
 
 .land {
-  fill: rgb(33, 33, 33);
+  fill: rgb(177, 32, 32);
   stroke: #d89d9d;
   stroke-width: 0.3px;
 }
@@ -61,8 +61,8 @@ svg.map-svg {
 .switch {
   position: relative; /* Gør det muligt at positionere indre elementer absolut */
   display: inline-block; /* Gør elementet inline, men med block-egenskaber */
-  width: 700px; /* Bredden på hele knappen – LANG */
-  height: 70px;  /* Højden på knappen – TYND */
+  width: 400px; /* Bredden på hele knappen – LANG */
+  height: 50px;  /* Højden på knappen – TYND */
 }
 
 /* === Selve checkboxen (input) skjules === */
@@ -75,7 +75,7 @@ svg.map-svg {
   position: relative; /* For at kunne positionere child-elementer absolut */
   width: 100%; /* Fylder hele switch-containerens bredde */
   height: 100%; /* Fylder hele højden */
-  background-color: rgb(255, 255, 255); /* Baggrundsfarve: hvid */
+  background-color: rgb(255, 254, 248); /* Baggrundsfarve: hvid */
   border-radius: 20px; /* Afrundede hjørner */
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.3); /* Let skygge omkring knappen */
   display: flex; /* Flexbox bruges til layout */
@@ -101,21 +101,29 @@ svg.map-svg {
   position: absolute; /* Gør det muligt at flytte elementet frit inde i slideren */
   top: 5px; /* Lidt ned fra toppen */
   left: 5px; /* Lidt ind fra venstre kant */
-  width: 320px;  /* Lidt mindre end halvdelen af den samlede bredde */
-  height: 60px;  /* Matcher næsten højden på containeren */
+  width: 180px;  /* Lidt mindre end halvdelen af den samlede bredde */
+  height: 40px;  /* Matcher næsten højden på containeren */
   background-color: rgb(154, 33, 33); /* Rød baggrund */
-  color: rgb(255, 255, 255); /* Hvid tekst */
+  color: rgb(255, 255, 235); /* Hvid tekst */
   border-radius: 10px; /* Let afrundede hjørner */
   display: flex; /* Flexbox for at centrere tekst i midten */
   align-items: center; /* Centrerer teksten lodret */
   justify-content: center; /* Centrerer teksten vandret */
   font-weight: bold; /* Gør teksten fed */
-  font-size: 24px; /* Skriftstørrelse inde i thumb */
+  font-size: 20px; /* Skriftstørrelse inde i thumb */
   transition: transform 0.4s; /* Giver en glidende animation ved skift */
   z-index: 2; /* Sørger for at thumb ligger ovenpå labels */
 }
 
 /* === Når input-checkboxen er tændt (checked) flyttes thumb til højre === */
 .switch input:checked + .slider .toggle-thumb {
-  transform: translateX(350px); /* Flytter thumb fra venstre til højre */
+  transform: translateX(200px); /* Flytter thumb fra venstre til højre */
+}
+
+.switch-wrapper {
+  position: absolute; /* gør det muligt at placere den frit */
+  top: 200px; /* afstand fra toppen */
+  left: 50%; /* midten vandret */
+  transform: translateX(-50%); /* justerer så den bliver centreret */
+  z-index: 10; /* ligger over evt. kortet */
 }
