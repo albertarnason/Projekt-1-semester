@@ -22,6 +22,12 @@ svg.map-svg {
   stroke-width: 0.3px;
 }
 
+.land2 {
+  fill: rgb(0, 32, 32);
+  stroke: #d89d9d;
+  stroke-width: 0.3px;
+}
+
 .tooltip {
   position: absolute;
   padding: 4px 8px;
