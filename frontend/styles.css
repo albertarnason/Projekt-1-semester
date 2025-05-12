@@ -127,3 +127,24 @@ svg.map-svg {
   transform: translateX(-50%); /* justerer så den bliver centreret */
   z-index: 10; /* ligger over evt. kortet */
 }
+
+.bubble-container {
+  display: flex;
+  justify-content: center; /* Sørger for, at boblerne er ved siden af hinanden midt på siden */
+  gap: 250px; /* Mellemrum mellem boblerne */
+  width: 100%;
+  margin-top: 800px; /* Topafstand til containeren */
+}
+
+.bubble {
+  height: 250px;
+  width: 400px;
+  min-width: 400px;
+  background: rgb(255, 255, 255);
+  margin: 50px auto 0 auto; /* centreret og med topafstand */
+  border-radius: 10px; /* mindre runding hvis du vil have det firkantet-ish */
+  font-size: 24px;
+  text-align: center;
+  padding: 20px;
+  box-sizing: border-box;
+}
