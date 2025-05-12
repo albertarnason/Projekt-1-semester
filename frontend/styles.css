@@ -60,9 +60,9 @@ svg.map-svg {
 /* === Container til hele toggle-knappen === */
 .switch {
   position: relative; /* Gør det muligt at positionere indre elementer absolut */
-  display: inline-block; /* Gør elementet inline, men med block-egenskaber */
-  width: 400px; /* Bredden på hele knappen – LANG */
-  height: 50px;  /* Højden på knappen – TYND */
+  display: inline-block; /* Gør slideren fleksibel så man kan ændre på bredden og højden, selvom den står på linje med andre knapper */
+  width: 400px; /* Justere bredden på slideren */
+  height: 50px;  /* Justere højden på slideren */
 }
 
 /* === Selve checkboxen (input) skjules === */
@@ -129,11 +129,11 @@ svg.map-svg {
 }
 
 .bubble-container {
-  display: flex;
-  justify-content: center; /* Sørger for, at boblerne er ved siden af hinanden midt på siden */
+  display: flex; /* Fortælle browseren, at elementerne indeni bubble-container (de to bubbler), skal ligge ved siden af hinanden og ikke ovenpå hinanden.*/
+  justify-content: center; /* Sørger for, at boblerne er ved siden af hinanden centreret på midten af siden */
   gap: 250px; /* Mellemrum mellem boblerne */
-  width: 100%;
-  margin-top: 800px; /* Topafstand til containeren */
+  width: 100%; /* Angiver hvor meget af bredden på siden, containeren skal fylde */
+  margin-top: 800px; /* Afstanden fra top til containeren */
 }
 
 .bubble {
