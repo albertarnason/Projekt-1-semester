@@ -56,13 +56,12 @@ svg.map-svg {
   text-shadow: 0 0 0px #e82127, 0 0 0px #ff3b3b, 4px 4px 6px rgba(0, 0, 0, 0.6);
 }
 
-
 /* === Container til hele toggle-knappen === */
 .switch {
   position: relative; /* Gør det muligt at positionere indre elementer absolut */
   display: inline-block; /* Gør elementet inline, men med block-egenskaber */
   width: 400px; /* Bredden på hele knappen – LANG */
-  height: 50px;  /* Højden på knappen – TYND */
+  height: 50px; /* Højden på knappen – TYND */
 }
 
 /* === Selve checkboxen (input) skjules === */
@@ -89,7 +88,8 @@ svg.map-svg {
 }
 
 /* === Teksten på venstre og højre side af knappen === */
-.label-left, .label-right {
+.label-left,
+.label-right {
   z-index: 1; /* Sørger for, at teksten ikke bliver dækket af andre elementer */
   width: 50%; /* Hver label fylder halvdelen af slideren */
   text-align: center; /* Centrerer teksten */
@@ -101,8 +101,8 @@ svg.map-svg {
   position: absolute; /* Gør det muligt at flytte elementet frit inde i slideren */
   top: 5px; /* Lidt ned fra toppen */
   left: 5px; /* Lidt ind fra venstre kant */
-  width: 180px;  /* Lidt mindre end halvdelen af den samlede bredde */
-  height: 40px;  /* Matcher næsten højden på containeren */
+  width: 180px; /* Lidt mindre end halvdelen af den samlede bredde */
+  height: 40px; /* Matcher næsten højden på containeren */
   background-color: rgb(154, 33, 33); /* Rød baggrund */
   color: rgb(255, 255, 235); /* Hvid tekst */
   border-radius: 10px; /* Let afrundede hjørner */
@@ -126,4 +126,29 @@ svg.map-svg {
   left: 50%; /* midten vandret */
   transform: translateX(-50%); /* justerer så den bliver centreret */
   z-index: 10; /* ligger over evt. kortet */
+}
+
+#stock-chart {
+  background-color: #f9f9f9;
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  width: fit-content;
+}
+
+svg {
+  font-family: sans-serif;
+}
+
+.axis path,
+.axis line {
+  fill: none;
+  stroke: #aaa;
+  shape-rendering: crispEdges;
+}
+
+path {
+  stroke: rgb(177, 32, 32);
+  stroke-width: 2;
+  fill: none;
 }

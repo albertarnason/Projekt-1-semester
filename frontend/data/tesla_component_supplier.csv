@@ -1,0 +1,61 @@
+Category,Component,Supplier,Origin,Latitude,Longitude
+Battery Components,Lithium (refined),Piedmont Lithium,USA,35.7596,-81.0348
+Battery Components,Lithium (refined),Liontown,Australien,-25.2744,133.7751
+Battery Components,Nickel,BHP,Australien,-25.2744,133.7751
+Battery Components,Cobalt,Glencore,DR Congo,-11.6870,26.7384
+Battery Components,Cobalt,Glencore,Schweiz,46.8182,8.2275
+Battery Components,Graphite,Syrah Resources,Mozambique,-18.6657,35.5296
+Battery Components,Graphite,Syrah Resources,USA,32.3199,-86.9023
+Battery Components,Electrolyte,LG Chem,Sydkorea,37.5665,126.9780
+Battery Components,Electrolyte,Panasonic,Japan,35.6895,139.6917
+Battery Components,Separator Film,UBE Industries,Japan,33.9435,131.2519
+Battery Components,Separator Film,SK Innovation,Sydkorea,37.5665,126.9780
+Battery Components,Battery Cells,Panasonic,Japan,35.6895,139.6917
+Battery Components,Battery Cells,Panasonic,USA,35.5931,-106.1110
+Battery Components,Battery Cells,Tesla,USA,39.5349,-119.7527
+Battery Components,Battery Modules,Tesla,USA,39.5349,-119.7527
+Battery Components,Battery Packs,Tesla,USA,39.5349,-119.7527
+Battery Components,Recycled Materials,Redwood Materials,USA,39.5267,-119.8138
+Powertrain and Electrical Components,Electric Motors,Tesla,USA,39.5349,-119.7527
+Powertrain and Electrical Components,Inverters,Tesla,USA,39.5349,-119.7527
+Powertrain and Electrical Components,Gearboxes,Tesla,USA,39.5349,-119.7527
+Powertrain and Electrical Components,Gearboxes,Magna,Canada,43.6532,-79.3832
+Powertrain and Electrical Components,Gearboxes,Magna,USA,42.3314,-83.0458
+Powertrain and Electrical Components,Transmissions,Futronic,Sydkorea,37.5665,126.9780
+Powertrain and Electrical Components,Transmissions,Futronic,USA,42.3314,-83.0458
+Powertrain and Electrical Components,Electronic Control Units (ECUs),STMicroelectronics,Europa,50.1109,8.6821
+Powertrain and Electrical Components,Power Electronics,Infineon,Tyskland,48.1351,11.5820
+Powertrain and Electrical Components,Power Electronics,ON Semiconductor,USA,33.4255,-111.9400
+Powertrain and Electrical Components,Wiring Harnesses,Yazaki,Japan,34.7454,137.7276
+Powertrain and Electrical Components,Wiring Harnesses,Aptiv,Irland,53.3498,-6.2603
+Powertrain and Electrical Components,Wiring Harnesses,Aptiv,Global,0.0,0.0
+Body and Structural Parts,Body Panels,Tesla,USA,39.5349,-119.7527
+Body and Structural Parts,Body Panels,Hydro,Norge,60.4720,8.4689
+Body and Structural Parts,Body Panels,Hydro,USA,35.4676,-97.5164
+Body and Structural Parts,Giga-Casting Parts,Tesla,USA,39.5349,-119.7527
+Body and Structural Parts,Giga-Casting Parts,IDRA Group,Italien,45.0703,7.6869
+Body and Structural Parts,Doors and Hinges,Gestamp,Spanien,40.4168,-3.7038
+Body and Structural Parts,Windows and Glass,AGC,Japan,35.6895,139.6917
+Body and Structural Parts,Windows and Glass,Fuyao Glass,Kina,29.3500,113.1000
+Body and Structural Parts,Windows and Glass,Fuyao Glass,USA,39.7589,-84.1916
+Body and Structural Parts,Seat Frames,Brose,Tyskland,50.2796,11.9802
+Body and Structural Parts,Seat Frames,Brose,USA,42.3314,-83.0458
+Body and Structural Parts,Chassis,Magna,Tyskland,48.7758,9.1829
+Body and Structural Parts,Chassis,ZF Friedrichshafen,Tyskland,47.6555,9.4755
+Interior and Software Components,Displays & Infotainment,LG Display,Sydkorea,37.5665,126.9780
+Interior and Software Components,Displays & Infotainment,Tesla,USA,39.5349,-119.7527
+Interior and Software Components,Cameras and Sensors,Tesla,USA,39.5349,-119.7527
+Interior and Software Components,Cameras and Sensors,Aptiv,Global,0.0,0.0
+Interior and Software Components,Cameras and Sensors,Continental,Tyskland,50.1109,8.6821
+Interior and Software Components,Speakers & Microphones,Harman,Sydkorea,37.5665,126.9780
+Interior and Software Components,Speakers & Microphones,Bose,USA,42.2590,-71.7960
+Interior and Software Components,Cabin Lights and Connectors,Lear Corporation,USA,42.3314,-83.0458
+Interior and Software Components,Cabin Lights and Connectors,Valeo,Frankrig,48.8566,2.3522
+Production Equipment,Giga Press,IDRA Group,Italien,45.0703,7.6869
+Production Equipment,Robot Arms,KUKA Robotics,Tyskland,48.3665,10.8940
+Production Equipment,Robot Arms,FANUC,Japan,36.2544,139.3775
+Production Equipment,Robot Arms,FANUC,USA,33.6407,-84.4277
+Production Equipment,Conveyors/AGVs,Tesla,USA,39.5349,-119.7527
+Production Equipment,Conveyors/AGVs,Dematic,USA,42.9634,-85.6681
+Production Equipment,Test Equipment,National Instruments,USA,30.4070,-97.7255
+Production Equipment,Test Equipment,Keysight,USA,38.2900,-122.4597
