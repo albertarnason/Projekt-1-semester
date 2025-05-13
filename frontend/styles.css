@@ -217,6 +217,8 @@ body {
 .yearButtons button:hover {
   background-color: rgb(187, 30, 30);
 }
+
+/* === Elon Musk Billede === */
 .elon-label {
   display: flex;
   flex-direction: column;
