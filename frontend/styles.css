@@ -179,3 +179,41 @@ path {
   stroke-width: 2;
   fill: none;
 }
+.elon-label {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.elon-img {
+  width: 300px;
+  margin-top: -450px;
+  margin-left: 1000px;
+  transition: opacity 0.3s ease;
+}
+
+.elon-råb {
+  display: none;
+}
+
+#elon-toggle:checked + .elon-label .elon-smil {
+  display: none;
+}
+
+#elon-toggle:checked + .elon-label .elon-råb {
+  display: block;
+}
+
+.elon-text {
+  margin-top: 10px;
+  text-align: center;
+  font-size: 18px;
+  color: rgb(177, 32, 32);
+  font-weight: bold;
+  background-color: rgb(255, 255, 255);
+  padding: 4px 10px;
+  border-radius: 10px;
+  border: 2px solid rgb(177, 32, 32);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  margin-left: 1100px;
+}
