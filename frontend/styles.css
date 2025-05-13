@@ -231,32 +231,43 @@ body {
 
 /* === Elon Musk Billede === */
 .elon-label {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+  position: relative;
+  cursor: pointer;
+  /* width/height to match your images */
+  width: 200px;
+  height: auto;
 }
 
 .elon-img {
-  width: 300px;
-  margin-top: -450px;
-  margin-left: 1000px;
+  position: absolute;
+  top: -500px;
+  left: 900px;
+  width: 100%;
   transition: opacity 0.3s ease;
+ width: 35%;
+}
+
+/* closed (smil) starts visible, open (råb) hidden */
+.elon-smil {
+  opacity: 1;
+  z-index: 1;
 }
 
 .elon-råb {
-  display: none;
+  opacity: 0;
+  z-index: 0;
 }
 
-.elon-toggle:checked + .elon-label .elon-smil {
-  display: none;
+/* when checked, swap their opacities */
+#elon-toggle:checked + .elon-label .elon-smil {
+  opacity: 0;
 }
 
-.elon-toggle:checked + .elon-label .elon-råb {
-  display: block;
+#elon-toggle:checked + .elon-label .elon-råb {
+  opacity: 1;
 }
-
 .elon-text {
-  margin-top: 10px;
+  margin-top: -80px;
   text-align: center;
   font-size: 18px;
   color: rgb(177, 32, 32);
@@ -266,5 +277,5 @@ body {
   border-radius: 10px;
   border: 2px solid rgb(177, 32, 32);
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-  margin-left: 1100px;
+  margin-left: 1150px;
 }
