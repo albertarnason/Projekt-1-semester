@@ -5,24 +5,31 @@
     <link rel="stylesheet" href="styles.css" />
     <script src="https://d3js.org/d3.v7.min.js"></script>
     <script src="https://d3js.org/topojson.v2.min.js"></script>
-    
+    <title>Tesla Projekt</title>
   </head>
   <body>
     <h1 class="tesla-heading">
       <div id="svg-pladsholder">indlæser logo</div>
     </h1>
+
     <div id="map"></div>
     <div class="tooltip"></div>
 
-   <div class="switch-wrapper">
-    <label class="switch">
-      <input type="checkbox" id="toggle">
-       <div class="slider">
-        <span class="label-left">Produktion</span>
-        <span class="label-right">Salg</span>
-      <div class="toggle-thumb" id="thumbText">Produktion</div> <!-- Teksten ændres her -->
-     </div>
+    <div class="switch-wrapper">
+      <label class="switch">
+        <input type="checkbox" id="toggle" />
+        <div class="slider">
+          <span class="label-left">Produktion</span>
+          <span class="label-right">Salg</span>
+          <div class="toggle-thumb" id="thumbText">Produktion</div>
+        </div>
+      </label>
+    </div>
 
+    <h2>Tesla Stock Price (2019–2024)</h2>
+    <div id="stock-chart">
+      <svg width="1000" height="500"></svg>
+    </div>
  
   <div class="bubble-container">
    <div class="bubble">skriv her</div>
@@ -31,9 +38,10 @@
 
 
     </label>
-  <script src="worldmap.js"></script>
+
   <script src="loadSvg.js"></script>
+  <script src="TeslaStock.js"></script>
+  <script src="worldmap.js"></script>
 </body>
   </body>
 </html>
-

@@ -62,7 +62,6 @@ svg.map-svg {
   text-shadow: 0 0 0px #e82127, 0 0 0px #ff3b3b, 4px 4px 6px rgba(0, 0, 0, 0.6);
 }
 
-
 /* === Container til hele toggle-knappen === */
 .switch {
   position: relative; /* Gør det muligt at positionere indre elementer absolut */
@@ -95,7 +94,8 @@ svg.map-svg {
 }
 
 /* === Teksten på venstre og højre side af knappen === */
-.label-left, .label-right {
+.label-left,
+.label-right {
   z-index: 1; /* Sørger for, at teksten ikke bliver dækket af andre elementer */
   width: 50%; /* Hver label fylder halvdelen af slideren */
   text-align: center; /* Centrerer teksten */
@@ -107,8 +107,8 @@ svg.map-svg {
   position: absolute; /* Gør det muligt at flytte elementet frit inde i slideren */
   top: 5px; /* Lidt ned fra toppen */
   left: 5px; /* Lidt ind fra venstre kant */
-  width: 180px;  /* Lidt mindre end halvdelen af den samlede bredde */
-  height: 40px;  /* Matcher næsten højden på containeren */
+  width: 180px; /* Lidt mindre end halvdelen af den samlede bredde */
+  height: 40px; /* Matcher næsten højden på containeren */
   background-color: rgb(154, 33, 33); /* Rød baggrund */
   color: rgb(255, 255, 235); /* Hvid tekst */
   border-radius: 10px; /* Let afrundede hjørner */
@@ -139,7 +139,7 @@ svg.map-svg {
   justify-content: center; /* Sørger for, at boblerne er ved siden af hinanden centreret på midten af siden */
   gap: 250px; /* Mellemrum mellem boblerne */
   width: 100%; /* Angiver hvor meget af bredden på siden, containeren skal fylde */
-  margin-top: 800px; /* Afstanden fra top til containeren */
+  margin-top: 100px; /* Afstanden fra top til containeren */
 }
 
 .bubble {
@@ -153,4 +153,68 @@ svg.map-svg {
   text-align: center;
   padding: 20px;
   box-sizing: border-box;
+}
+
+h2 {
+  margin-top: 160px; /* afstanden fra top til overskriften */
+}
+
+#stock-chart {
+  background-color: #f9f9f9;
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  width: fit-content;
+  margin-top: 151px;  /* afstanden fra top til grafen */
+}
+
+svg {
+  font-family: sans-serif;
+}
+
+
+.axis path,
+.axis line {
+  fill: none;
+  stroke: #aaa;
+  shape-rendering: crispEdges;
+}
+
+path {
+  stroke: rgb(177, 32, 32);
+  stroke-width: 2;
+  fill: none;
+}
+
+body {
+  display: flex;
+  flex-direction: column;  /* Sørger for, at indholdet er lodret */
+  justify-content: flex-start;  /* Sørger for, at elementer starter fra toppen */
+  align-items: center;  /* Centrerer indholdet vandret */
+  height: 100vh;  /* Gør at body fylder hele skærmen */
+  margin: 0;  /* Fjerner standard margin */
+}
+
+.yearButtons {
+  display: flex;
+  justify-content: center;
+  position: absolute;
+  top: 270px; /* Afstand fra toppen */
+  left: 50%; /* Centrerer horisontalt */
+  transform: translateX(-50%); /* Gør centringen præcis */
+  gap: 25px; /* Mellemrum mellem knapperne */
+}
+
+.yearButtons button {
+padding: 6px 12px;
+font-size: 14px;
+background-color: rgb(144, 23, 23);
+color: white;
+border: none;
+border-radius: 5px;
+cursor: pointer;
+}
+
+.yearButtons button:hover {
+background-color: rgb(187, 30, 30);
 }
