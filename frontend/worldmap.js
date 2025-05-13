@@ -79,6 +79,14 @@ function initData(worldstate) {
   addTooltip(paths); 
     // draw 10×10px red boxes with black stroke:
   
+addBoxes(points, {
+  size: 10,
+  fill: "white",
+  stroke: "black"
+});
+  
+    
+
 }
   
 
@@ -103,14 +111,14 @@ cleanup();
 
 
 
-  if (worldstate == "land2"){
+  if (worldstate == "land"){
 
     // draw 10×10px red boxes with black stroke:
 
 
 addBoxes(points, {
   size: 10,
-  fill: "red",
+  fill: "white",
   stroke: "black"
 });
   }
@@ -215,7 +223,7 @@ function addBoxes(coords, opts = {}) {
 
 
 
-main(worldstate);
+
 
 
 
@@ -244,3 +252,5 @@ points = data.map(item => [
 });
 
 fetchTeslaFactories();
+
+main(worldstate);
