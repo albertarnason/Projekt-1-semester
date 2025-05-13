@@ -18,10 +18,10 @@
     // Hvis checkboxen er checked (slideren er til højre eller venstre)
     if (this.checked) {
       thumbText.textContent = "Produktion"; // Sætter teksten i slideren til "Produktion"
-      worldstate = "land2";
+      worldstate = "land";
     } else {
       thumbText.textContent = "Salg"; // Sætter teksten i slideren til "Salg"
-      worldstate = "land";
+      worldstate = "land2";
 
       
     }
