@@ -1,23 +1,22 @@
-import { upload } from 'pg-upload';
-import pg from 'pg';
-import dotenv from 'dotenv';
-
+import { upload } from "pg-upload";
+import pg from "pg";
+import dotenv from "dotenv";
 
 dotenv.config();
-console.log('Connecting to database', process.env.PG_DATABASE);
+console.log("Connecting to database", process.env.PG_DATABASE);
 const db = new pg.Pool({
-    host:     process.env.PG_HOST,
-    port:     parseInt(process.env.PG_PORT),
-    database: process.env.PG_DATABASE,
-    user:     process.env.PG_USER,
-    password: process.env.PG_PASSWORD,
-    ssl:      { rejectUnauthorized: false },
+  host: process.env.PG_HOST,
+  port: parseInt(process.env.PG_PORT),
+  database: process.env.PG_DATABASE,
+  user: process.env.PG_USER,
+  password: process.env.PG_PASSWORD,
+  ssl: { rejectUnauthorized: false },
 });
 
-const dbResult = await db.query('select now()');
-console.log('Database connection established on', dbResult.rows[0].now);
+const dbResult = await db.query("select now()");
+console.log("Database connection established on", dbResult.rows[0].now);
 
-console.log('Recreating tables...');
+console.log("Recreating tables...");
 
 await db.query(`
 -- primary keys UNDER references OVER
@@ -42,8 +41,7 @@ await db.query(`
 `);
 
 await upload(
-    db,
-    'frontend/data/tesla_factories.csv',
-    'copy tesla_factories from stdin with csv header'
+  db,
+  "frontend/data/tesla_factories.csv",
+  "copy tesla_factories from stdin with csv header"
 );
-
