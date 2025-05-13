@@ -2,7 +2,7 @@
     "private": true,
     "type": "module",
     "scripts": {
-        "createDb": "node db/createDb.js",
+        "createDb": "node frontend/data/createDb.js",
         "dev": "nodemon backend/server.js"
     },
     "dependencies": {
