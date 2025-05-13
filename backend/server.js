@@ -23,6 +23,7 @@ const port = 3003;
 const server = express();
 server.use(express.static('frontend'));
 server.use(onEachRequest)
+server.get('/api/teslaFactories', teslaFactories);
 server.listen(port, onServerReady);
 
 function onEachRequest(request, response, next) {
@@ -34,3 +35,8 @@ function onServerReady() {
     console.log('Webserver running on port', port);
 }
 
+async function teslaFactories(request, response) {
+    const dbResult = await db.query('select * from tesla_factories');
+    console.log(dbResult)
+    response.json(dbResult.rows);
+}
