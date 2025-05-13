@@ -156,9 +156,15 @@ svg.map-svg {
 }
 
 h2 {
-  margin-top: 160px; /* afstanden fra top til overskriften */
+  margin-top: 160px;
+  width: 1000px; /* matcher bredden på grafen */
+  text-align: left;
 }
 
+#stock-chart h2 {
+  margin: 0 0 10px 0;
+  text-align: center;
+}
 #stock-chart {
   background-color: #f9f9f9;
   padding: 20px;
@@ -241,11 +247,11 @@ body {
   display: none;
 }
 
-#elon-toggle:checked + .elon-label .elon-smil {
+.elon-toggle:checked + .elon-label .elon-smil {
   display: none;
 }
 
-#elon-toggle:checked + .elon-label .elon-råb {
+.elon-toggle:checked + .elon-label .elon-råb {
   display: block;
 }
 
