@@ -78,14 +78,6 @@ function initData(worldstate) {
 
   addTooltip(paths); 
     // draw 10×10px red boxes with black stroke:
-  
-addBoxes(points, {
-  size: 10,
-  fill: "white",
-  stroke: "black"
-});
-  
-    
 
 }
   
@@ -147,8 +139,6 @@ function cleanup() {
   // remove the arrow marker
   svg.select("defs marker#arrow").remove();
 
-   svg.selectAll("rect.box-marker").remove();
-
    svg.selectAll("image.logo-marker").remove();
 }
 
@@ -190,34 +180,6 @@ svg.append("defs")
   }
   };
 
-
-function addBoxes(coords, opts = {}) {
-  const {
-    size = 8,
-    className = "box-marker",
-    fill = "steelblue",
-    stroke = "black",
-    strokeWidth = 1
-  } = opts;
-
-  // bind data
-  const boxes = svg.selectAll(`rect.${className}`)
-    .data(coords);
-
-  console.log(boxes)
-  // enter
-  boxes.enter()
-    .append("rect")
-      .attr("class", className)
-      .attr("width", size)
-      .attr("height", size)
-      .attr("x", d => projection(d)[0] - size / 2)
-      .attr("y", d => projection(d)[1] - size / 2)
-      .attr("fill", fill)
-      .attr("stroke", stroke)
-      .attr("stroke-width", strokeWidth);
-}
-
 function addLogos(coords, opts = {}) {
   const {
     size = 32,
@@ -252,10 +214,6 @@ function addLogos(coords, opts = {}) {
   logos.exit().remove();
 }
 
-
-
-
-
 //data fra databasen
 
 async function fetchTeslaFactories (){
@@ -279,7 +237,5 @@ points = data.map(item => [
 //Returnerer værdierne til variablen points
   return points;
 });
-
-fetchTeslaFactories();
 
 main(worldstate);

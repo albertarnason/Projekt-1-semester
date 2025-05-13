@@ -20,8 +20,18 @@ Australia,10%,2025-04-05,Universal Tariff,Subject to universal tariff only
 Ukraine,10%,2025-04-05,Universal Tariff,Subject to universal tariff only
 United Kingdom,10%,2025-04-05,Universal Tariff,Subject to universal tariff only
 Singapore,10%,2025-04-05,Universal Tariff,Subject to universal tariff only
-Russia,0%,N/A,Exempt,Exempted due to sanctions
-North Korea,0%,N/A,Exempt,Exempted due to sanctions
 Steel & Aluminum,25%,2025-03-12,Product-Specific Tariff,Includes beer cans and aluminum containers
 Automobiles,25%,2025-04-03,Product-Specific Tariff,Applies to vehicles; USMCA exemptions
 Auto Parts,25%,2025-05-03,Product-Specific Tariff,Applies to parts; USMCA exemptions
+Lithium-ion EV Batteries,25%,"09-27-2024",Product-Specific Tariff, China
+Battery Components,25%,"09-27-2024",Product-Specific Tariff, China
+Natural Graphite,25%,"06-15-2024",Product-Specific Tariff, China
+Synthetic Graphite,25%,"06-15-2024",Product-Specific Tariff, China
+Electric Vehicles,100%,"09-27-2024",Product-Specific Tariff,China
+Battery Cells,24%,"05-3-2025",Product-Specific Tariff, Japan
+Battery Cells,25%,"05-3-2025",Product-Specific Tariff, South Korea
+General Goods,25%,"03-4-2025",Product-Specific Tariff, Mexico
+General Goods,25%,"03-4-2025",Product-Specific Tariff, Canada
+Nickel Sulfate,20%,"04-9-2025",Product-Specific Tariff, Belgium
+Nickel Sulfate,10%,"04-9-2025",Product-Specific Tariff, Australia
+Nickel Sulfate,32%,"04-9-2025",Product-Specific Tariff, Indonesia

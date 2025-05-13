@@ -20,7 +20,9 @@ console.log("Recreating tables...");
 
 await db.query(`
 -- primary keys UNDER references OVER
-    drop table if exists tesla_factories
+    drop table if exists tesla_factories;
+    drop table if exists tesla_stock;
+    drop table if exists tariffs_trump;
 `);
 
 await db.query(`
@@ -44,4 +46,33 @@ await upload(
   db,
   "frontend/data/tesla_factories.csv",
   "copy tesla_factories from stdin with csv header"
+);
+
+await db.query(`
+    create table tesla_stock (
+    date_close date,
+    value_dollar double precision
+    );
+`);
+
+await upload(
+  db,
+  "frontend/data/tesla_stock.csv",
+  "copy tesla_stock from stdin with csv header"
+);
+
+await db.query(`
+    create table tariffs_trump (
+    entity text,
+    tariff_rate text,
+    effective_date date,
+    tariff_type text,
+    notes text
+    );
+`);
+
+await upload(
+  db,
+  "frontend/data/tariffs_trump.csv",
+  "copy tariffs_trump from stdin with csv header"
 );
