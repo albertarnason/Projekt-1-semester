@@ -12,6 +12,11 @@
       <div id="svg-pladsholder">indlæser logo</div>
     </h1>
 
+    <div class="yearButtons">
+      <button id="button2024">2024</button>
+      <button id="button2025">2025</button>
+    </div>
+
     <div id="map"></div>
     <div class="tooltip"></div>
 
@@ -26,11 +31,27 @@
       </label>
     </div>
 
-    <h2>Tesla Stock Price (2019–2024)</h2>
-    <div id="stock-chart">
-      <svg width="1000" height="500"></svg>
-    </div>
- 
+    <div class="bubble-container">
+      <div class="bubble">skriv her</div>
+      <div class="bubble">skriv her</div>
+     </div>   
+
+<h2>Tesla Stock Price (2019–2024)</h2>
+<div class="chart-container">
+  <div id="stock-chart">
+    <svg width="1000" height="500"></svg>
+  </div>
+
+<div class="Elon-knap">
+  <input type="checkbox" id="elon-toggle" hidden>
+  <label for="elon-toggle" class="elon-label">
+    <img src="Images/elonmusk_closed.png" class="elon-img elon-smil">
+    <img src="Images/elonmusk_open.png" class="elon-img elon-råb">
+    <div class="elon-text">Tryk på mig</div>
+  </label>
+</div>
+  
+</div>
   <div class="bubble-container">
    <div class="bubble">skriv her</div>
    <div class="bubble">skriv her</div>
@@ -44,5 +65,4 @@
   <script src="worldmap.js"></script>
 
 </body>
-  </body>
 </html>
