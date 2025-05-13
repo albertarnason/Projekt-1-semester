@@ -1,4 +1,4 @@
-Type,Name,City,State,Country,Size_m2,Focus,Battery_Cell_Production,Open_Date,notes,Latitude,Longitude
+Type,Name,City,State,Country,Size_m2,Focus,Battery_Cell_Production,Open_Year,notes,Latitude,Longitude
 Gigafactory,Giga Nevada,Sparks,Nevada,USA,500000,"Battery packs, drivetrains, Powerwalls",Yes,2016,none,39.5349,-119.7527
 Gigafactory,Giga Shanghai,Shanghai,,China,864000,"Model 3/Y, battery packs",No,2019,cells from CATL/LG,31.2304,121.4737
 Gigafactory,Giga Berlin,Grünheide,Brandenburg,Germany,730000,"Model Y, 4680 battery cells",Yes,2022,ramping battery production,52.4044,13.7843
