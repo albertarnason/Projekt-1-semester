@@ -38,6 +38,7 @@
   let countries = null
   let filteredCountries = null;
   let path = null;
+  let points = null;
 
   async function main(worldstate) {
     
@@ -101,9 +102,12 @@ cleanup();
   
 
 
+
   if (worldstate == "land2"){
 
     // draw 10×10px red boxes with black stroke:
+
+
 addBoxes(points, {
   size: 10,
   fill: "red",
@@ -182,15 +186,6 @@ svg.append("defs")
   };
 
 
-// array of [lon, lat] pairs:
-let points = [
-  [-74.0060, 40.7128],    // New York
-  [2.3522,   48.8566],    // Paris
-  [139.6917, 35.6895]     // Tokyo
-];
-
-
-
 function addBoxes(coords, opts = {}) {
   const {
     size = 8,
@@ -216,9 +211,6 @@ function addBoxes(coords, opts = {}) {
       .attr("fill", fill)
       .attr("stroke", stroke)
       .attr("stroke-width", strokeWidth);
-
-  // remove old, if any
-
 }
 
 
@@ -226,9 +218,6 @@ function addBoxes(coords, opts = {}) {
 main(worldstate);
 
 
-fetchTeslaFactories().then(factories => {
-  console.log(factories);
-});
 
 //data fra databasen
 
@@ -238,16 +227,20 @@ async function fetchTeslaFactories (){
   const response = await fetch('/api/teslaFactories');
   // 2) await the JSON parse → actual data
   const data = await response.json();
-  console.log(data)
-  // now `data` is your JS Array/Object and you can map over it directly
-  const factories = data.map(({ Type, State, Country, Longitude, Latitude }) => ({
-    type: Type,
-    name: `${State}, ${Country}`,
-    coords: [
-      parseFloat(Longitude),
-      parseFloat(Latitude)
-    ]
-  }));
 
-return factories;
+return data;
 }
+
+fetchTeslaFactories().then(data => {
+console.log(data)
+ // console.log([data[0]['latitude'], data[0]['longitude']]);
+
+points = data.map(item => [
+  (item.longitude),
+  (item.latitude)
+]);
+//Returnerer værdierne til variablen points
+  return points;
+});
+
+fetchTeslaFactories();
