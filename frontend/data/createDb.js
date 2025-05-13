@@ -23,6 +23,9 @@ await db.query(`
     drop table if exists tesla_factories;
     drop table if exists tesla_stock;
     drop table if exists tariffs_trump;
+    drop table if exists tesla_mining_partners;
+    drop table if exists tesla_sales;
+    drop table if exists tesla_component_supplier;
 `);
 
 await db.query(`
@@ -75,4 +78,53 @@ await upload(
   db,
   "frontend/data/tariffs_trump.csv",
   "copy tariffs_trump from stdin with csv header"
+);
+
+await db.query(`
+    create table tesla_mining_partners (
+   mining_partner text,
+   Material text,
+   Operations text,
+   start_date text,
+  Latitude double precision,
+  Longitude double precision
+    );
+`);
+
+await upload(
+  db,
+  "frontend/data/tesla_mining_partners.csv",
+  "copy tesla_mining_partners from stdin with csv header"
+);
+
+await db.query(`
+    create table tesla_sales (
+sales_quarter text,
+country text,
+sale_amount integer,
+sales_year integer
+    );
+`);
+
+await upload(
+  db,
+  "frontend/data/tesla_sales.csv",
+  "copy tesla_sales from stdin with csv header"
+);
+
+await db.query(`
+    create table tesla_component_supplier (
+Category text,
+Component text,
+Supplier text,
+Origin text,
+ Latitude double precision,
+  Longitude double precision
+    );
+`);
+
+await upload(
+  db,
+  "frontend/data/tesla_component_supplier.csv",
+  "copy tesla_component_supplier from stdin with csv header"
 );
