@@ -17,11 +17,11 @@
   toggle.addEventListener('change', function () {
     // Hvis checkboxen er checked (slideren er til højre eller venstre)
     if (this.checked) {
-      thumbText.textContent = "Salg"; // Sætter teksten i slideren til "Salg"
-      worldstate = "land2";
-    } else {
       thumbText.textContent = "Produktion"; // Sætter teksten i slideren til "Produktion"
       worldstate = "land";
+    } else {
+      thumbText.textContent = "Salg"; // Sætter teksten i slideren til "Salg"
+      worldstate = "land2";
 
       
     }
@@ -113,16 +113,11 @@ cleanup();
 
   if (worldstate == "land"){
 
-    // draw 10×10px red boxes with black stroke:
-
-
-addBoxes(points, {
-  size: 10,
-  fill: "white",
-  stroke: "black"
+addLogos(points, {
+  size: 36, // 48×48px icons
+  src: "Images/tesla_gigafactory_logo.png"
 });
   }
-     
 }
 
 function addTooltip(selection) {
@@ -153,6 +148,8 @@ function cleanup() {
   svg.select("defs marker#arrow").remove();
 
    svg.selectAll("rect.box-marker").remove();
+
+   svg.selectAll("image.logo-marker").remove();
 }
 
 function linefromUSAtoChina(worldstate){
@@ -221,7 +218,39 @@ function addBoxes(coords, opts = {}) {
       .attr("stroke-width", strokeWidth);
 }
 
+function addLogos(coords, opts = {}) {
+  const {
+    size = 32,
+    className = "logo-marker",
+    src = "Images/tesla_gigafactory_logo.png"
+  } = opts;
 
+  // data‐join on <image> tags
+  const logos = svg.selectAll(`image.${className}`)
+    .data(coords);
+
+  // enter
+  logos.enter()
+    .append("image")
+      .attr("class", className)
+      // modern browsers support href on <image>; if yours needs xlink, use .attr("xlink:href", src)
+      .attr("href", src)
+      .attr("width", size)
+      .attr("height", size)
+      // center the icon over the [lon,lat]
+      .attr("x", d => projection(d)[0] - size / 2)
+      .attr("y", d => projection(d)[1] - size / 2);
+
+  // update (in case you re-project or re-size)
+  logos
+      .attr("width", size)
+      .attr("height", size)
+      .attr("x", d => projection(d)[0] - size / 2)
+      .attr("y", d => projection(d)[1] - size / 2);
+
+  // exit
+  logos.exit().remove();
+}
 
 
 
