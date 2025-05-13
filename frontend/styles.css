@@ -65,9 +65,9 @@ svg.map-svg {
 /* === Container til hele toggle-knappen === */
 .switch {
   position: relative; /* Gør det muligt at positionere indre elementer absolut */
-  display: inline-block; /* Gør elementet inline, men med block-egenskaber */
-  width: 400px; /* Bredden på hele knappen – LANG */
-  height: 50px; /* Højden på knappen – TYND */
+  display: inline-block; /* Gør slideren fleksibel så man kan ændre på bredden og højden, selvom den står på linje med andre knapper */
+  width: 400px; /* Justere bredden på slideren */
+  height: 50px; /* Justere højden på slideren */
 }
 
 /* === Selve checkboxen (input) skjules === */
@@ -135,11 +135,11 @@ svg.map-svg {
 }
 
 .bubble-container {
-  display: flex;
-  justify-content: center; /* Sørger for, at boblerne er ved siden af hinanden midt på siden */
+  display: flex; /* Fortælle browseren, at elementerne indeni bubble-container (de to bubbler), skal ligge ved siden af hinanden og ikke ovenpå hinanden.*/
+  justify-content: center; /* Sørger for, at boblerne er ved siden af hinanden centreret på midten af siden */
   gap: 250px; /* Mellemrum mellem boblerne */
-  width: 100%;
-  margin-top: 800px; /* Topafstand til containeren */
+  width: 100%; /* Angiver hvor meget af bredden på siden, containeren skal fylde */
+  margin-top: 100px; /* Afstanden fra top til containeren */
 }
 
 .bubble {
@@ -155,12 +155,17 @@ svg.map-svg {
   box-sizing: border-box;
 }
 
+h2 {
+  margin-top: 160px; /* afstanden fra top til overskriften */
+}
+
 #stock-chart {
   background-color: #f9f9f9;
   padding: 20px;
   border-radius: 12px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
   width: fit-content;
+  margin-top: 151px; /* afstanden fra top til grafen */
 }
 
 svg {
@@ -178,6 +183,39 @@ path {
   stroke: rgb(177, 32, 32);
   stroke-width: 2;
   fill: none;
+}
+
+body {
+  display: flex;
+  flex-direction: column; /* Sørger for, at indholdet er lodret */
+  justify-content: flex-start; /* Sørger for, at elementer starter fra toppen */
+  align-items: center; /* Centrerer indholdet vandret */
+  height: 100vh; /* Gør at body fylder hele skærmen */
+  margin: 0; /* Fjerner standard margin */
+}
+
+.yearButtons {
+  display: flex;
+  justify-content: center;
+  position: absolute;
+  top: 270px; /* Afstand fra toppen */
+  left: 50%; /* Centrerer horisontalt */
+  transform: translateX(-50%); /* Gør centringen præcis */
+  gap: 25px; /* Mellemrum mellem knapperne */
+}
+
+.yearButtons button {
+  padding: 6px 12px;
+  font-size: 14px;
+  background-color: rgb(144, 23, 23);
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.yearButtons button:hover {
+  background-color: rgb(187, 30, 30);
 }
 .elon-label {
   display: flex;

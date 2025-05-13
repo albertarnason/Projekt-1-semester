@@ -147,7 +147,7 @@ svg.append("defs")
    const from = [filteredCountries[4].geometry.coordinates[0][0][0][0], filteredCountries[4].geometry.coordinates[0][0][0][1]]
 
    console.log(from)
-   const to = [116.4, 39.9];    // Beijing
+   const to = [-119.7527,39.5349];    // gigafactory nevada
  
    const line = {
      type: "LineString",

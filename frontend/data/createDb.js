@@ -20,34 +20,30 @@ console.log('Database connection established on', dbResult.rows[0].now);
 console.log('Recreating tables...');
 
 await db.query(`
-    drop table if exists filmskuespillere;
-    drop table if exists kritikeranmeldelser;
-    drop table if exists filmstreamingtjenester;
-    drop table if exists credits;
-    drop table if exists trailer;
-    drop table if exists kommentarer;
-    drop table if exists brugeranmeldelser;
-    drop table if exists film_playlists;
 -- primary keys UNDER references OVER
-    drop table if exists streamingtjenester;
-    drop table if exists kritikere;
-    drop table if exists film;
-    drop table if exists kategorier;
-    drop table if exists skuespillere;
-    drop table if exists brugere;
+    drop table if exists tesla_factories
 `);
 
 await db.query(`
-    create table kategorier (
-      kategori_id int primary key,
-      kategori_desc text,
-      kategori_navn text
+    create table tesla_factories (
+      Type text,
+      Name text,
+      City text,
+      State text,
+      Country text,
+      Size_m2 integer,
+      Focus text,
+      Battery_Cell_Production text,
+      Open_Date integer,
+      notes text,
+      Latitude double precision,
+      Longitude double precision
     );
 `);
 
 await upload(
     db,
-    'db/kategorier.csv',
-    'copy kategorier from stdin with csv header'
+    'frontend/data/tesla_factories.csv',
+    'copy tesla_factories from stdin with csv header'
 );
 
