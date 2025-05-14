@@ -50,6 +50,15 @@
 
       // Her kan du nu viderebehandle buttonYear,
       // f.eks. opdatere en graf, lave et API-kald osv.
+
+      if (toggle.checked) {
+        worldstate = (buttonyear === 2024) ? produktion2024 : produktion2025;
+      } else {
+        worldstate = (buttonyear === 2024) ? salg2024 : salg2025;
+      }
+
+      updateData(worldstate); 
+
     });
   });
     const projection = d3.geoNaturalEarth1()
@@ -67,6 +76,21 @@
   let filteredCountries = null;
   let path = null;
   let points = null;
+
+  // Salgsdata for 2024 og 2025
+  const salesData2024 = {
+    "840": 195000,  // USA
+    "276": 27000,  // Tyskland
+    "156": 155000,  // Kina
+    "752": 5800   // Sverige
+  };
+  
+  const salesData2025 = {
+    "840": 160000,
+    "276": 12000,
+    "156": 125000,
+    "752": 2500
+  };
 
   async function main(worldstate) {
     
@@ -91,6 +115,7 @@
   initData(worldstate);
 
   }
+
 
 function initData(worldstate) {
 
@@ -125,7 +150,27 @@ cleanup();
     .attr("d", path);
 
   addTooltip(paths);
-
+   // viser tal for lande ved salg
+   if (worldstate === "land" || worldstate === "land2") {
+    const salesData = (worldstate === "land") ? salesData2024 : salesData2025;
+  
+    svg.selectAll(".sales-label").remove(); // Fjern gamle tekster
+  
+    svg.selectAll(".sales-label")
+      .data(filteredCountries)
+      .enter()
+      .append("text")
+      .attr("class", "sales-label")
+      .attr("x", d => path.centroid(d)[0])
+      .attr("y", d => path.centroid(d)[1])
+      .text(d => {
+        const code = d.id; // ID som landekode 
+        return salesData[code] !== undefined ? salesData[code] : "";
+      })
+      .attr("text-anchor", "middle")
+      .attr("fill", "white")
+      .style("font-size", "10px");
+  }
   linefromUSAtoChina(worldstate);
   
 
@@ -184,7 +229,12 @@ function cleanup() {
   // remove the arrow marker
   svg.select("defs marker#arrow").remove();
 
-   svg.selectAll("image.logo-marker").remove();
+  svg.selectAll("image.logo-marker").remove();
+
+  svg.selectAll("text.country-value").remove();
+
+  // Fjern tidligere salgstal
+  svg.selectAll(".sales-label").remove();
 }
 
 function linefromUSAtoChina(worldstate){

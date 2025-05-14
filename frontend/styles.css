@@ -17,13 +17,13 @@ svg.map-svg {
 }
 
 .land {
-  fill: #ab1414;
-  stroke: #f8f8f8;
+  fill: rgb(132, 17, 17);
+  stroke: #d89d9d;
   stroke-width: 0.3px;
 }
 
 .land2 {
-  fill: rgb(0, 32, 32);
+  fill: rgb(132, 17, 17);
   stroke: #d89d9d;
   stroke-width: 0.3px;
 }
@@ -155,8 +155,8 @@ svg.map-svg {
 }
 
 .bubble {
-  height: 250px;
-  width: 400px;
+  height: 500px;
+  width: 550px;
   min-width: 400px;
   background: rgb(255, 255, 255);
   margin: 50px auto 0 auto; /* centreret og med topafstand */
