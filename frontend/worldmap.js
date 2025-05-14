@@ -126,7 +126,7 @@ function initData(worldstate) {
   addTooltip(paths); 
     // draw 10×10px red boxes with black stroke:
 
-    linefromUSAtoChina(worldstate);
+     linefromUSAtoChina(worldstate);
 
 }
   
@@ -149,11 +149,11 @@ cleanup();
 
  
   
-
+ linefromUSAtoChina(worldstate);
 
 
   if (worldstate == salg2024){
- linefromUSAtoChina(worldstate);
+
 
   }
 
@@ -298,8 +298,10 @@ console.log(data)
 
 points = data.map(item => [
   (item.longitude),
-  (item.latitude)
+  (item.latitude),
+  (item.type)
 ]);
+console.log(points)
 //Returnerer værdierne til variablen points
   return points;
 });
