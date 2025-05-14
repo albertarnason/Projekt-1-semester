@@ -18,13 +18,18 @@
     // Hvis checkboxen er checked (slideren er til højre eller venstre)
     if (this.checked) {
       thumbText.textContent = "Produktion"; // Sætter teksten i slideren til "Produktion"
+        produktion_or_sale = "produktion"
+        console.log(produktion_or_sale)
       console.log(buttonyear)
       if (buttonyear == 2024){
         worldstate = produktion2024
+      
       } else {worldstate = produktion2025}
       
     } else {
       thumbText.textContent = "Salg"; // Sætter teksten i slideren til "Salg"
+      produktion_or_sale = "salg"
+      console.log(produktion_or_sale)
         if (buttonyear == 2024){
         worldstate = salg2024
       } else {worldstate = salg2025}
@@ -50,8 +55,21 @@
 
       // Her kan du nu viderebehandle buttonYear,
       // f.eks. opdatere en graf, lave et API-kald osv.
+         if (buttonyear == 2024 && produktion_or_sale == "salg"){
+        worldstate = salg2024
+
+      } else if (buttonyear == 2025 && produktion_or_sale == "salg") {worldstate = salg2025
+  
+      }
+      else if (buttonyear == 2024 && produktion_or_sale == "produktion") {worldstate = produktion2024
+  
+      }
+      else {worldstate = produktion2025};
+          updateData(worldstate);
     });
   });
+
+
     const projection = d3.geoNaturalEarth1()
       .scale(width / 6.5)
       .translate([width / 2, height / 2]);
@@ -63,6 +81,7 @@
   let produktion2024 = "land3"
   let produktion2025 = "land4"
   let buttonyear = 2024
+  let produktion_or_sale = "salg"
   let countries = null
   let filteredCountries = null;
   let path = null;
