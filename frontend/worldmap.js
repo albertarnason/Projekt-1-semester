@@ -18,23 +18,51 @@
     // Hvis checkboxen er checked (slideren er til højre eller venstre)
     if (this.checked) {
       thumbText.textContent = "Produktion"; // Sætter teksten i slideren til "Produktion"
-      worldstate = "land";
+      console.log(buttonyear)
+      if (buttonyear == 2024){
+        worldstate = produktion2024
+      } else {worldstate = produktion2025}
+      
     } else {
       thumbText.textContent = "Salg"; // Sætter teksten i slideren til "Salg"
-      worldstate = "land2";
+        if (buttonyear == 2024){
+        worldstate = salg2024
+      } else {worldstate = salg2025}
 
-      
+      console.log(buttonyear)
     }
      updateData(worldstate);
      
   });
 
+  const buttons = document.querySelectorAll('.yearButtons button');
+ 
+  buttons.forEach(btn => {
+    btn.addEventListener('click', () => {
+      // Fjern 'active' fra alle knapper
+      buttons.forEach(b => b.classList.remove('active'));
+      // Tilføj 'active' til den klikkede
+      btn.classList.add('active');
 
+      // Sæt buttonYear til det tal, der står i data-year
+      buttonyear = parseInt(btn.dataset.year, 10);
+      //console.log('Valgt år:', buttonYear);
+
+      // Her kan du nu viderebehandle buttonYear,
+      // f.eks. opdatere en graf, lave et API-kald osv.
+    });
+  });
     const projection = d3.geoNaturalEarth1()
       .scale(width / 6.5)
       .translate([width / 2, height / 2]);
 
-  let worldstate = "land"
+  
+  let salg2024 = "land"
+  worldstate = salg2024
+  let salg2025 = "land2"
+  let produktion2024 = "land3"
+  let produktion2025 = "land4"
+  let buttonyear = 2024
   let countries = null
   let filteredCountries = null;
   let path = null;
@@ -103,8 +131,25 @@ cleanup();
 
 
 
-  if (worldstate == "land"){
+  if (worldstate == salg2024){
 
+
+  }
+
+   if (worldstate == salg2025){
+
+
+  }
+
+   if (worldstate == produktion2024){
+
+addLogos(points, {
+  size: 36, // 48×48px icons
+  src: "Images/tesla_gigafactory_logo.png"
+});
+  }
+
+   if (worldstate == produktion2025){
 addLogos(points, {
   size: 36, // 48×48px icons
   src: "Images/tesla_gigafactory_logo.png"

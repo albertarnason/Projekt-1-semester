@@ -28,6 +28,18 @@ svg.map-svg {
   stroke-width: 0.3px;
 }
 
+.land3 {
+  fill: rgb(7, 181, 181);
+  stroke: #d89d9d;
+  stroke-width: 0.3px;
+}
+
+.land4 {
+  fill: rgb(23, 209, 32);
+  stroke: #d89d9d;
+  stroke-width: 0.3px;
+}
+
 .tooltip {
   position: absolute;
   padding: 4px 8px;
@@ -227,6 +239,12 @@ body {
 
 .yearButtons button:hover {
   background-color: rgb(187, 30, 30);
+}
+
+.yearButtons button.active {
+  background-color: rgb(255, 100, 100);
+  box-shadow: 0 0 8px rgba(0, 0, 0, 0.3);
+  transform: translateY(1px);
 }
 
 /* === Elon Musk Billede === */
