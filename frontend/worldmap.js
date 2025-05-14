@@ -185,8 +185,8 @@ function addTooltip(selection) {
     .on("mouseover", (event, d) => {
       tooltip
         .style("display", "block")
-        .html("Country: " + (d.properties.name || "Unknown") + d.id);
-    })
+        .html(`Country: ${(d.properties.name || "Unknown")}.${d.id}`);
+      })
     .on("mousemove", (event) => {
       tooltip
         .style("left", event.pageX + 10 + "px")
