@@ -126,6 +126,8 @@ function initData(worldstate) {
   addTooltip(paths); 
     // draw 10×10px red boxes with black stroke:
 
+    linefromUSAtoChina(worldstate);
+
 }
   
 
@@ -145,13 +147,13 @@ cleanup();
 
   addTooltip(paths);
 
-  linefromUSAtoChina(worldstate);
+ 
   
 
 
 
   if (worldstate == salg2024){
-
+ linefromUSAtoChina(worldstate);
 
   }
 
@@ -206,8 +208,8 @@ function cleanup() {
    svg.selectAll("image.logo-marker").remove();
 }
 
-function linefromUSAtoChina(worldstate){
-  if (worldstate == "land2"){
+function linefromUSAtoChina(){
+
 svg.append("defs")
   .append("marker")
   .attr("id", "arrow")
@@ -219,7 +221,7 @@ svg.append("defs")
   .attr("orient", "auto")
   .append("path")
   .attr("d", "M0,-5L10,0L0,5")
-  .attr("fill", "red"); // Sort pil
+  .attr("fill", "black"); // Sort pil
 
 
    // Tegn pil fra USA til Beijing
@@ -237,11 +239,11 @@ svg.append("defs")
      .datum(line)
      .attr("class", "flight-path")
      .attr("fill", "none")
-     .attr("stroke", "red")
+     .attr("stroke", "black")
      .attr("stroke-width", 2)
      .attr("d", path)
      .attr("marker-end", "url(#arrow)");
-  }
+  
   };
 
 function addLogos(coords, opts = {}) {
