@@ -69,19 +69,21 @@
     });
   });
 
-
-    const projection = d3.geoNaturalEarth1()
-      .scale(width / 6.5)
-      .translate([width / 2, height / 2]);
-
-  
-  let salg2024 = "land"
+    let salg2024 = "land"
   worldstate = salg2024
   let salg2025 = "land2"
   let produktion2024 = "land3"
   let produktion2025 = "land4"
   let buttonyear = 2024
   let produktion_or_sale = "salg"
+
+
+    const projection = d3.geoNaturalEarth1()
+      .scale(width / 6.5)
+      .translate([width / 2, height / 2]);
+
+    const baseScale = projection.scale();
+
   let countries = null
   let filteredCountries = null;
   let path = null;
@@ -246,38 +248,60 @@ svg.append("defs")
   
   };
 
+// ——— logo‐drawing function ———
 function addLogos(coords, opts = {}) {
   const {
-    size = 32,
-    className = "logo-marker",
-    src = "Images/tesla_gigafactory_logo.png"
+    className = "logo-marker"
   } = opts;
 
-  // data‐join on <image> tags
-  const logos = svg.selectAll(`image.${className}`)
-    .data(coords);
 
-  // enter
-  logos.enter()
-    .append("image")
+  // get current projection scale (if you re‐zoom or resize)
+  const currentScale = projection.scale();
+  const scaleRatio   = currentScale / baseScale;
+
+  // sizes & offsets scale with the map
+  const gigSize     = 32 * scaleRatio;
+  const batterySize = 16 * scaleRatio;
+  const batteryOffset = {
+    x: 8  * scaleRatio,
+    y: 10 * scaleRatio
+  };
+
+  const logoMap = {
+    "Gigafactory":     "Images/tesla_gigafactory_logo.png",
+    "Battery Factory": "Images/battery_factory.png"
+  };
+
+  // first pass: record longitudes of all Gigafactories
+  const gfLons = new Set();
+  for (let i = 0; i < coords.length && i < 11; i++) {
+    const [lon,,type] = coords[i];
+    if (type === "Gigafactory") gfLons.add(lon);
+  }
+
+  // second pass: draw only Giga + Battery (offset if overlapping)
+  for (let d = 0; d < coords.length && d < 11; d++) {
+    const [lon, lat, type] = coords[d];
+    const src = logoMap[type];
+    if (!src) continue;
+
+    let [x, y] = projection([lon, lat]);
+    let size   = (type === "Gigafactory" ? gigSize : batterySize);
+
+    // if battery at same lon as giga, apply offset
+    if (type === "Battery Factory" && gfLons.has(lon)) {
+      x += batteryOffset.x;
+      y += batteryOffset.y;
+    }
+
+    svg.append("image")
       .attr("class", className)
-      // modern browsers support href on <image>; if yours needs xlink, use .attr("xlink:href", src)
-      .attr("href", src)
-      .attr("width", size)
-      .attr("height", size)
-      // center the icon over the [lon,lat]
-      .attr("x", d => projection(d)[0] - size / 2)
-      .attr("y", d => projection(d)[1] - size / 2);
-
-  // update (in case you re-project or re-size)
-  logos
-      .attr("width", size)
-      .attr("height", size)
-      .attr("x", d => projection(d)[0] - size / 2)
-      .attr("y", d => projection(d)[1] - size / 2);
-
-  // exit
-  logos.exit().remove();
+      .attr("href",    src)
+      .attr("width",   size)
+      .attr("height",  size)
+      .attr("x",       x - size/2)
+      .attr("y",       y - size/2);
+  }
 }
 
 //data fra databasen
@@ -286,6 +310,7 @@ async function fetchTeslaFactories (){
   
   // 1) await the fetch → Response
   const response = await fetch('/api/teslaFactories');
+
   // 2) await the JSON parse → actual data
   const data = await response.json();
 
