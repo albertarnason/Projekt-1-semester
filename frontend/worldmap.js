@@ -640,7 +640,7 @@ function drawKeys(opts = {}) {
     { src: "Images/component_icons/battery_cell.png",    label: "Battery Cell"    },
     { src: "Images/component_icons/tesla_ecu.png",    label: "ECU"    },
     { src: "Images/component_icons/tesla_infotainment.png",    label: "Infotainment"    },
-    { src: "Images/component_icons/tesla_powerelectronics.png",   label: "powerelectronics"    },
+    { src: "Images/component_icons/tesla_powerelectronics.png",   label: "Power Electronics"    },
     { src: "Images/tesla_gigafactory_logo.png",   label: "Gigafactory"    },
     { src: "Images/battery_factory.png",   label: "Battery Factory"    },
 
