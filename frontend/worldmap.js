@@ -89,7 +89,9 @@ let filteredCountries = null;
 let path = null;
 let points = null;
 let miningpoints = null;
-
+  let materialpoints = null;
+  let componentpoints = null;
+  
 // Salgsdata for 2024 og 2025
 const salesData2024 = {
   840: 195000, // USA
@@ -163,17 +165,20 @@ function updateData(worldstate) {
     });
   }
 
-  if (worldstate == produktion2025) {
-    drawfactories(points, {
-      className: "materials-marker",
-      lonThreshold: 3, // degrees of longitude
-      latThreshold: 3, // degrees of latitude
-      size: 36, //
-    });
-    drawmaterials(miningpoints, {
-      size: 12,
-    });
-  }
+if (worldstate == produktion2025) {
+  drawfactories(points, {
+    className: "materials-marker",
+    lonThreshold: 3, // degrees of longitude
+    latThreshold: 3, // degrees of latitude
+    size: 36, //
+  });
+  drawmaterials(miningpoints, {
+    size: 12,
+  });
+    drawcomponents(miningpoints, {
+    size: 12,
+  });
+}
 
   function getCountryColor(countryId, worldstate) {
     // Tving ID til at være et tal
@@ -270,7 +275,7 @@ function updateData(worldstate) {
 
     svg.selectAll("image.logo-marker").remove();
 
-    svg.selectAll("image.materials-marker").remove();
+  svg.selectAll("image.materials-marker").remove();
 
     svg.selectAll("text.country-value").remove();
 
@@ -381,12 +386,12 @@ function updateData(worldstate) {
 
     console.log("Drawing materials for:", rawCoords);
 
-    const {
-      className = "materials-marker",
-      lonThreshold = 3, // degrees of longitude
-      latThreshold = 3, // degrees of latitude
-      size = 12, //
-    } = opts;
+  const {
+    className = "materials-marker",
+    lonThreshold = 3, // degrees of longitude
+    latThreshold = 3, // degrees of latitude
+    size = 12, //
+  } = opts;
 
     // get current projection scale (if you re‐zoom or resize)
     const currentScale = projection.scale();
@@ -494,25 +499,25 @@ function updateData(worldstate) {
     // 1) await the fetch → Response
     const response = await fetch("/api/MiningPartners");
 
-    // 2) await the JSON parse → actual data
-    const data = await response.json();
+  // 2) await the JSON parse → actual data
+  const data = await response.json();
 
-    return data;
-  }
-
-  fetchMiningPartners().then((data) => {
-    console.log(data);
-    // console.log([data[0]['latitude'], data[0]['longitude']]);
-
-    miningpoints = data.map((item) => [
-      item.mining_partner,
-      item.material,
-      item.longitude,
-      item.latitude,
-    ]);
-    console.log(miningpoints);
-    //Returnerer værdierne til variablen points
-    return miningpoints;
-  });
+  return data;
 }
+
+fetchMiningPartners().then((data) => {
+  console.log(data);
+  // console.log([data[0]['latitude'], data[0]['longitude']]);
+
+  miningpoints = data.map((item) => [
+    item.mining_partner,
+    item.material,
+    item.longitude,
+    item.latitude,
+  ]);
+  console.log(miningpoints);
+  //Returnerer værdierne til variablen points
+  return miningpoints;
+});
+
 main(worldstate);
