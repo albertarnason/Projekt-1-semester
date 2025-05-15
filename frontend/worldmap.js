@@ -19,8 +19,6 @@ toggle.addEventListener("change", function () {
   if (this.checked) {
     thumbText.textContent = "Produktion"; // Sætter teksten i slideren til "Produktion"
     produktion_or_sale = "produktion";
-    console.log(produktion_or_sale);
-    console.log(buttonyear);
     if (buttonyear == 2024) {
       worldstate = produktion2024;
     } else {
@@ -29,14 +27,11 @@ toggle.addEventListener("change", function () {
   } else {
     thumbText.textContent = "Salg"; // Sætter teksten i slideren til "Salg"
     produktion_or_sale = "salg";
-    console.log(produktion_or_sale);
     if (buttonyear == 2024) {
       worldstate = salg2024;
     } else {
       worldstate = salg2025;
     }
-
-    console.log(buttonyear);
   }
   updateData(worldstate);
 });
@@ -176,6 +171,7 @@ function updateData(worldstate) {
      drawcomponents(componentpoints, {
       size: 12,
     });
+    drawKeys();
   }
 
   if (worldstate == produktion2025) {
@@ -192,6 +188,7 @@ function updateData(worldstate) {
       size: 12,
     });
     drawUSAwalls();
+      drawKeys();
   }
 }
 function getCountryColor(countryId, worldstate) {
@@ -304,25 +301,24 @@ function addTooltip(selection) {
 }
 
 function cleanup() {
-  // 1) Remove _all_ <path> elements
-  svg.selectAll("path").remove();
+  //Ny cleanup funktion, Tilføj teksten samt en kommentar om hvilket element det er der bliver fjernet
+  const selectors = [
+    "path",                   // all map paths (includes flight‐path)
+    "defs marker#arrow",      // the arrow marker
+    "image.logo-marker",      // gigafactory logos
+    "image.materials-marker", // material icons
+    "image.components-marker",// component icons
+    "text.material-label",    // material labels
+    "text.component-label",   // component labels
+    "text.country-value",     // country values
+    ".sales-label",           // sales labels
+    "wall",                   // wall elements
+    "g.legend-key-group"      // the legend background + items
+  ];
 
-  svg.selectAll("path.flight-path").remove();
-  // remove the arrow marker
-  svg.select("defs marker#arrow").remove();
+  svg.selectAll(selectors.join(",")).remove();
 
-  svg.selectAll("image.logo-marker").remove();
-
-  svg.selectAll("image.materials-marker").remove();
-
-  svg.selectAll("text.material-label").remove();
-
-  svg.selectAll("text.country-value").remove();
-
-  // Fjern tidligere salgstal
-  svg.selectAll(".sales-label").remove();
-
-  svg.selectAll("wall").remove();
+  //Hvis det går galt så bare tilføj den gamle funktion over^
 }
 
 function linefromUSAtoChina() {
@@ -382,7 +378,7 @@ function drawfactories(coords, opts = {}) {
   };
 
   const logoMap = {
-    Gigafactory: "Images/tesla_gigafactory_logo.png",
+    "Gigafactory": "Images/tesla_gigafactory_logo.png",
     "Battery Factory": "Images/battery_factory.png",
   };
 
@@ -632,6 +628,80 @@ function drawUSAwalls() {
 }
 
 //data fra databasen
+
+function drawKeys(opts = {}) {
+  // ——— define your icons & labels here ———
+  const items = [
+    { src: "Images/material_icons/cobalt_ingot.png",  label: "Cobalt"    },
+    { src: "Images/material_icons/graphite_ingot.png", label: "Graphite"  },
+    { src: "Images/material_icons/lithium_ingot.png",  label: "Lithium"   },
+    { src: "Images/material_icons/manganese_ingot.png", label: "Manganese" },
+    { src: "Images/material_icons/nickel_ingot.png",    label: "Nickel"    },
+    { src: "Images/component_icons/battery_cell.png",    label: "Battery Cell"    },
+    { src: "Images/component_icons/tesla_ecu.png",    label: "ECU"    },
+    { src: "Images/component_icons/tesla_infotainment.png",    label: "Infotainment"    },
+    { src: "Images/component_icons/tesla_powerelectronics.png",   label: "powerelectronics"    },
+    { src: "Images/tesla_gigafactory_logo.png",   label: "Gigafactory"    },
+    { src: "Images/battery_factory.png",   label: "Battery Factory"    },
+
+  ]
+  // ——— pull defaults for your layout, then allow overrides ———
+  const {
+    marginx    = 100,
+    marginy    = 100,
+    iconSize  = 24,
+    spacing   = 4,
+    fontSize  = 14,
+    className = "legend-key",
+    bgPadding = 6,    // padding inside the background rect
+    bgFill    = "white",
+    bgStroke  = "black",
+    bgStrokeWidth = 1,
+    bgRadius  = 4 
+  } = opts;
+
+  // anchor at bottom-left
+  const startX = marginx;
+  const startY = height - marginy;
+
+  // create a group for the legend
+  const legendG = svg.append("g")
+    .attr("class", className + "-group");
+
+  // draw icons & labels into the group
+  items.forEach((item, i) => {
+    const entryY = startY - i * (iconSize + spacing);
+
+    legendG.append("image")
+      .attr("href",  item.src)
+      .attr("width", iconSize)
+      .attr("height", iconSize)
+      .attr("x",     startX)
+      .attr("y",     entryY - iconSize);
+
+    legendG.append("text")
+      .attr("x",     startX + iconSize + spacing)
+      .attr("y",     entryY - iconSize / 2)
+      .text(item.label)
+      .style("font-size", `${fontSize}px`)
+      .style("alignment-baseline", "middle");
+  });
+
+  // once drawn, measure the group’s bounding box
+  const bbox = legendG.node().getBBox();
+
+  // insert a background rect at the very back of the group
+  legendG.insert("rect", ":first-child")
+    .attr("x",      bbox.x - bgPadding)
+    .attr("y",      bbox.y - bgPadding)
+    .attr("width",  bbox.width + bgPadding * 2)
+    .attr("height", bbox.height + bgPadding * 2)
+    .attr("fill",   bgFill)
+    .attr("stroke", bgStroke)
+    .attr("stroke-width", bgStrokeWidth)
+    .attr("rx",     bgRadius)      // rounded corners
+    .attr("ry",     bgRadius);     // same radius vertically
+}
 
 async function fetchTeslaFactories() {
   // 1) await the fetch → Response
