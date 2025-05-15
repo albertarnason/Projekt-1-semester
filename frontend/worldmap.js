@@ -130,6 +130,7 @@
 }
   
 
+
 function updateData(worldstate) {
 
 cleanup();
@@ -210,7 +211,7 @@ function salesData(worldstate){
       })
       .attr("text-anchor", "middle")
       .attr("fill", "white")
-      .style("font-size", "10px");
+      .style("font-size", "12px");
   }
 }
 
