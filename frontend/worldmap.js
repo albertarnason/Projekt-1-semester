@@ -66,6 +66,8 @@ buttons.forEach((btn) => {
       worldstate = produktion2025;
     }
     updateData(worldstate);
+
+
   });
 });
 
@@ -188,8 +190,9 @@ function updateData(worldstate) {
     drawcomponents(miningpoints, {
       size: 12,
     });
+    drawUSAwalls();
   }
-
+}
   function getCountryColor(countryId, worldstate) {
     // Tving ID til at være et tal
     countryId = parseInt(countryId, 10);
@@ -305,6 +308,8 @@ function updateData(worldstate) {
 
     // Fjern tidligere salgstal
     svg.selectAll(".sales-label").remove();
+
+    svg.selectAll("wall").remove();
   }
 
   function linefromUSAtoChina() {
@@ -593,6 +598,28 @@ function updateData(worldstate) {
     });
   }
 
+  function drawUSAwalls() {
+    // Define the coordinates for the USA border
+  const usaBorder = filteredCountries.find(country => country.id === "840"); // USA's country code is 840
+  
+    if (!usaBorder) {
+      console.error("USA border not found in the data.");
+      return;
+    }
+  
+    // Draw the wall along the USA border
+    svg.append("path")
+      .datum(usaBorder)
+      .attr("class", "wall")
+      .attr("d", path)
+      .attr("fill", "none")
+      .attr("stroke", "red") // Wall color
+      .attr("stroke-width", 4) // Wall thickness
+      // Solid line for the wall
+      .attr("stroke-dasharray", "none");
+  
+  }
+
   //data fra databasen
 
   async function fetchTeslaFactories() {
@@ -657,6 +684,6 @@ function updateData(worldstate) {
     //Returnerer værdierne til variablen points
     return componentpoints;
   });
-}
+
 
 main(worldstate);
