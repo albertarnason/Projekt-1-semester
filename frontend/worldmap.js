@@ -124,31 +124,10 @@
 
     path = d3.geoPath().projection(projection);
 
-  initData(worldstate);
+  updateData(worldstate);
 
   }
-
-
-function initData(worldstate) {
-
-
-  let worldmapstate = worldstate
-
-  const paths = svg.selectAll("." + worldmapstate)
-    .data(filteredCountries)
-    .enter()
-    .append("path")
-    .attr("class", worldmapstate)
-    .attr("d", path);
-
-  addTooltip(paths); 
-    // draw 10×10px red boxes with black stroke:
-
-     linefromUSAtoChina(worldstate);
-
-}
   
-
 
 function updateData(worldstate) {
 
@@ -164,8 +143,42 @@ cleanup();
     .attr("d", path);
 
   addTooltip(paths);
-   // viser tal for lande ved salg
-   if (worldstate === "land" || worldstate === "land2") {
+
+  linefromUSAtoChina(worldstate);
+  
+
+
+
+  if (worldstate == salg2024){
+    salesData(worldstate);
+
+  }
+
+   if (worldstate == salg2025){
+    salesData(worldstate);
+
+  }
+
+   if (worldstate == produktion2024){
+
+addLogos(points, {
+  size: 36, // 48×48px icons
+  src: "Images/tesla_gigafactory_logo.png"
+});
+  }
+
+   if (worldstate == produktion2025){
+addLogos(points, {
+  size: 36, // 48×48px icons
+  src: "Images/tesla_gigafactory_logo.png"
+});
+  }
+}
+
+
+function salesData(worldstate){
+  // viser tal for lande ved salg
+  if (worldstate == salg2024 || worldstate == salg2025) {
     const salesData = (worldstate === "land") ? salesData2024 : salesData2025;
   
     svg.selectAll(".sales-label").remove(); // Fjern gamle tekster
@@ -184,35 +197,6 @@ cleanup();
       .attr("text-anchor", "middle")
       .attr("fill", "white")
       .style("font-size", "10px");
-  }
-  linefromUSAtoChina(worldstate);
-  
-
-
-
-  if (worldstate == salg2024){
-
-
-  }
-
-   if (worldstate == salg2025){
-
-
-  }
-
-   if (worldstate == produktion2024){
-
-addLogos(points, {
-  size: 36, // 48×48px icons
-  src: "Images/tesla_gigafactory_logo.png"
-});
-  }
-
-   if (worldstate == produktion2025){
-addLogos(points, {
-  size: 36, // 48×48px icons
-  src: "Images/tesla_gigafactory_logo.png"
-});
   }
 }
 
