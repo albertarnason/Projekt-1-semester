@@ -253,12 +253,12 @@ function updateData(worldstate) {
       .on("mouseover", (event, d) => {
         tooltip
           .style("display", "block")
-          .html(`Country: ${d.properties.name || "Unknown"}.${d.id}`);
+          .html(`Country: ${d.properties.name || "Unknown"} (ID: ${d.id})`);
       })
       .on("mousemove", (event) => {
         tooltip
-          .style("left", event.pageX + 10 + "px")
-          .style("top", event.pageY - 20 + "px");
+          .style("left", event.pageX + 10 + "px") // Position tooltip 10px to the right of the mouse
+          .style("top", event.pageY - 20 + "px"); // Position tooltip 20px above the mouse
       })
       .on("mouseout", () => {
         tooltip.style("display", "none");
