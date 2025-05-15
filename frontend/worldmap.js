@@ -89,7 +89,9 @@
   let path = null;
   let points = null;
   let miningpoints = null;
-
+  let materialpoints = null;
+  let componentpoints = null;
+  
   // Salgsdata for 2024 og 2025
   const salesData2024 = {
     "840": 195000,  // USA
@@ -186,7 +188,10 @@ drawfactories(points,   {
   {
     size :12
   });   
-
+ drawcomponents(componentpoints, 
+  {
+    size :12
+  });   
   }
 }
 
@@ -442,6 +447,100 @@ points.forEach((pt, i) => {
   });
 }
 
+// ——— component‐drawing function ———
+function drawcomponents(rawCoords, opts = {}) {
+  if (!Array.isArray(rawCoords) || rawCoords.length === 0) {
+    // no data yet; nothing to draw
+    return;
+  }
+
+  console.log("Drawing materials for:", rawCoords);
+
+    const {
+    className      = "materials-marker",
+    lonThreshold   = 3,          // degrees of longitude
+    latThreshold   = 3,          // degrees of latitude
+    size = 12                    // 
+  } = opts;
+
+
+  // get current projection scale (if you re‐zoom or resize)
+  const currentScale = projection.scale();
+  const scaleRatio   = currentScale / baseScale;
+
+  // sizes & offsets scale with the map
+  const iconSize = size * scaleRatio;
+  const materialOffset = {
+    x: 8  * scaleRatio,
+    y: 10 * scaleRatio
+  };
+
+  const materialMap = {
+    "cobalt":     "Images/material_icons/cobalt_ingot.png",
+    "graphite":     "Images/material_icons/graphite_ingot.png",
+    "lithium":     "Images/material_icons/lithium_ingot.png",
+    "manganese":     "Images/material_icons/manganese_ingot.png",
+    "nickel":     "Images/material_icons/nickel_ingot.png",
+  };
+
+   // collect up to the first 11 points
+ const points = rawCoords
+  .slice(0, 11)
+  .map(([company, materialType, lon, lat]) => {
+    // normalize materialType → key (as before)…
+    // …
+      const m = materialType.toLowerCase();
+      let key;
+      if (m.includes("lithium"))      key = "lithium";
+      else if (m.includes("graphite")) key = "graphite";
+      else if (m.includes("nickel"))   key = "nickel";
+      else if (m.includes("cobalt"))   key = "cobalt";
+      else if (m.includes("manganese"))key = "manganese";
+      else return null; // skip anything else
+
+    return { company, lon, lat, key };
+  })
+  .filter(pt => pt !== null);
+
+// now draw each:
+points.forEach((pt, i) => {
+  const { company, lon, lat, key } = pt;
+  const src = materialMap[key];
+  if (!src) return;
+
+  let [x, y] = projection([lon, lat]);
+
+  const overlap = points.some((other, j) => {
+    if (i === j) return false;
+    return Math.abs(lon - other.lon) <= lonThreshold
+        && Math.abs(lat - other.lat) <= latThreshold;
+  });
+  if (overlap) {
+    x += materialOffset.x;
+    y += materialOffset.y;
+  }
+
+    svg.append("image")
+      .attr("class", className)
+      .attr("href",    src)
+      .attr("width",   iconSize)
+      .attr("height",  iconSize)
+      .attr("x",       x - iconSize/2)
+      .attr("y",       y - iconSize/2);
+
+       // draw the label
+  svg.append("text")
+    .attr("class", "material-label")
+    // put it just to the right of the icon, vertically centered
+    .attr("x", x + iconSize/2 + 4)
+    .attr("y", y + iconSize/4)   // tweak .25 vs .5 of iconSize to best align
+    .text(company)
+    .style("font-size", `${iconSize * 0.4}px`)
+    .style("pointer-events", "none");  // so the text doesn’t block tooltips
+
+  });
+}
+
 
 //data fra databasen
 
@@ -476,16 +575,14 @@ async function fetchMiningPartners (){
   const response = await fetch('/api/MiningPartners');
 
   // 2) await the JSON parse → actual data
-  const data = await response.json();
+  const miningdata = await response.json();
 
-return data;
+return miningdata;
 }
 
-fetchMiningPartners().then(data => {
-console.log(data)
- // console.log([data[0]['latitude'], data[0]['longitude']]);
+fetchMiningPartners().then(miningdata => {
 
-miningpoints = data.map(item => [
+miningpoints = miningdata.map(item => [
    (item.mining_partner),
    (item.material),
   (item.longitude),
@@ -493,9 +590,34 @@ miningpoints = data.map(item => [
   
   
 ]);
-console.log(miningpoints)
 //Returnerer værdierne til variablen points
   return miningpoints;
+});
+
+async function fetchComponentSuppliers (){
+  
+  // 1) await the fetch → Response
+  const response = await fetch('/api/componentSuppliers');
+
+  // 2) await the JSON parse → actual data
+  const componentdata = await response.json();
+
+return componentdata;
+}
+
+fetchComponentSuppliers().then(componentdata => {
+
+componentpoints = componentdata.map(item => [
+   (item.category),
+   (item.supplier),
+  (item.longitude),
+  (item.latitude)
+  
+  
+]);
+console.log(componentpoints)
+//Returnerer værdierne til variablen points
+  return componentpoints;
 });
 
 

@@ -25,6 +25,7 @@ server.use(express.static('frontend'));
 server.use(onEachRequest)
 server.get('/api/teslaFactories', teslaFactories);
 server.get('/api/MiningPartners', MiningPartners);
+server.get('/api/componentSuppliers', componentSuppliers);
 server.listen(port, onServerReady);
 
 function onEachRequest(request, response, next) {
@@ -44,6 +45,12 @@ async function teslaFactories(request, response) {
 
 async function MiningPartners(request, response) {
     const dbResult = await db.query('select * from tesla_mining_partners ');
+    console.log(dbResult)
+    response.json(dbResult.rows);
+}
+
+async function componentSuppliers(request, response) {
+    const dbResult = await db.query('select * from tesla_component_supplier ');
     console.log(dbResult)
     response.json(dbResult.rows);
 }
