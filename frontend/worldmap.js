@@ -271,6 +271,8 @@ function cleanup() {
 
   svg.selectAll("image.materials-marker").remove();
 
+   svg.selectAll("text.material-label").remove();
+
   svg.selectAll("text.country-value").remove();
 
   // Fjern tidligere salgstal
