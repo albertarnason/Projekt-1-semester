@@ -94,20 +94,30 @@ let componentpoints = null;
 
 // Salgsdata for 2024 og 2025
 const salesData2024 = {
-  840: 195000, // USA
-  276: 27000, // Tyskland
-  156: 155000, // Kina
-  752: 5800, // Sverige
-  826: 50000, // UK
+  840: 160000, // USA
+  156: 140000, // China
+  276: 25000, // Germany
+  752: 4500, // Sweden
+  124: 10000, // Canada
+  826: 9000, // UK
+  36: 6000, // Australia
+  528: 4200, // Netherlands
+  578: 3800, // Norway
+  392: 7000, // Japan
 };
 
 const salesData2025 = {
-  840: 160000,
-  276: 12000,
-  156: 125000,
-  752: 2500,
+  840: 145000, // USA ↓
+  156: 120000, // China ↓
+  276: 18000, // Germany ↓
+  752: 2200, // Sweden ↓
+  124: 8500, // Canada ↓
+  826: 7000, // UK ↓
+  36: 4500, // Australia ↓
+  528: 1500, // Netherlands ↓↓↓
+  578: 1200, // Norway ↓↓↓
+  392: 2000, // Japan ↓↓↓
 };
-
 async function main(worldstate) {
   const world = await d3.json("countries-110m.json");
   console.log(world);
@@ -191,6 +201,12 @@ function updateData(worldstate) {
         276: "rgb(166, 63, 63)", // Tyskland
         156: "rgb(166, 63, 63)", // Kina
         752: "rgb(166, 63, 63)", // Sverige
+        124: "rgb(166, 63, 63)", // Canada
+        826: "rgb(166, 63, 63)", // UK
+        36: "rgb(166, 63, 63)", // Australien
+        528: "rgb(166, 63, 63)", // Holland
+        578: "rgb(166, 63, 63)", // Norge
+        392: "rgb(166, 63, 63)", // Japan
         default: "lightgray",
       },
       land2: {
@@ -198,6 +214,12 @@ function updateData(worldstate) {
         276: "rgb(227, 135, 135)", // Tyskland
         156: "rgb(185, 88, 88)", // Kina
         752: "rgb(241, 154, 154)", // Sverige
+        124: "rgb(213, 134, 134)", // Canada
+        826: "rgb(185, 88, 88)", // UK
+        36: "rgb(215, 107, 107)", // Australien
+        528: "rgb(243, 159, 159)", // Holland
+        578: "rgb(207, 139, 139)", // Norge
+        392: "rgb(243, 122, 122)", // Japan
         default: "lightgray",
       },
       land3: {
