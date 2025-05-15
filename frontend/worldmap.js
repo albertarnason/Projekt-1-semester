@@ -171,6 +171,9 @@ if (worldstate == produktion2025) {
   drawmaterials(miningpoints, {
     size: 12,
   });
+    drawcomponents(miningpoints, {
+    size: 12,
+  });
 }
 
 function getCountryColor(countryId, worldstate) {
