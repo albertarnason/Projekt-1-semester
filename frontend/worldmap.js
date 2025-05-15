@@ -96,7 +96,7 @@ let componentpoints = null;
 
 // Salgsdata for 2024 og 2025
 const salesData2024 = {
-  840: 160000, // USA
+  840: 170000, // USA
   156: 140000, // China
   276: 25000, // Germany
   752: 4500, // Sweden
@@ -109,8 +109,8 @@ const salesData2024 = {
 };
 
 const salesData2025 = {
-  840: 145000, // USA ↓
-  156: 120000, // China ↓
+  840: 160000, // USA ↓
+  156: 125000, // China ↓
   276: 18000, // Germany ↓
   752: 2200, // Sweden ↓
   124: 8500, // Canada ↓
@@ -266,7 +266,7 @@ function updateData(worldstate) {
           return salesData[code] !== undefined ? salesData[code] : "";
         })
         .attr("text-anchor", "middle")
-        .attr("fill", "white")
+        .attr("fill", "black")
         .style("font-size", "12px");
     }
   }
