@@ -96,6 +96,7 @@ const salesData2024 = {
   276: 27000, // Tyskland
   156: 155000, // Kina
   752: 5800, // Sverige
+  826: 50000, // UK
 };
 
 const salesData2025 = {
@@ -139,16 +140,20 @@ function updateData(worldstate) {
     .attr("class", worldstate)
     .attr("d", path)
     .style("fill", (d) => getCountryColor(d.id, worldstate)) // Brug farvefunktion
-    .style("stroke", "#d89d9d") // Kantfarve
+    .style("stroke", "black") // Kantfarve
     .style("stroke-width", "0.3px"); // Kanttykkelse
 
   addTooltip(paths);
 
-  if (worldstate === salg2024 || worldstate === salg2025) {
+  if (worldstate === salg2024) {
     salesData(worldstate);
   }
 
-  if (worldstate === produktion2024 || worldstate === produktion2025) {
+  if (worldstate === salg2025) {
+    salesData(worldstate);
+  }
+
+  if (worldstate === produktion2024) {
     drawfactories(points, {
       size: 36,
       src: "Images/tesla_gigafactory_logo.png",
@@ -157,356 +162,357 @@ function updateData(worldstate) {
       size: 12,
     });
   }
-}
 
-if (worldstate == produktion2025) {
-  drawfactories(points, {
-    className: "materials-marker",
-    lonThreshold: 3, // degrees of longitude
-    latThreshold: 3, // degrees of latitude
-    size: 36, //
-  });
-  drawmaterials(miningpoints, {
-    size: 12,
-  });
-}
+  if (worldstate == produktion2025) {
+    drawfactories(points, {
+      className: "materials-marker",
+      lonThreshold: 3, // degrees of longitude
+      latThreshold: 3, // degrees of latitude
+      size: 36, //
+    });
+    drawmaterials(miningpoints, {
+      size: 12,
+    });
+  }
 
-function getCountryColor(countryId, worldstate) {
-  // Tving ID til at være et tal
-  countryId = parseInt(countryId, 10);
+  function getCountryColor(countryId, worldstate) {
+    // Tving ID til at være et tal
+    countryId = parseInt(countryId, 10);
 
-  // Definer farver for hvert kort
-  const colorMaps = {
-    land: {
-      840: "blue", // USA
-      276: "green", // Tyskland
-      156: "red", // Kina
-      default: "red",
-    },
-    land2: {
-      840: "purple", // USA
-      276: "yellow", // Tyskland
-      156: "orange", // Kina
-      default: "lightgray",
-    },
-    land3: {
-      840: "cyan", // USA
-      276: "pink", // Tyskland
-      156: "brown", // Kina
-      default: "darkgray",
-    },
-    land4: {
-      840: "navy", // USA
-      276: "lime", // Tyskland
-      156: "gold", // Kina
-      default: "black",
-    },
-  };
+    // Definer farver for hvert kort
+    const colorMaps = {
+      land: {
+        840: "rgb(166, 63, 63)", // USA
+        276: "rgb(166, 63, 63)", // Tyskland
+        156: "rgb(166, 63, 63)", // Kina
+        752: "rgb(166, 63, 63)", // Sverige
+        default: "lightgray",
+      },
+      land2: {
+        840: "rgb(185, 88, 88)", // USA
+        276: "rgb(227, 135, 135)", // Tyskland
+        156: "rgb(185, 88, 88)", // Kina
+        752: "rgb(241, 154, 154)", // Sverige
+        default: "lightgray",
+      },
+      land3: {
+        840: "cyan", // USA
+        276: "pink", // Tyskland
+        156: "brown", // Kina
+        default: "darkgray",
+      },
+      land4: {
+        840: "navy", // USA
+        276: "lime", // Tyskland
+        156: "gold", // Kina
+        default: "darkgray",
+      },
+    };
 
-  // Vælg farvekort baseret på worldstate
-  const colors = colorMaps[worldstate] || colorMaps.land;
+    // Vælg farvekort baseret på worldstate
+    const colors = colorMaps[worldstate] || colorMaps.land;
 
-  // Returner farve for landet eller standardfarve
-  return colors[countryId] || colors.default;
-}
+    // Returner farve for landet eller standardfarve
+    return colors[countryId] || colors.default;
+  }
 
-function salesData(worldstate) {
-  // viser tal for lande ved salg
-  if (worldstate == salg2024 || worldstate == salg2025) {
-    const salesData = worldstate === "land" ? salesData2024 : salesData2025;
+  function salesData(worldstate) {
+    // viser tal for lande ved salg
+    if (worldstate == salg2024 || worldstate == salg2025) {
+      const salesData = worldstate === "land" ? salesData2024 : salesData2025;
 
-    svg.selectAll(".sales-label").remove(); // Fjern gamle tekster
+      svg.selectAll(".sales-label").remove(); // Fjern gamle tekster
 
-    svg
-      .selectAll(".sales-label")
-      .data(filteredCountries)
-      .enter()
-      .append("text")
-      .attr("class", "sales-label")
-      .attr("x", (d) => path.centroid(d)[0])
-      .attr("y", (d) => path.centroid(d)[1])
-      .text((d) => {
-        const code = d.id; // ID som landekode
-        return salesData[code] !== undefined ? salesData[code] : "";
+      svg
+        .selectAll(".sales-label")
+        .data(filteredCountries)
+        .enter()
+        .append("text")
+        .attr("class", "sales-label")
+        .attr("x", (d) => path.centroid(d)[0])
+        .attr("y", (d) => path.centroid(d)[1])
+        .text((d) => {
+          const code = d.id; // ID som landekode
+          return salesData[code] !== undefined ? salesData[code] : "";
+        })
+        .attr("text-anchor", "middle")
+        .attr("fill", "white")
+        .style("font-size", "12px");
+    }
+  }
+
+  function addTooltip(selection) {
+    const tooltip = d3.select(".tooltip");
+
+    selection
+      .on("mouseover", (event, d) => {
+        tooltip
+          .style("display", "block")
+          .html(`Country: ${d.properties.name || "Unknown"}.${d.id}`);
       })
-      .attr("text-anchor", "middle")
-      .attr("fill", "white")
-      .style("font-size", "12px");
-  }
-}
-
-function addTooltip(selection) {
-  const tooltip = d3.select(".tooltip");
-
-  selection
-    .on("mouseover", (event, d) => {
-      tooltip
-        .style("display", "block")
-        .html(`Country: ${d.properties.name || "Unknown"}.${d.id}`);
-    })
-    .on("mousemove", (event) => {
-      tooltip
-        .style("left", event.pageX + 10 + "px")
-        .style("top", event.pageY - 20 + "px");
-    })
-    .on("mouseout", () => {
-      tooltip.style("display", "none");
-    });
-}
-
-function cleanup() {
-  // 1) Remove _all_ <path> elements
-  svg.selectAll("path").remove();
-
-  svg.selectAll("path.flight-path").remove();
-  // remove the arrow marker
-  svg.select("defs marker#arrow").remove();
-
-  svg.selectAll("image.logo-marker").remove();
-
-  svg.selectAll("image.materials-marker").remove();
-
-  svg.selectAll("text.country-value").remove();
-
-  // Fjern tidligere salgstal
-  svg.selectAll(".sales-label").remove();
-}
-
-function linefromUSAtoChina() {
-  svg
-    .append("defs")
-    .append("marker")
-    .attr("id", "arrow")
-    .attr("viewBox", "0 -5 10 10")
-    .attr("refX", 10)
-    .attr("refY", 0)
-    .attr("markerWidth", 6)
-    .attr("markerHeight", 6)
-    .attr("orient", "auto")
-    .append("path")
-    .attr("d", "M0,-5L10,0L0,5")
-    .attr("fill", "black"); // Sort pil
-
-  // Tegn pil fra USA til Beijing
-  const from = [
-    filteredCountries[4].geometry.coordinates[0][0][0][0],
-    filteredCountries[4].geometry.coordinates[0][0][0][1],
-  ];
-
-  console.log(from);
-  const to = [-119.7527, 39.5349]; // gigafactory nevada
-
-  const line = {
-    type: "LineString",
-    coordinates: [from, to],
-  };
-
-  svg
-    .append("path")
-    .datum(line)
-    .attr("class", "flight-path")
-    .attr("fill", "none")
-    .attr("stroke", "black")
-    .attr("stroke-width", 2)
-    .attr("d", path)
-    .attr("marker-end", "url(#arrow)");
-}
-
-// ——— factory‐drawing function ———
-function drawfactories(coords, opts = {}) {
-  const { className = "logo-marker" } = opts;
-
-  // get current projection scale (if you re‐zoom or resize)
-  const currentScale = projection.scale();
-  const scaleRatio = currentScale / baseScale;
-
-  // sizes & offsets scale with the map
-  const gigSize = 32 * scaleRatio;
-  const batterySize = 16 * scaleRatio;
-  const batteryOffset = {
-    x: 8 * scaleRatio,
-    y: 10 * scaleRatio,
-  };
-
-  const logoMap = {
-    Gigafactory: "Images/tesla_gigafactory_logo.png",
-    "Battery Factory": "Images/battery_factory.png",
-  };
-
-  // first pass: record longitudes of all Gigafactories
-  const gfLons = new Set();
-  for (let i = 0; i < coords.length && i < 11; i++) {
-    const [lon, , type] = coords[i];
-    if (type === "Gigafactory") gfLons.add(lon);
+      .on("mousemove", (event) => {
+        tooltip
+          .style("left", event.pageX + 10 + "px")
+          .style("top", event.pageY - 20 + "px");
+      })
+      .on("mouseout", () => {
+        tooltip.style("display", "none");
+      });
   }
 
-  // second pass: draw only Giga + Battery (offset if overlapping)
-  for (let d = 0; d < coords.length && d < 11; d++) {
-    const [lon, lat, type] = coords[d];
-    const src = logoMap[type];
-    if (!src) continue;
+  function cleanup() {
+    // 1) Remove _all_ <path> elements
+    svg.selectAll("path").remove();
 
-    let [x, y] = projection([lon, lat]);
-    let size = type === "Gigafactory" ? gigSize : batterySize;
+    svg.selectAll("path.flight-path").remove();
+    // remove the arrow marker
+    svg.select("defs marker#arrow").remove();
 
-    // if battery at same lon as giga, apply offset
-    if (type === "Battery Factory" && gfLons.has(lon)) {
-      x += batteryOffset.x;
-      y += batteryOffset.y;
+    svg.selectAll("image.logo-marker").remove();
+
+    svg.selectAll("image.materials-marker").remove();
+
+    svg.selectAll("text.country-value").remove();
+
+    // Fjern tidligere salgstal
+    svg.selectAll(".sales-label").remove();
+  }
+
+  function linefromUSAtoChina() {
+    svg
+      .append("defs")
+      .append("marker")
+      .attr("id", "arrow")
+      .attr("viewBox", "0 -5 10 10")
+      .attr("refX", 10)
+      .attr("refY", 0)
+      .attr("markerWidth", 6)
+      .attr("markerHeight", 6)
+      .attr("orient", "auto")
+      .append("path")
+      .attr("d", "M0,-5L10,0L0,5")
+      .attr("fill", "black"); // Sort pil
+
+    // Tegn pil fra USA til Beijing
+    const from = [
+      filteredCountries[4].geometry.coordinates[0][0][0][0],
+      filteredCountries[4].geometry.coordinates[0][0][0][1],
+    ];
+
+    console.log(from);
+    const to = [-119.7527, 39.5349]; // gigafactory nevada
+
+    const line = {
+      type: "LineString",
+      coordinates: [from, to],
+    };
+
+    svg
+      .append("path")
+      .datum(line)
+      .attr("class", "flight-path")
+      .attr("fill", "none")
+      .attr("stroke", "black")
+      .attr("stroke-width", 2)
+      .attr("d", path)
+      .attr("marker-end", "url(#arrow)");
+  }
+
+  // ——— factory‐drawing function ———
+  function drawfactories(coords, opts = {}) {
+    const { className = "logo-marker" } = opts;
+
+    // get current projection scale (if you re‐zoom or resize)
+    const currentScale = projection.scale();
+    const scaleRatio = currentScale / baseScale;
+
+    // sizes & offsets scale with the map
+    const gigSize = 32 * scaleRatio;
+    const batterySize = 16 * scaleRatio;
+    const batteryOffset = {
+      x: 8 * scaleRatio,
+      y: 10 * scaleRatio,
+    };
+
+    const logoMap = {
+      Gigafactory: "Images/tesla_gigafactory_logo.png",
+      "Battery Factory": "Images/battery_factory.png",
+    };
+
+    // first pass: record longitudes of all Gigafactories
+    const gfLons = new Set();
+    for (let i = 0; i < coords.length && i < 11; i++) {
+      const [lon, , type] = coords[i];
+      if (type === "Gigafactory") gfLons.add(lon);
     }
 
-    svg
-      .append("image")
-      .attr("class", className)
-      .attr("href", src)
-      .attr("width", size)
-      .attr("height", size)
-      .attr("x", x - size / 2)
-      .attr("y", y - size / 2);
+    // second pass: draw only Giga + Battery (offset if overlapping)
+    for (let d = 0; d < coords.length && d < 11; d++) {
+      const [lon, lat, type] = coords[d];
+      const src = logoMap[type];
+      if (!src) continue;
+
+      let [x, y] = projection([lon, lat]);
+      let size = type === "Gigafactory" ? gigSize : batterySize;
+
+      // if battery at same lon as giga, apply offset
+      if (type === "Battery Factory" && gfLons.has(lon)) {
+        x += batteryOffset.x;
+        y += batteryOffset.y;
+      }
+
+      svg
+        .append("image")
+        .attr("class", className)
+        .attr("href", src)
+        .attr("width", size)
+        .attr("height", size)
+        .attr("x", x - size / 2)
+        .attr("y", y - size / 2);
+    }
   }
-}
 
-// ——— factory‐drawing function ———
-function drawmaterials(rawCoords, opts = {}) {
-  if (!Array.isArray(rawCoords) || rawCoords.length === 0) {
-    // no data yet; nothing to draw
-    return;
-  }
-
-  console.log("Drawing materials for:", rawCoords);
-
-  const {
-    className = "materials-marker",
-    lonThreshold = 3, // degrees of longitude
-    latThreshold = 3, // degrees of latitude
-    size = 12, //
-  } = opts;
-
-  // get current projection scale (if you re‐zoom or resize)
-  const currentScale = projection.scale();
-  const scaleRatio = currentScale / baseScale;
-
-  // sizes & offsets scale with the map
-  const iconSize = size * scaleRatio;
-  const materialOffset = {
-    x: 8 * scaleRatio,
-    y: 10 * scaleRatio,
-  };
-
-  const materialMap = {
-    cobalt: "Images/material_icons/cobalt_ingot.png",
-    graphite: "Images/material_icons/graphite_ingot.png",
-    lithium: "Images/material_icons/lithium_ingot.png",
-    manganese: "Images/material_icons/manganese_ingot.png",
-    nickel: "Images/material_icons/nickel_ingot.png",
-  };
-
-  // collect up to the first 11 points
-  const points = rawCoords
-    .slice(0, 11)
-    .map(([company, materialType, lon, lat]) => {
-      // normalize materialType → key (as before)…
-      // …
-      const m = materialType.toLowerCase();
-      let key;
-      if (m.includes("lithium")) key = "lithium";
-      else if (m.includes("graphite")) key = "graphite";
-      else if (m.includes("nickel")) key = "nickel";
-      else if (m.includes("cobalt")) key = "cobalt";
-      else if (m.includes("manganese")) key = "manganese";
-      else return null; // skip anything else
-
-      return { company, lon, lat, key };
-    })
-    .filter((pt) => pt !== null);
-
-  // now draw each:
-  points.forEach((pt, i) => {
-    const { company, lon, lat, key } = pt;
-    const src = materialMap[key];
-    if (!src) return;
-
-    let [x, y] = projection([lon, lat]);
-
-    const overlap = points.some((other, j) => {
-      if (i === j) return false;
-      return (
-        Math.abs(lon - other.lon) <= lonThreshold &&
-        Math.abs(lat - other.lat) <= latThreshold
-      );
-    });
-    if (overlap) {
-      x += materialOffset.x;
-      y += materialOffset.y;
+  // ——— factory‐drawing function ———
+  function drawmaterials(rawCoords, opts = {}) {
+    if (!Array.isArray(rawCoords) || rawCoords.length === 0) {
+      // no data yet; nothing to draw
+      return;
     }
 
-    svg
-      .append("image")
-      .attr("class", className)
-      .attr("href", src)
-      .attr("width", iconSize)
-      .attr("height", iconSize)
-      .attr("x", x - iconSize / 2)
-      .attr("y", y - iconSize / 2);
+    console.log("Drawing materials for:", rawCoords);
 
-    // draw the label
-    svg
-      .append("text")
-      .attr("class", "material-label")
-      // put it just to the right of the icon, vertically centered
-      .attr("x", x + iconSize / 2 + 4)
-      .attr("y", y + iconSize / 4) // tweak .25 vs .5 of iconSize to best align
-      .text(company)
-      .style("font-size", `${iconSize * 0.4}px`)
-      .style("pointer-events", "none"); // so the text doesn’t block tooltips
+    const {
+      className = "materials-marker",
+      lonThreshold = 3, // degrees of longitude
+      latThreshold = 3, // degrees of latitude
+      size = 12, //
+    } = opts;
+
+    // get current projection scale (if you re‐zoom or resize)
+    const currentScale = projection.scale();
+    const scaleRatio = currentScale / baseScale;
+
+    // sizes & offsets scale with the map
+    const iconSize = size * scaleRatio;
+    const materialOffset = {
+      x: 8 * scaleRatio,
+      y: 10 * scaleRatio,
+    };
+
+    const materialMap = {
+      cobalt: "Images/material_icons/cobalt_ingot.png",
+      graphite: "Images/material_icons/graphite_ingot.png",
+      lithium: "Images/material_icons/lithium_ingot.png",
+      manganese: "Images/material_icons/manganese_ingot.png",
+      nickel: "Images/material_icons/nickel_ingot.png",
+    };
+
+    // collect up to the first 11 points
+    const points = rawCoords
+      .slice(0, 11)
+      .map(([company, materialType, lon, lat]) => {
+        // normalize materialType → key (as before)…
+        // …
+        const m = materialType.toLowerCase();
+        let key;
+        if (m.includes("lithium")) key = "lithium";
+        else if (m.includes("graphite")) key = "graphite";
+        else if (m.includes("nickel")) key = "nickel";
+        else if (m.includes("cobalt")) key = "cobalt";
+        else if (m.includes("manganese")) key = "manganese";
+        else return null; // skip anything else
+
+        return { company, lon, lat, key };
+      })
+      .filter((pt) => pt !== null);
+
+    // now draw each:
+    points.forEach((pt, i) => {
+      const { company, lon, lat, key } = pt;
+      const src = materialMap[key];
+      if (!src) return;
+
+      let [x, y] = projection([lon, lat]);
+
+      const overlap = points.some((other, j) => {
+        if (i === j) return false;
+        return (
+          Math.abs(lon - other.lon) <= lonThreshold &&
+          Math.abs(lat - other.lat) <= latThreshold
+        );
+      });
+      if (overlap) {
+        x += materialOffset.x;
+        y += materialOffset.y;
+      }
+
+      svg
+        .append("image")
+        .attr("class", className)
+        .attr("href", src)
+        .attr("width", iconSize)
+        .attr("height", iconSize)
+        .attr("x", x - iconSize / 2)
+        .attr("y", y - iconSize / 2);
+
+      // draw the label
+      svg
+        .append("text")
+        .attr("class", "material-label")
+        // put it just to the right of the icon, vertically centered
+        .attr("x", x + iconSize / 2 + 4)
+        .attr("y", y + iconSize / 4) // tweak .25 vs .5 of iconSize to best align
+        .text(company)
+        .style("font-size", `${iconSize * 0.4}px`)
+        .style("pointer-events", "none"); // so the text doesn’t block tooltips
+    });
+  }
+
+  //data fra databasen
+
+  async function fetchTeslaFactories() {
+    // 1) await the fetch → Response
+    const response = await fetch("/api/teslaFactories");
+
+    // 2) await the JSON parse → actual data
+    const data = await response.json();
+
+    return data;
+  }
+
+  fetchTeslaFactories().then((data) => {
+    console.log(data);
+    // console.log([data[0]['latitude'], data[0]['longitude']]);
+
+    points = data.map((item) => [item.longitude, item.latitude, item.type]);
+    console.log(points);
+    //Returnerer værdierne til variablen points
+    return points;
+  });
+
+  async function fetchMiningPartners() {
+    // 1) await the fetch → Response
+    const response = await fetch("/api/MiningPartners");
+
+    // 2) await the JSON parse → actual data
+    const data = await response.json();
+
+    return data;
+  }
+
+  fetchMiningPartners().then((data) => {
+    console.log(data);
+    // console.log([data[0]['latitude'], data[0]['longitude']]);
+
+    miningpoints = data.map((item) => [
+      item.mining_partner,
+      item.material,
+      item.longitude,
+      item.latitude,
+    ]);
+    console.log(miningpoints);
+    //Returnerer værdierne til variablen points
+    return miningpoints;
   });
 }
-
-//data fra databasen
-
-async function fetchTeslaFactories() {
-  // 1) await the fetch → Response
-  const response = await fetch("/api/teslaFactories");
-
-  // 2) await the JSON parse → actual data
-  const data = await response.json();
-
-  return data;
-}
-
-fetchTeslaFactories().then((data) => {
-  console.log(data);
-  // console.log([data[0]['latitude'], data[0]['longitude']]);
-
-  points = data.map((item) => [item.longitude, item.latitude, item.type]);
-  console.log(points);
-  //Returnerer værdierne til variablen points
-  return points;
-});
-
-async function fetchMiningPartners() {
-  // 1) await the fetch → Response
-  const response = await fetch("/api/MiningPartners");
-
-  // 2) await the JSON parse → actual data
-  const data = await response.json();
-
-  return data;
-}
-
-fetchMiningPartners().then((data) => {
-  console.log(data);
-  // console.log([data[0]['latitude'], data[0]['longitude']]);
-
-  miningpoints = data.map((item) => [
-    item.mining_partner,
-    item.material,
-    item.longitude,
-    item.latitude,
-  ]);
-  console.log(miningpoints);
-  //Returnerer værdierne til variablen points
-  return miningpoints;
-});
-
 main(worldstate);
