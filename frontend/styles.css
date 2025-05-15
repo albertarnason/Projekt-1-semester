@@ -39,8 +39,7 @@ svg.map-svg {
   stroke: #d89d9d;
   stroke-width: 0.3px;
 }
-
-.tooltip {
+*/ .tooltip {
   position: absolute;
   padding: 4px 8px;
   background: rgba(0, 0, 0, 0.7);
@@ -262,7 +261,7 @@ body {
   left: 900px;
   width: 100%;
   transition: opacity 0.3s ease;
- width: 35%;
+  width: 35%;
 }
 
 /* closed (smil) starts visible, open (råb) hidden */
