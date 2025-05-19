@@ -156,6 +156,7 @@ function updateData(worldstate) {
   cleanup();
 
   const paths = svg
+
     .selectAll("." + worldstate)
     .data(filteredCountries)
     .enter()
@@ -184,6 +185,7 @@ function updateData(worldstate) {
     drawmaterials(miningpoints, { size: 12 });
     drawcomponents(componentpoints, { size: 12 });
     drawKeys();
+    trumpimage();
   }
 
   if (worldstate == produktion2025) {
@@ -198,8 +200,61 @@ function updateData(worldstate) {
     drawUSAwalls();
     drawKeys();
     showTariffs();
+    trumpimage();
   }
+
 }
+function trumpimage() {
+  // Always remove any existing Trump images, regardless of state
+
+  // Only show Trump image for production states
+  if (worldstate !== produktion2024 && worldstate !== produktion2025) {
+    return; // Do not show image for sales states
+  }
+
+  let imgSrc = null;
+  let imgAlt = "";
+  if (worldstate === produktion2024) {
+    imgSrc = "Images/trump_sad.png";
+    imgAlt = "Sad Trump";
+  } else if (worldstate === produktion2025) {
+    imgSrc = "Images/trump_nice.png";
+    imgAlt = "Nice Trump";
+  } else {
+    return;
+  }
+
+  // Find the USA-Canada border midpoint
+  // USA: 840, Canada: 124
+  const usa = filteredCountries.find((c) => parseInt(c.id, 10) === 840);
+  const canada = filteredCountries.find((c) => parseInt(c.id, 10) === 124);
+
+  let imgX = width - 150;
+  let imgY = 100;
+
+  if (usa && canada) {
+    // Get centroids
+    const usaCentroid = path.centroid(usa);
+    const canadaCentroid = path.centroid(canada);
+    // Midpoint between centroids
+    imgX = (usaCentroid[0] + canadaCentroid[0]) / 2;
+    imgY = (usaCentroid[1] + canadaCentroid[1]) / 2 - 60; // move up a bit above the border
+  }
+
+  const imgWidth = 120;
+  const imgHeight = 120;
+
+  svg
+    .append("image")
+    .attr("class", "trump-image")
+    .attr("href", imgSrc)
+    .attr("width", imgWidth)
+    .attr("height", imgHeight)
+    .attr("x", imgX - imgWidth / 2)
+    .attr("y", imgY - imgHeight / 2)
+    .attr("alt", imgAlt);
+}
+
 function getCountryColor(countryId, worldstate) {
   // Tving ID til at være et tal
   countryId = parseInt(countryId, 10);
@@ -408,9 +463,11 @@ function cleanup() {
     "linedefs #arrowline", //lines between components/factories
       "linedefs",          // remove entire <linedefs> container
     "line",              // REMOVE THIS: <line> elements created by drawlines
+    "image.trump-image", // trump image
   ];
 
   svg.selectAll(selectors.join(",")).remove();
+
 
   //Hvis det går galt så bare tilføj den gamle funktion over^
 }
