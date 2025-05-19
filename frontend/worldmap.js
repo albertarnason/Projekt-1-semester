@@ -19,8 +19,6 @@ toggle.addEventListener("change", function () {
   if (this.checked) {
     thumbText.textContent = "Produktion"; // Sætter teksten i slideren til "Produktion"
     produktion_or_sale = "produktion";
-    console.log(produktion_or_sale);
-    console.log(buttonyear);
     if (buttonyear == 2024) {
       worldstate = produktion2024;
     } else {
@@ -29,14 +27,11 @@ toggle.addEventListener("change", function () {
   } else {
     thumbText.textContent = "Salg"; // Sætter teksten i slideren til "Salg"
     produktion_or_sale = "salg";
-    console.log(produktion_or_sale);
     if (buttonyear == 2024) {
       worldstate = salg2024;
     } else {
       worldstate = salg2025;
     }
-
-    console.log(buttonyear);
   }
   updateData(worldstate);
 });
@@ -173,6 +168,10 @@ function updateData(worldstate) {
     drawmaterials(miningpoints, {
       size: 12,
     });
+     drawcomponents(componentpoints, {
+      size: 12,
+    });
+    drawKeys();
   }
 
   if (worldstate == produktion2025) {
@@ -185,10 +184,11 @@ function updateData(worldstate) {
     drawmaterials(miningpoints, {
       size: 12,
     });
-    drawcomponents(miningpoints, {
+    drawcomponents(componentpoints, {
       size: 12,
     });
     drawUSAwalls();
+      drawKeys();
   }
 }
 function getCountryColor(countryId, worldstate) {
@@ -303,25 +303,24 @@ function addTooltip(selection) {
 }
 
 function cleanup() {
-  // 1) Remove _all_ <path> elements
-  svg.selectAll("path").remove();
+  //Ny cleanup funktion, Tilføj teksten samt en kommentar om hvilket element det er der bliver fjernet
+  const selectors = [
+    "path",                   // all map paths (includes flight‐path)
+    "defs marker#arrow",      // the arrow marker
+    "image.logo-marker",      // gigafactory logos
+    "image.materials-marker", // material icons
+    "image.components-marker",// component icons
+    "text.material-label",    // material labels
+    "text.component-label",   // component labels
+    "text.country-value",     // country values
+    ".sales-label",           // sales labels
+    "wall",                   // wall elements
+    "g.legend-key-group"      // the legend background + items
+  ];
 
-  svg.selectAll("path.flight-path").remove();
-  // remove the arrow marker
-  svg.select("defs marker#arrow").remove();
+  svg.selectAll(selectors.join(",")).remove();
 
-  svg.selectAll("image.logo-marker").remove();
-
-  svg.selectAll("image.materials-marker").remove();
-
-  svg.selectAll("text.material-label").remove();
-
-  svg.selectAll("text.country-value").remove();
-
-  // Fjern tidligere salgstal
-  svg.selectAll(".sales-label").remove();
-
-  svg.selectAll("wall").remove();
+  //Hvis det går galt så bare tilføj den gamle funktion over^
 }
 
 function linefromUSAtoChina() {
@@ -381,7 +380,7 @@ function drawfactories(coords, opts = {}) {
   };
 
   const logoMap = {
-    Gigafactory: "Images/tesla_gigafactory_logo.png",
+    "Gigafactory": "Images/tesla_gigafactory_logo.png",
     "Battery Factory": "Images/battery_factory.png",
   };
 
@@ -424,8 +423,6 @@ function drawmaterials(rawCoords, opts = {}) {
     // no data yet; nothing to draw
     return;
   }
-
-  console.log("Drawing materials for:", rawCoords);
 
   const {
     className = "materials-marker",
@@ -515,16 +512,16 @@ function drawmaterials(rawCoords, opts = {}) {
 }
 
 // ——— component‐drawing function ———
-function drawcomponents(rawCoords, opts = {}) {
-  if (!Array.isArray(rawCoords) || rawCoords.length === 0) {
+function drawcomponents(componentCoords, opts = {}) {
+  if (!Array.isArray(componentCoords) || componentCoords.length === 0) {
     // no data yet; nothing to draw
     return;
   }
 
-  console.log("Drawing materials for:", rawCoords);
+  console.log("Drawing materials for components:", componentCoords);
 
   const {
-    className = "materials-marker",
+    className = "components-marker",
     lonThreshold = 3, // degrees of longitude
     latThreshold = 3, // degrees of latitude
     size = 12, //
@@ -536,42 +533,42 @@ function drawcomponents(rawCoords, opts = {}) {
 
   // sizes & offsets scale with the map
   const iconSize = size * scaleRatio;
-  const materialOffset = {
+  const componentOffset = {
     x: 8 * scaleRatio,
     y: 10 * scaleRatio,
   };
 
-  const materialMap = {
-    cobalt: "Images/material_icons/cobalt_ingot.png",
-    graphite: "Images/material_icons/graphite_ingot.png",
-    lithium: "Images/material_icons/lithium_ingot.png",
-    manganese: "Images/material_icons/manganese_ingot.png",
-    nickel: "Images/material_icons/nickel_ingot.png",
+  const componentMap = {
+    batterycell: "Images/component_icons/battery_cell.png",
+    ecu: "Images/component_icons/tesla_ecu.png",
+    infotainment: "Images/component_icons/tesla_infotainment.png",
+    powerelectronics: "Images/component_icons/tesla_powerelectronics.png",
   };
 
-  // collect up to the first 11 points
-  const points = rawCoords
-    .slice(0, 11)
-    .map(([company, materialType, lon, lat]) => {
-      // normalize materialType → key (as before)…
-      // …
-      const m = materialType.toLowerCase();
-      let key;
-      if (m.includes("lithium")) key = "lithium";
-      else if (m.includes("graphite")) key = "graphite";
-      else if (m.includes("nickel")) key = "nickel";
-      else if (m.includes("cobalt")) key = "cobalt";
-      else if (m.includes("manganese")) key = "manganese";
-      else return null; // skip anything else
+const points = componentCoords
+  .slice(0, 62)
+  .map(([componentType, supplier, lat, lon]) => {
+    const m = componentType.toLowerCase();
+    let compkey = null;
 
-      return { company, lon, lat, key };
-    })
-    .filter((pt) => pt !== null);
+    if (m.includes("battery cell"))           compkey = "batterycell";
+    else if (m.includes("electronic control unit")) compkey = "ecu";
+    else if (m.includes("power electronics")) compkey = "powerelectronics";
+    else if (m.includes("infotainment"))      compkey = "infotainment";
+    // **no else** → everything else stays key===null
 
+    // only keep the ones we recognized
+    if (!compkey) {
+        console.log("→ skipping unrecognized componentType:", componentType);
+      return null;}
+    return { supplier, lon, lat, compkey };
+  })
+  .filter(pt => pt !== null);
+console.log("points", points);
   // now draw each:
   points.forEach((pt, i) => {
-    const { company, lon, lat, key } = pt;
-    const src = materialMap[key];
+    const {  compkey, supplier, lon, lat} = pt;
+    const src = componentMap[compkey];
     if (!src) return;
 
     let [x, y] = projection([lon, lat]);
@@ -584,8 +581,8 @@ function drawcomponents(rawCoords, opts = {}) {
       );
     });
     if (overlap) {
-      x += materialOffset.x;
-      y += materialOffset.y;
+      x += componentOffset.x;
+      y += componentOffset.y;
     }
 
     svg
@@ -600,11 +597,11 @@ function drawcomponents(rawCoords, opts = {}) {
     // draw the label
     svg
       .append("text")
-      .attr("class", "material-label")
+      .attr("class", "component-label")
       // put it just to the right of the icon, vertically centered
       .attr("x", x + iconSize / 2 + 4)
       .attr("y", y + iconSize / 4) // tweak .25 vs .5 of iconSize to best align
-      .text(company)
+      .text(supplier)
       .style("font-size", `${iconSize * 0.4}px`)
       .style("pointer-events", "none"); // so the text doesn’t block tooltips
   });
@@ -634,6 +631,80 @@ function drawUSAwalls() {
 
 //data fra databasen
 
+function drawKeys(opts = {}) {
+  // ——— define your icons & labels here ———
+  const items = [
+    { src: "Images/material_icons/cobalt_ingot.png",  label: "Cobalt"    },
+    { src: "Images/material_icons/graphite_ingot.png", label: "Graphite"  },
+    { src: "Images/material_icons/lithium_ingot.png",  label: "Lithium"   },
+    { src: "Images/material_icons/manganese_ingot.png", label: "Manganese" },
+    { src: "Images/material_icons/nickel_ingot.png",    label: "Nickel"    },
+    { src: "Images/component_icons/battery_cell.png",    label: "Battery Cell"    },
+    { src: "Images/component_icons/tesla_ecu.png",    label: "ECU"    },
+    { src: "Images/component_icons/tesla_infotainment.png",    label: "Infotainment"    },
+    { src: "Images/component_icons/tesla_powerelectronics.png",   label: "Power Electronics"    },
+    { src: "Images/tesla_gigafactory_logo.png",   label: "Gigafactory"    },
+    { src: "Images/battery_factory.png",   label: "Battery Factory"    },
+
+  ]
+  // ——— pull defaults for your layout, then allow overrides ———
+  const {
+    marginx    = 100,
+    marginy    = 100,
+    iconSize  = 24,
+    spacing   = 4,
+    fontSize  = 14,
+    className = "legend-key",
+    bgPadding = 6,    // padding inside the background rect
+    bgFill    = "white",
+    bgStroke  = "black",
+    bgStrokeWidth = 1,
+    bgRadius  = 4 
+  } = opts;
+
+  // anchor at bottom-left
+  const startX = marginx;
+  const startY = height - marginy;
+
+  // create a group for the legend
+  const legendG = svg.append("g")
+    .attr("class", className + "-group");
+
+  // draw icons & labels into the group
+  items.forEach((item, i) => {
+    const entryY = startY - i * (iconSize + spacing);
+
+    legendG.append("image")
+      .attr("href",  item.src)
+      .attr("width", iconSize)
+      .attr("height", iconSize)
+      .attr("x",     startX)
+      .attr("y",     entryY - iconSize);
+
+    legendG.append("text")
+      .attr("x",     startX + iconSize + spacing)
+      .attr("y",     entryY - iconSize / 2)
+      .text(item.label)
+      .style("font-size", `${fontSize}px`)
+      .style("alignment-baseline", "middle");
+  });
+
+  // once drawn, measure the group’s bounding box
+  const bbox = legendG.node().getBBox();
+
+  // insert a background rect at the very back of the group
+  legendG.insert("rect", ":first-child")
+    .attr("x",      bbox.x - bgPadding)
+    .attr("y",      bbox.y - bgPadding)
+    .attr("width",  bbox.width + bgPadding * 2)
+    .attr("height", bbox.height + bgPadding * 2)
+    .attr("fill",   bgFill)
+    .attr("stroke", bgStroke)
+    .attr("stroke-width", bgStrokeWidth)
+    .attr("rx",     bgRadius)      // rounded corners
+    .attr("ry",     bgRadius);     // same radius vertically
+}
+
 async function fetchTeslaFactories() {
   // 1) await the fetch → Response
   const response = await fetch("/api/teslaFactories");
@@ -645,11 +716,7 @@ async function fetchTeslaFactories() {
 }
 
 fetchTeslaFactories().then((data) => {
-  console.log(data);
-  // console.log([data[0]['latitude'], data[0]['longitude']]);
-
   points = data.map((item) => [item.longitude, item.latitude, item.type]);
-  console.log(points);
   //Returnerer værdierne til variablen points
   return points;
 });
@@ -687,10 +754,10 @@ async function fetchComponentSuppliers() {
 
 fetchComponentSuppliers().then((componentdata) => {
   componentpoints = componentdata.map((item) => [
-    item.category,
+    item.component,
     item.supplier,
-    item.longitude,
     item.latitude,
+    item.longitude,
   ]);
   console.log(componentpoints);
   //Returnerer værdierne til variablen points
