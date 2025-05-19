@@ -1,37 +1,13 @@
 Entity,Tariff Rate,Effective Date,Tariff Type,Notes
 All Countries,10%,2025-04-05,Universal Tariff,Applies to all countries unless exempted or overridden
 China,145%,2025-02-04,Country-Specific Tariff,Includes 20% fentanyl tariff and 125% reciprocal tariff
-Cambodia,49%,2025-07-09,Country-Specific Tariff,Delayed implementation
-Vietnam,46%,2025-07-09,Country-Specific Tariff,Delayed implementation
-Sri Lanka,44%,2025-07-09,Country-Specific Tariff,Delayed implementation
-Bangladesh,37%,2025-07-09,Country-Specific Tariff,Delayed implementation
-Thailand,36%,2025-07-09,Country-Specific Tariff,Delayed implementation
-Taiwan,32%,2025-07-09,Country-Specific Tariff,Delayed implementation
-Indonesia,32%,2025-07-09,Country-Specific Tariff,Delayed implementation
-Switzerland,31%,2025-07-09,Country-Specific Tariff,Delayed implementation
-South Africa,30%,2025-07-09,Country-Specific Tariff,Delayed implementation
-Pakistan,29%,2025-07-09,Country-Specific Tariff,Delayed implementation
-India,26%,2025-07-09,Country-Specific Tariff,Delayed implementation
 South Korea,25%,2025-07-09,Country-Specific Tariff,Delayed implementation
 Japan,24%,2025-07-09,Country-Specific Tariff,Delayed implementation
 European Union,20%,2025-07-09,Country-Specific Tariff,Delayed implementation
-Israel,17%,2025-04-02,Country-Specific Tariff,Implemented as scheduled
 Australia,10%,2025-04-05,Universal Tariff,Subject to universal tariff only
-Ukraine,10%,2025-04-05,Universal Tariff,Subject to universal tariff only
 United Kingdom,10%,2025-04-05,Universal Tariff,Subject to universal tariff only
-Singapore,10%,2025-04-05,Universal Tariff,Subject to universal tariff only
-Steel & Aluminum,25%,2025-03-12,Product-Specific Tariff,Includes beer cans and aluminum containers
-Automobiles,25%,2025-04-03,Product-Specific Tariff,Applies to vehicles; USMCA exemptions
-Auto Parts,25%,2025-05-03,Product-Specific Tariff,Applies to parts; USMCA exemptions
-Lithium-ion EV Batteries,25%,"09-27-2024",Product-Specific Tariff, China
-Battery Components,25%,"09-27-2024",Product-Specific Tariff, China
-Natural Graphite,25%,"06-15-2024",Product-Specific Tariff, China
-Synthetic Graphite,25%,"06-15-2024",Product-Specific Tariff, China
-Electric Vehicles,100%,"09-27-2024",Product-Specific Tariff,China
-Battery Cells,24%,"05-3-2025",Product-Specific Tariff, Japan
-Battery Cells,25%,"05-3-2025",Product-Specific Tariff, South Korea
-General Goods,25%,"03-4-2025",Product-Specific Tariff, Mexico
-General Goods,25%,"03-4-2025",Product-Specific Tariff, Canada
-Nickel Sulfate,20%,"04-9-2025",Product-Specific Tariff, Belgium
-Nickel Sulfate,10%,"04-9-2025",Product-Specific Tariff, Australia
-Nickel Sulfate,32%,"04-9-2025",Product-Specific Tariff, Indonesia
+Germany,20%,2025-07-09,Country-Specific Tariff,Part of European Union tariff policy
+New Caledonia,10%,2025-04-05,Universal Tariff,No specific exemption listed
+Congo,10%,2025-04-05,Universal Tariff,No specific exemption listed
+Argentina,10%,2025-04-05,Universal Tariff,No specific exemption listed
+Canada,10%,2025-04-05,Universal Tariff,No specific exemption listed
