@@ -772,23 +772,40 @@ function drawUSAwalls() {
   // Define the coordinates for the USA border
   const usaBorder = filteredCountries.find((country) => country.id === "840"); // USA's country code is 840
 
-  if (!usaBorder) { 
+  if (!usaBorder) {
     console.error("USA border not found in the data.");
     return;
   }
 
   // Draw the wall along the USA border
+  // Draw a "3D" effect by layering two lines: a thick dark shadow and a thinner bright line on top
+  // 1. Draw the shadow (offset, darker color) using a group with translate
+  svg
+    .append("g")
+    .attr("transform", "translate(3,3)")
+    .append("path")
+    .datum(usaBorder)
+    .attr("class", "wall wall-shadow")
+    .attr("d", path)
+    .attr("fill", "none")
+    .attr("stroke", "#444")
+    .attr("stroke-width", 8)
+    .attr("stroke-linejoin", "round")
+    .attr("stroke-linecap", "round")
+    .attr("opacity", 0.5);
+
+  // 2. Draw the main wall line (on top, lighter color)
   svg
     .append("path")
     .datum(usaBorder)
-    .attr("class", "wall")
+    .attr("class", "wall wall-main")
     .attr("d", path)
     .attr("fill", "none")
-    .attr("stroke-width", 6) // Wall thickness
-    // Solid line for the wall
-    .attr("stroke-dasharray", "none");
+    .attr("stroke", "#fff")
+    .attr("stroke-width", 4)
+    .attr("stroke-linejoin", "round")
+    .attr("stroke-linecap", "round");
 }
-
 
 //data fra databasen
 
