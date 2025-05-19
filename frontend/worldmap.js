@@ -86,9 +86,23 @@ let points = null;
 let miningpoints = null;
 let materialpoints = null;
 let componentpoints = null;
-let factorylocations = [];  // Or load real data
+let factorylocations = []; // Or load real data
 let materiallocations = [];
 let componentlocations = [];
+
+const tariffData = {
+  156: "145%", // Kina
+  276: "20%", // Tyskland
+  826: "10%", // UK
+  36: "10%", // Australien
+  124: "10%", // Canada
+  392: "24%", // Japan
+  32: "10%", // Argentina
+  180: "10%", // Congo
+  410: "25%", // Sydkorea
+  540: "10%", // New Caledonia
+  // Tilføj flere lande hvis nødvendigt
+};
 
 // Salgsdata for 2024 og 2025
 const salesData2024 = {
@@ -168,38 +182,30 @@ function updateData(worldstate) {
       size: 36,
       src: "Images/tesla_gigafactory_logo.png",
     });
-    drawmaterials(miningpoints, {
-      size: 12,
-    });
-    drawcomponents(componentpoints, {
-      size: 12,
-    });
+    drawmaterials(miningpoints, { size: 12 });
+    drawcomponents(componentpoints, { size: 12 });
     drawKeys();
     console.log("factorylocationspre", factorylocationsreturn);
     locationlist(componentlocations, factorylocationsreturn, materiallocations);
-    console.log(fulllist)
+    console.log(fulllist);
+    showTariffs(); // <-- Tilføj denne linje
   }
 
   if (worldstate == produktion2025) {
     drawfactories(points, {
       className: "materials-marker",
-      lonThreshold: 3, // degrees of longitude
-      latThreshold: 3, // degrees of latitude
-      size: 36, //
+      lonThreshold: 3,
+      latThreshold: 3,
+      size: 36,
     });
-    drawmaterials(miningpoints, {
-      size: 12,
-    });
-    drawcomponents(componentpoints, {
-      size: 12,
-    });
+    drawmaterials(miningpoints, { size: 12 });
+    drawcomponents(componentpoints, { size: 12 });
     drawUSAwalls();
-      drawKeys();
-      
-      locationlist(componentlocations, factorylocationsreturn, materiallocations);
-      drawlines(fulllist,[
-      [0,2]
-      ]);
+    drawKeys();
+
+    locationlist(componentlocations, factorylocationsreturn, materiallocations);
+    drawlines(fulllist, [[0, 2]]);
+    showTariffs(); // <-- Tilføj denne linje
   }
 }
 function getCountryColor(countryId, worldstate) {
@@ -273,11 +279,70 @@ function getCountryColor(countryId, worldstate) {
   // Returner farve for landet eller standardfarve
   return colors[countryId] || colors.default;
 }
+function showTariffs() {
+  // Definer offset for udvalgte lande (id: [xOffset, yOffset])
+  const labelOffsets = {
+    840: [30, 30], // USA
+    156: [0, 30], // Kina
+    276: [40, -10], // Tyskland
+    826: [-30, -20], // UK
+    36: [0, 20], // Australien
+    124: [-40, 20], // Canada
+    392: [0, 30], // Japan
+  };
+
+  svg.selectAll(".tariff-label").remove();
+
+  svg
+    .selectAll(".tariff-label")
+    .data(filteredCountries)
+    .enter()
+    .append("text")
+    .attr("class", "tariff-label")
+    .attr("x", (d) => {
+      const code = parseInt(d.id, 10);
+      const centroid = path.centroid(d);
+      const offset = labelOffsets[code] || [0, 0];
+      return centroid[0] + offset[0];
+    })
+    .attr("y", (d) => {
+      const code = parseInt(d.id, 10);
+      const centroid = path.centroid(d);
+      const offset = labelOffsets[code] || [0, 0];
+      return centroid[1] + offset[1];
+    })
+    .text((d) => {
+      const code = parseInt(d.id, 10);
+      return tariffData[code] ? `Told: ${tariffData[code]}` : "";
+    })
+    .attr("text-anchor", "middle")
+    .attr("fill", "white")
+    .attr("stroke", "black")
+    .attr("stroke-width", 2)
+    .attr("paint-order", "stroke")
+    .style("font-size", "16px")
+    .style("font-weight", "bold")
+    .style("pointer-events", "none");
+}
 
 function salesData(worldstate) {
   // viser tal for lande ved salg
   if (worldstate == salg2024 || worldstate == salg2025) {
     const salesData = worldstate === "land" ? salesData2024 : salesData2025;
+
+    // Definer offset for udvalgte lande (id: [xOffset, yOffset])
+    const labelOffsets = {
+      276: [50, 0], // Tyskland
+      826: [-40, -20], // UK
+      528: [0, 20], // Holland
+      752: [20, 20], // Sverige
+      578: [-10, 20], // Norge
+      392: [0, 20], // Japan
+      840: [20, 25], // USA
+      156: [0, 0], // Kina
+      124: [-40, 20], // Canada
+      // Tilføj flere hvis nødvendigt
+    };
 
     svg.selectAll(".sales-label").remove(); // Fjern gamle tekster
 
@@ -287,18 +352,35 @@ function salesData(worldstate) {
       .enter()
       .append("text")
       .attr("class", "sales-label")
-      .attr("x", (d) => path.centroid(d)[0])
-      .attr("y", (d) => path.centroid(d)[1])
+      .attr("x", (d) => {
+        const code = parseInt(d.id, 10);
+        const centroid = path.centroid(d);
+        const offset = labelOffsets[code] || [0, 0];
+        return centroid[0] + offset[0];
+      })
+      .attr("y", (d) => {
+        const code = parseInt(d.id, 10);
+        const centroid = path.centroid(d);
+        const offset = labelOffsets[code] || [0, 0];
+        return centroid[1] + offset[1];
+      })
       .text((d) => {
-        const code = d.id; // ID som landekode
-        return salesData[code] !== undefined ? salesData[code] : "";
+        const code = parseInt(d.id, 10);
+        if (salesData[code] !== undefined) {
+          return salesData[code].toLocaleString("da-DK") + " stk.";
+        }
+        return "";
       })
       .attr("text-anchor", "middle")
-      .attr("fill", "black")
-      .style("font-size", "12px");
+      .attr("fill", "white")
+      .attr("stroke", "black")
+      .attr("stroke-width", 2)
+      .attr("paint-order", "stroke")
+      .style("font-size", "18px")
+      .style("font-weight", "bold")
+      .style("pointer-events", "none");
   }
 }
-
 function addTooltip(selection) {
   const tooltip = d3.select(".tooltip");
 
@@ -332,6 +414,7 @@ function cleanup() {
     ".sales-label", // sales labels
     "wall", // wall elements
     "g.legend-key-group", // the legend background + items
+    ".tariff-label", // tariff labels
   ];
 
   svg.selectAll(selectors.join(",")).remove();
@@ -434,10 +517,9 @@ function drawfactories(coords, opts = {}) {
 
     factorylocations.push([type, lon, lat]);
   }
-   console.log("factorylocations",factorylocations)
-  factorylocationsreturn = factorylocations
-  return (factorylocationsreturn)
-
+  console.log("factorylocations", factorylocations);
+  factorylocationsreturn = factorylocations;
+  return factorylocationsreturn;
 }
 
 // ——— factory‐drawing function ———
@@ -538,104 +620,104 @@ function drawmaterials(rawCoords, opts = {}) {
   return materiallocations;
 }
 
-  // ——— component‐drawing function ———
-  function drawcomponents(componentCoords, opts = {}) {
-    if (!Array.isArray(componentCoords) || componentCoords.length === 0) {
-      // no data yet; nothing to draw
-      return;
+// ——— component‐drawing function ———
+function drawcomponents(componentCoords, opts = {}) {
+  if (!Array.isArray(componentCoords) || componentCoords.length === 0) {
+    // no data yet; nothing to draw
+    return;
+  }
+
+  console.log("Drawing materials for components:", componentCoords);
+
+  const {
+    className = "components-marker",
+    lonThreshold = 1, // degrees of longitude
+    latThreshold = 1, // degrees of latitude
+    size = 12, //
+  } = opts;
+
+  // get current projection scale (if you re‐zoom or resize)
+  const currentScale = projection.scale();
+  const scaleRatio = currentScale / baseScale;
+
+  // sizes & offsets scale with the map
+  const iconSize = size * scaleRatio;
+  const componentOffset = {
+    x: 8 * scaleRatio,
+    y: 10 * scaleRatio,
+  };
+
+  const componentMap = {
+    batterycell: "Images/component_icons/battery_cell.png",
+    ecu: "Images/component_icons/tesla_ecu.png",
+    infotainment: "Images/component_icons/tesla_infotainment.png",
+    powerelectronics: "Images/component_icons/tesla_powerelectronics.png",
+  };
+
+  const points = componentCoords
+    .slice(0, 62)
+    .map(([componentType, supplier, lat, lon]) => {
+      const m = componentType.toLowerCase();
+      let compkey = null;
+
+      if (m.includes("battery cell")) compkey = "batterycell";
+      else if (m.includes("electronic control unit")) compkey = "ecu";
+      else if (m.includes("power electronics")) compkey = "powerelectronics";
+      else if (m.includes("infotainment")) compkey = "infotainment";
+      // **no else** → everything else stays key===null
+
+      // only keep the ones we recognized
+      if (!compkey) {
+        return null;
+      }
+      return { supplier, lon, lat, compkey };
+    })
+    .filter((pt) => pt !== null);
+
+  // now draw each:
+  points.forEach((pt, i) => {
+    const { compkey, supplier, lon, lat } = pt;
+    const src = componentMap[compkey];
+    if (!src) return;
+
+    let [x, y] = projection([lon, lat]);
+
+    const overlap = points.some((other, j) => {
+      if (i === j) return false;
+      return (
+        Math.abs(lon - other.lon) <= lonThreshold &&
+        Math.abs(lat - other.lat) <= latThreshold
+      );
+    });
+    if (overlap) {
+      x += componentOffset.x;
+      y += componentOffset.y;
     }
 
-    console.log("Drawing materials for components:", componentCoords);
+    svg
+      .append("image")
+      .attr("class", className)
+      .attr("href", src)
+      .attr("width", iconSize)
+      .attr("height", iconSize)
+      .attr("x", x - iconSize / 2)
+      .attr("y", y - iconSize / 2);
 
-    const {
-      className = "components-marker",
-      lonThreshold = 1, // degrees of longitude
-      latThreshold = 1, // degrees of latitude
-      size = 12, //
-    } = opts;
-
-    // get current projection scale (if you re‐zoom or resize)
-    const currentScale = projection.scale();
-    const scaleRatio = currentScale / baseScale;
-
-    // sizes & offsets scale with the map
-    const iconSize = size * scaleRatio;
-    const componentOffset = {
-      x: 8 * scaleRatio,
-      y: 10 * scaleRatio,
-    };
-
-    const componentMap = {
-      batterycell: "Images/component_icons/battery_cell.png",
-      ecu: "Images/component_icons/tesla_ecu.png",
-      infotainment: "Images/component_icons/tesla_infotainment.png",
-      powerelectronics: "Images/component_icons/tesla_powerelectronics.png",
-    };
-
-    const points = componentCoords
-      .slice(0, 62)
-      .map(([componentType, supplier, lat, lon]) => {
-        const m = componentType.toLowerCase();
-        let compkey = null;
-
-        if (m.includes("battery cell")) compkey = "batterycell";
-        else if (m.includes("electronic control unit")) compkey = "ecu";
-        else if (m.includes("power electronics")) compkey = "powerelectronics";
-        else if (m.includes("infotainment")) compkey = "infotainment";
-        // **no else** → everything else stays key===null
-
-        // only keep the ones we recognized
-        if (!compkey) {
-          return null;
-        }
-        return { supplier, lon, lat, compkey };
-      })
-      .filter((pt) => pt !== null);
-
-    // now draw each:
-    points.forEach((pt, i) => {
-      const { compkey, supplier, lon, lat } = pt;
-      const src = componentMap[compkey];
-      if (!src) return;
-
-      let [x, y] = projection([lon, lat]);
-
-      const overlap = points.some((other, j) => {
-        if (i === j) return false;
-        return (
-          Math.abs(lon - other.lon) <= lonThreshold &&
-          Math.abs(lat - other.lat) <= latThreshold
-        );
-      });
-      if (overlap) {
-        x += componentOffset.x;
-        y += componentOffset.y;
-      }
-
-      svg
-        .append("image")
-        .attr("class", className)
-        .attr("href", src)
-        .attr("width", iconSize)
-        .attr("height", iconSize)
-        .attr("x", x - iconSize / 2)
-        .attr("y", y - iconSize / 2);
-
-      // draw the label
-      svg
-        .append("text")
-        .attr("class", "component-label")
-        // put it just to the right of the icon, vertically centered
-        .attr("x", x + iconSize / 2 + 4)
-        .attr("y", y + iconSize / 4) // tweak .25 vs .5 of iconSize to best align
-        .text(supplier)
-        .style("font-size", `${iconSize * 0.4}px`)
-        .style("pointer-events", "none"); // so the text doesn’t block tooltips
-    });
-  console.log("points:", points)
-  componentlocations = points
-  return(componentlocations)
-  }
+    // draw the label
+    svg
+      .append("text")
+      .attr("class", "component-label")
+      // put it just to the right of the icon, vertically centered
+      .attr("x", x + iconSize / 2 + 4)
+      .attr("y", y + iconSize / 4) // tweak .25 vs .5 of iconSize to best align
+      .text(supplier)
+      .style("font-size", `${iconSize * 0.4}px`)
+      .style("pointer-events", "none"); // so the text doesn’t block tooltips
+  });
+  console.log("points:", points);
+  componentlocations = points;
+  return componentlocations;
+}
 
 function locationlist(componentlocations, factorylocations, materiallocations) {
   const locationlist = [];
@@ -646,8 +728,8 @@ function locationlist(componentlocations, factorylocations, materiallocations) {
       locationlist.push({
         lon,
         lat,
-        type, 
-        source: "Factory"
+        type,
+        source: "Factory",
       });
     }
   }
@@ -659,7 +741,7 @@ function locationlist(componentlocations, factorylocations, materiallocations) {
       locationlist.push({
         ...mat,
         type: "Material",
-        source: "Material"
+        source: "Material",
       });
     }
   }
@@ -671,18 +753,19 @@ function locationlist(componentlocations, factorylocations, materiallocations) {
       locationlist.push({
         ...comp,
         type: "Component",
-        source: "Component"
+        source: "Component",
       });
     }
   }
-  fulllist = locationlist
+  fulllist = locationlist;
   return fulllist;
 }
 
 function drawlines(fulllist, connections = []) {
   // Define arrowhead marker if not already defined
   if (svg.select("defs").empty()) {
-    svg.append("defs")
+    svg
+      .append("defs")
       .append("marker")
       .attr("id", "arrow")
       .attr("viewBox", "0 -5 10 10")
@@ -709,7 +792,8 @@ function drawlines(fulllist, connections = []) {
     const [x1, y1] = projection([from.lon, from.lat]);
     const [x2, y2] = projection([to.lon, to.lat]);
 
-    svg.append("line")
+    svg
+      .append("line")
       .attr("x1", x1)
       .attr("y1", y1)
       .attr("x2", x2)
