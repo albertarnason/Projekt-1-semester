@@ -14,7 +14,7 @@
     xmlns="http://www.w3.org/2000/svg"
     viewBox="75 50 200 300"
     width="200"
-    height="120"
+    height="100"
   >
     <path
       d="M 173.146,317.299 208.622,117.78 c 33.815,0 44.481,3.708 46.021,18.843 0,0 22.684,-8.458 34.125,-25.636 C 244.122,90.299 199.263,89.366 199.263,89.366 l -26.176,31.882 0.059,-0.004 -26.176,-31.883 c 0,0 -44.86,0.934 -89.5,21.622 11.431,17.178 34.124,25.636 34.124,25.636 1.549,-15.136 12.202,-18.844 45.79,-18.868 l 35.762,199.548"
@@ -28,14 +28,8 @@
   <span class="esla">esla Produktion & Salg</span>
 </div>
 
-<div class="yearButtons">
-  <button data-year="2024" id="button2024">2024</button>
-  <button data-year="2025" id="button2025">2025</button>
-    </div>
 
-    <div id="map"></div>
-    <div class="tooltip"></div>
-
+<div id="worldmap">
     <div class="switch-wrapper">
       <label class="switch">
         <input type="checkbox" id="toggle" />
@@ -44,8 +38,17 @@
           <span class="label-right">Produktion</span>
           <div class="toggle-thumb" id="thumbText">Salg</div>
         </div>
+        <div class="yearButtons">
+  <button data-year="2024" id="button2024">2024</button>
+  <button data-year="2025" id="button2025">2025</button>
+    </div>
       </label>
     </div>
+
+      <div id="map"></div>
+    <div class="tooltip"></div>
+  </div>
+
 
     <div class="bubble-container">
       <div class="bubble">
