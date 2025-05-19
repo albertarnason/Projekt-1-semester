@@ -314,5 +314,8 @@ body {
 }
 
 .wall {
-  stroke: rgb(0, 0, 0);
+  position: absolute;
+  stroke: black ; 
+  stroke-width: 5px;
+
 }
