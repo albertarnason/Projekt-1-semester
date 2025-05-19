@@ -12,8 +12,6 @@ Battery Components,Separator Film,UBE Industries,Japan,33.9435,131.2519
 Battery Components,Separator Film,SK Innovation,Sydkorea,37.5665,126.9780
 Battery Components,Battery Cells,Panasonic,Japan,35.6895,139.6917
 Battery Components,Battery Cells,Panasonic,USA,35.5931,-106.1110
-Battery Components,Battery Cells,Tesla,USA,39.5349,-119.7527
-Battery Components,Battery Modules,Tesla,USA,39.5349,-119.7527
 Battery Components,Battery Packs,Tesla,USA,39.5349,-119.7527
 Battery Components,Battery Cells,CATL,Kina,26.6599,119.5216
 Battery Components,Recycled Materials,Redwood Materials,USA,39.5267,-119.8138
@@ -44,7 +42,6 @@ Body and Structural Parts,Seat Frames,Brose,USA,42.3314,-83.0458
 Body and Structural Parts,Chassis,Magna,Tyskland,48.7758,9.1829
 Body and Structural Parts,Chassis,ZF Friedrichshafen,Tyskland,47.6555,9.4755
 Interior and Software Components,Displays & Infotainment,LG Display,Sydkorea,37.5665,126.9780
-Interior and Software Components,Displays & Infotainment,Tesla,USA,39.5349,-119.7527
 Interior and Software Components,Cameras and Sensors,Tesla,USA,39.5349,-119.7527
 Interior and Software Components,Cameras and Sensors,Aptiv,Global,0.0,0.0
 Interior and Software Components,Cameras and Sensors,Continental,Tyskland,50.1109,8.6821

@@ -538,104 +538,104 @@ function drawmaterials(rawCoords, opts = {}) {
   return materiallocations;
 }
 
-// ——— component‐drawing function ———
-function drawcomponents(componentCoords, opts = {}) {
-  if (!Array.isArray(componentCoords) || componentCoords.length === 0) {
-    // no data yet; nothing to draw
-    return;
-  }
-
-  console.log("Drawing materials for components:", componentCoords);
-
-  const {
-    className = "components-marker",
-    lonThreshold = 1, // degrees of longitude
-    latThreshold = 1, // degrees of latitude
-    size = 12, //
-  } = opts;
-
-  // get current projection scale (if you re‐zoom or resize)
-  const currentScale = projection.scale();
-  const scaleRatio = currentScale / baseScale;
-
-  // sizes & offsets scale with the map
-  const iconSize = size * scaleRatio;
-  const componentOffset = {
-    x: 8 * scaleRatio,
-    y: 10 * scaleRatio,
-  };
-
-  const componentMap = {
-    batterycell: "Images/component_icons/battery_cell.png",
-    ecu: "Images/component_icons/tesla_ecu.png",
-    infotainment: "Images/component_icons/tesla_infotainment.png",
-    powerelectronics: "Images/component_icons/tesla_powerelectronics.png",
-  };
-
-  const points = componentCoords
-    .slice(0, 62)
-    .map(([componentType, supplier, lat, lon]) => {
-      const m = componentType.toLowerCase();
-      let compkey = null;
-
-      if (m.includes("battery cell")) compkey = "batterycell";
-      else if (m.includes("electronic control unit")) compkey = "ecu";
-      else if (m.includes("power electronics")) compkey = "powerelectronics";
-      else if (m.includes("infotainment")) compkey = "infotainment";
-      // **no else** → everything else stays key===null
-
-      // only keep the ones we recognized
-      if (!compkey) {
-        return null;
-      }
-      return { supplier, lon, lat, compkey };
-    })
-    .filter((pt) => pt !== null);
-
-  // now draw each:
-  points.forEach((pt, i) => {
-    const { compkey, supplier, lon, lat } = pt;
-    const src = componentMap[compkey];
-    if (!src) return;
-
-    let [x, y] = projection([lon, lat]);
-
-    const overlap = points.some((other, j) => {
-      if (i === j) return false;
-      return (
-        Math.abs(lon - other.lon) <= lonThreshold &&
-        Math.abs(lat - other.lat) <= latThreshold
-      );
-    });
-    if (overlap) {
-      x += componentOffset.x;
-      y += componentOffset.y;
+  // ——— component‐drawing function ———
+  function drawcomponents(componentCoords, opts = {}) {
+    if (!Array.isArray(componentCoords) || componentCoords.length === 0) {
+      // no data yet; nothing to draw
+      return;
     }
 
-    svg
-      .append("image")
-      .attr("class", className)
-      .attr("href", src)
-      .attr("width", iconSize)
-      .attr("height", iconSize)
-      .attr("x", x - iconSize / 2)
-      .attr("y", y - iconSize / 2);
+    console.log("Drawing materials for components:", componentCoords);
 
-    // draw the label
-    svg
-      .append("text")
-      .attr("class", "component-label")
-      // put it just to the right of the icon, vertically centered
-      .attr("x", x + iconSize / 2 + 4)
-      .attr("y", y + iconSize / 4) // tweak .25 vs .5 of iconSize to best align
-      .text(supplier)
-      .style("font-size", `${iconSize * 0.4}px`)
-      .style("pointer-events", "none"); // so the text doesn’t block tooltips
-  });
- console.log("points:", points)
- componentlocations = points
- return(componentlocations)
-}
+    const {
+      className = "components-marker",
+      lonThreshold = 1, // degrees of longitude
+      latThreshold = 1, // degrees of latitude
+      size = 12, //
+    } = opts;
+
+    // get current projection scale (if you re‐zoom or resize)
+    const currentScale = projection.scale();
+    const scaleRatio = currentScale / baseScale;
+
+    // sizes & offsets scale with the map
+    const iconSize = size * scaleRatio;
+    const componentOffset = {
+      x: 8 * scaleRatio,
+      y: 10 * scaleRatio,
+    };
+
+    const componentMap = {
+      batterycell: "Images/component_icons/battery_cell.png",
+      ecu: "Images/component_icons/tesla_ecu.png",
+      infotainment: "Images/component_icons/tesla_infotainment.png",
+      powerelectronics: "Images/component_icons/tesla_powerelectronics.png",
+    };
+
+    const points = componentCoords
+      .slice(0, 62)
+      .map(([componentType, supplier, lat, lon]) => {
+        const m = componentType.toLowerCase();
+        let compkey = null;
+
+        if (m.includes("battery cell")) compkey = "batterycell";
+        else if (m.includes("electronic control unit")) compkey = "ecu";
+        else if (m.includes("power electronics")) compkey = "powerelectronics";
+        else if (m.includes("infotainment")) compkey = "infotainment";
+        // **no else** → everything else stays key===null
+
+        // only keep the ones we recognized
+        if (!compkey) {
+          return null;
+        }
+        return { supplier, lon, lat, compkey };
+      })
+      .filter((pt) => pt !== null);
+
+    // now draw each:
+    points.forEach((pt, i) => {
+      const { compkey, supplier, lon, lat } = pt;
+      const src = componentMap[compkey];
+      if (!src) return;
+
+      let [x, y] = projection([lon, lat]);
+
+      const overlap = points.some((other, j) => {
+        if (i === j) return false;
+        return (
+          Math.abs(lon - other.lon) <= lonThreshold &&
+          Math.abs(lat - other.lat) <= latThreshold
+        );
+      });
+      if (overlap) {
+        x += componentOffset.x;
+        y += componentOffset.y;
+      }
+
+      svg
+        .append("image")
+        .attr("class", className)
+        .attr("href", src)
+        .attr("width", iconSize)
+        .attr("height", iconSize)
+        .attr("x", x - iconSize / 2)
+        .attr("y", y - iconSize / 2);
+
+      // draw the label
+      svg
+        .append("text")
+        .attr("class", "component-label")
+        // put it just to the right of the icon, vertically centered
+        .attr("x", x + iconSize / 2 + 4)
+        .attr("y", y + iconSize / 4) // tweak .25 vs .5 of iconSize to best align
+        .text(supplier)
+        .style("font-size", `${iconSize * 0.4}px`)
+        .style("pointer-events", "none"); // so the text doesn’t block tooltips
+    });
+  console.log("points:", points)
+  componentlocations = points
+  return(componentlocations)
+  }
 
 function locationlist(componentlocations, factorylocations, materiallocations) {
   const locationlist = [];
