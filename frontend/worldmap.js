@@ -188,7 +188,8 @@ function updateData(worldstate) {
     console.log("factorylocationspre", factorylocationsreturn);
     locationlist(componentlocations, factorylocationsreturn, materiallocations);
     console.log(fulllist);
-    showTariffs(); // <-- Tilføj denne linje
+    drawlines(fulllist, [[0, 2]]);
+  
   }
 
   if (worldstate == produktion2025) {
