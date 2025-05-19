@@ -520,8 +520,8 @@ function drawcomponents(componentCoords, opts = {}) {
 
   const {
     className = "components-marker",
-    lonThreshold = 3, // degrees of longitude
-    latThreshold = 3, // degrees of latitude
+    lonThreshold = 1, // degrees of longitude
+    latThreshold = 1, // degrees of latitude
     size = 12, //
   } = opts;
 
