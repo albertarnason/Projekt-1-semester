@@ -172,6 +172,7 @@ function updateData(worldstate) {
       size: 12,
     });
     drawKeys();
+    Drawlines();
   }
 
   if (worldstate == produktion2025) {
@@ -189,6 +190,7 @@ function updateData(worldstate) {
     });
     drawUSAwalls();
       drawKeys();
+      Drawlines();
   }
 }
 function getCountryColor(countryId, worldstate) {
@@ -384,6 +386,7 @@ function drawfactories(coords, opts = {}) {
     "Battery Factory": "Images/battery_factory.png",
   };
 
+  const factorylocations = []
   // first pass: record longitudes of all Gigafactories
   const gfLons = new Set();
   for (let i = 0; i < coords.length && i < 11; i++) {
@@ -414,7 +417,12 @@ function drawfactories(coords, opts = {}) {
       .attr("height", size)
       .attr("x", x - size / 2)
       .attr("y", y - size / 2);
+      
+  factorylocations.push([type, lon, lat]);
   }
+   console.log("factorylocations",factorylocations)
+  return (factorylocations)
+
 }
 
 // ——— factory‐drawing function ———
@@ -426,8 +434,8 @@ function drawmaterials(rawCoords, opts = {}) {
 
   const {
     className = "materials-marker",
-    lonThreshold = 3, // degrees of longitude
-    latThreshold = 3, // degrees of latitude
+    lonThreshold = 1, // degrees of longitude
+    latThreshold = 1, // degrees of latitude
     size = 12, //
   } = opts;
 
@@ -459,6 +467,7 @@ function drawmaterials(rawCoords, opts = {}) {
       const m = materialType.toLowerCase();
       let key;
       if (m.includes("lithium")) key = "lithium";
+      else if (m.includes("spodume")) key = "lithium";
       else if (m.includes("graphite")) key = "graphite";
       else if (m.includes("nickel")) key = "nickel";
       else if (m.includes("cobalt")) key = "cobalt";
@@ -509,6 +518,9 @@ function drawmaterials(rawCoords, opts = {}) {
       .style("font-size", `${iconSize * 0.4}px`)
       .style("pointer-events", "none"); // so the text doesn’t block tooltips
   });
+  console.log("Materials", points)
+  materiallocations = points
+  return(materiallocations)
 }
 
 // ——— component‐drawing function ———
@@ -559,12 +571,12 @@ const points = componentCoords
 
     // only keep the ones we recognized
     if (!compkey) {
-        console.log("→ skipping unrecognized componentType:", componentType);
+
       return null;}
     return { supplier, lon, lat, compkey };
   })
   .filter(pt => pt !== null);
-console.log("points", points);
+
   // now draw each:
   points.forEach((pt, i) => {
     const {  compkey, supplier, lon, lat} = pt;
@@ -605,6 +617,15 @@ console.log("points", points);
       .style("font-size", `${iconSize * 0.4}px`)
       .style("pointer-events", "none"); // so the text doesn’t block tooltips
   });
+ console.log("points:", points)
+ componentlocations = points
+ return(componentlocations)
+}
+
+function Drawlines(componentlocations, factorylocations, materiallocations){
+
+
+
 }
 
 function drawUSAwalls() {
