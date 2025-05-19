@@ -60,7 +60,8 @@ svg.map-svg {
 .logo-text-container svg {
   width: 130px;
   height: 150px;
-  margin-right: 0px; /* afstand mellem logo og tekst */
+  margin-right: -20px; /* afstand mellem logo og tekst */
+  margin-top: -20px; /* afstand mellem logo og tekst */
   filter: drop-shadow(4px 4px 6px rgba(0, 0, 0, 0.8));
 }
 
