@@ -210,7 +210,7 @@ function getCountryColor(countryId, worldstate) {
       528: "rgb(166, 63, 63)", // Holland
       578: "rgb(166, 63, 63)", // Norge
       392: "rgb(166, 63, 63)", // Japan
-      default: "lightgray",
+      default: "darkgray",
     },
     land2: {
       840: "rgb(185, 88, 88)", // USA
@@ -223,38 +223,38 @@ function getCountryColor(countryId, worldstate) {
       528: "rgb(243, 159, 159)", // Holland
       578: "rgb(207, 139, 139)", // Norge
       392: "rgb(243, 122, 122)", // Japan
-      default: "lightgray",
+      default: "darkgray",
     },
 
     land3: {
-      840: "rgb(173, 49, 49)", // USA
-      276: "rgb(173, 49, 49)", // Tyskland
-      156: "rgb(173, 49, 49)", // Kina
-      124: "rgb(239, 228, 153)", // Canada
-      484: "rgb(173, 49, 49)", // Mexico
-      32: "rgb(238, 238, 238)", // argentina
-      36: "rgb(238, 238, 238", // Australien
-      540: "rgb(239, 228, 153)", // New Caledonia
-      180: "rgb(95, 115, 160)", // Congo
-      410: "white", // South Korea
-      392: "white", // Japan
+      840: "rgb(166, 63, 63)", // USA
+      276: "rgb(166, 63, 63)", // Tyskland
+      156: "rgb(166, 63, 63)", // Kina
+      124: "rgb(101, 93, 36)", // Canada
+      484: "rgb(156, 128, 83)", // Mexico
+      32: "rgb(89, 118, 121)", // argentina
+      36: "rgb(74, 99, 141)", // Australien
+      540: "rgb(0, 0, 0)", // New Caledonia
+      180: "rgb(84, 85, 85)", // Congo
+      410: "rgb(136, 110, 68)", // South Korea
+      392: "rgb(67, 48, 20)", // Japan
 
-      default: "lightgray",
+      default: "darkgray",
     },
     land4: {
-      840: "rgb(173, 49, 49)", // USA
-      276: "rgb(173, 49, 49)", // Tyskland
-      156: "rgb(173, 49, 49)", // Kina
-      124: "rgb(239, 228, 153)", // Canada
-      484: "rgb(173, 49, 49)", // Mexico
-      32: "rgb(238, 238, 238", // argentina
-      36: "rgb(238, 238, 238", // Australien
-      540: "rgb(239, 228, 153)", // New Caledonia
-      180: "rgb(95, 115, 160)", // Congo
-      410: "white", // South Korea
-      392: "white", // Japan
+      840: "rgb(166, 63, 63)", // USA
+      276: "rgb(166, 63, 63)", // Tyskland
+      156: "rgb(166, 63, 63)", // Kina
+      124: "rgb(101, 93, 36)", // Canada
+      484: "rgb(156, 128, 83)", // Mexico
+      32: "rgb(89, 118, 121)", // argentina
+      36: "rgb(74, 99, 141)", // Australien
+      540: "rgb(5, 4, 1)", // New Caledonia
+      180: "rgb(84, 85, 85)", // Congo
+      410: "rgb(136, 110, 68)", // South Korea
+      392: "rgb(67, 48, 20)", // Japan
 
-      default: "lightgray",
+      default: "darkgray",
     },
   };
 
@@ -632,7 +632,7 @@ function drawUSAwalls() {
   // Define the coordinates for the USA border
   const usaBorder = filteredCountries.find((country) => country.id === "840"); // USA's country code is 840
 
-  if (!usaBorder) {
+  if (!usaBorder) { 
     console.error("USA border not found in the data.");
     return;
   }
@@ -644,11 +644,11 @@ function drawUSAwalls() {
     .attr("class", "wall")
     .attr("d", path)
     .attr("fill", "none")
-    .attr("stroke", "red") // Wall color
-    .attr("stroke-width", 4) // Wall thickness
+    .attr("stroke-width", 6) // Wall thickness
     // Solid line for the wall
     .attr("stroke-dasharray", "none");
 }
+
 
 //data fra databasen
 
