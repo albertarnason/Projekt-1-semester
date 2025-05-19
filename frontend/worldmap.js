@@ -86,6 +86,23 @@ let points = null;
 let miningpoints = null;
 let materialpoints = null;
 let componentpoints = null;
+let factorylocations = []; // Or load real data
+let materiallocations = [];
+let componentlocations = [];
+
+const tariffData = {
+  156: "145%", // Kina
+  276: "20%", // Tyskland
+  826: "10%", // UK
+  36: "10%", // Australien
+  124: "10%", // Canada
+  392: "24%", // Japan
+  32: "10%", // Argentina
+  180: "10%", // Congo
+  410: "25%", // Sydkorea
+  540: "10%", // New Caledonia
+  // Tilføj flere lande hvis nødvendigt
+};
 
 // Salgsdata for 2024 og 2025
 const salesData2024 = {
@@ -165,32 +182,30 @@ function updateData(worldstate) {
       size: 36,
       src: "Images/tesla_gigafactory_logo.png",
     });
-    drawmaterials(miningpoints, {
-      size: 12,
-    });
-    drawcomponents(componentpoints, {
-      size: 12,
-    });
+    drawmaterials(miningpoints, { size: 12 });
+    drawcomponents(componentpoints, { size: 12 });
     drawKeys();
-    Drawlines();
+    console.log("factorylocationspre", factorylocationsreturn);
+    locationlist(componentlocations, factorylocationsreturn, materiallocations);
+    console.log(fulllist);
+    showTariffs(); // <-- Tilføj denne linje
   }
 
   if (worldstate == produktion2025) {
     drawfactories(points, {
       className: "materials-marker",
-      lonThreshold: 3, // degrees of longitude
-      latThreshold: 3, // degrees of latitude
-      size: 36, //
+      lonThreshold: 3,
+      latThreshold: 3,
+      size: 36,
     });
-    drawmaterials(miningpoints, {
-      size: 12,
-    });
-    drawcomponents(componentpoints, {
-      size: 12,
-    });
+    drawmaterials(miningpoints, { size: 12 });
+    drawcomponents(componentpoints, { size: 12 });
     drawUSAwalls();
     drawKeys();
-    Drawlines();
+
+    locationlist(componentlocations, factorylocationsreturn, materiallocations);
+    drawlines(fulllist, [[0, 2]]);
+    showTariffs(); // <-- Tilføj denne linje
   }
 }
 function getCountryColor(countryId, worldstate) {
@@ -264,11 +279,70 @@ function getCountryColor(countryId, worldstate) {
   // Returner farve for landet eller standardfarve
   return colors[countryId] || colors.default;
 }
+function showTariffs() {
+  // Definer offset for udvalgte lande (id: [xOffset, yOffset])
+  const labelOffsets = {
+    840: [30, 30], // USA
+    156: [0, 30], // Kina
+    276: [40, -10], // Tyskland
+    826: [-30, -20], // UK
+    36: [0, 20], // Australien
+    124: [-40, 20], // Canada
+    392: [0, 30], // Japan
+  };
+
+  svg.selectAll(".tariff-label").remove();
+
+  svg
+    .selectAll(".tariff-label")
+    .data(filteredCountries)
+    .enter()
+    .append("text")
+    .attr("class", "tariff-label")
+    .attr("x", (d) => {
+      const code = parseInt(d.id, 10);
+      const centroid = path.centroid(d);
+      const offset = labelOffsets[code] || [0, 0];
+      return centroid[0] + offset[0];
+    })
+    .attr("y", (d) => {
+      const code = parseInt(d.id, 10);
+      const centroid = path.centroid(d);
+      const offset = labelOffsets[code] || [0, 0];
+      return centroid[1] + offset[1];
+    })
+    .text((d) => {
+      const code = parseInt(d.id, 10);
+      return tariffData[code] ? `Told: ${tariffData[code]}` : "";
+    })
+    .attr("text-anchor", "middle")
+    .attr("fill", "white")
+    .attr("stroke", "black")
+    .attr("stroke-width", 2)
+    .attr("paint-order", "stroke")
+    .style("font-size", "16px")
+    .style("font-weight", "bold")
+    .style("pointer-events", "none");
+}
 
 function salesData(worldstate) {
   // viser tal for lande ved salg
   if (worldstate == salg2024 || worldstate == salg2025) {
     const salesData = worldstate === "land" ? salesData2024 : salesData2025;
+
+    // Definer offset for udvalgte lande (id: [xOffset, yOffset])
+    const labelOffsets = {
+      276: [50, 0], // Tyskland
+      826: [-40, -20], // UK
+      528: [0, 20], // Holland
+      752: [20, 20], // Sverige
+      578: [-10, 20], // Norge
+      392: [0, 20], // Japan
+      840: [20, 25], // USA
+      156: [0, 0], // Kina
+      124: [-40, 20], // Canada
+      // Tilføj flere hvis nødvendigt
+    };
 
     svg.selectAll(".sales-label").remove(); // Fjern gamle tekster
 
@@ -278,18 +352,35 @@ function salesData(worldstate) {
       .enter()
       .append("text")
       .attr("class", "sales-label")
-      .attr("x", (d) => path.centroid(d)[0])
-      .attr("y", (d) => path.centroid(d)[1])
+      .attr("x", (d) => {
+        const code = parseInt(d.id, 10);
+        const centroid = path.centroid(d);
+        const offset = labelOffsets[code] || [0, 0];
+        return centroid[0] + offset[0];
+      })
+      .attr("y", (d) => {
+        const code = parseInt(d.id, 10);
+        const centroid = path.centroid(d);
+        const offset = labelOffsets[code] || [0, 0];
+        return centroid[1] + offset[1];
+      })
       .text((d) => {
-        const code = d.id; // ID som landekode
-        return salesData[code] !== undefined ? salesData[code] : "";
+        const code = parseInt(d.id, 10);
+        if (salesData[code] !== undefined) {
+          return salesData[code].toLocaleString("da-DK") + " stk.";
+        }
+        return "";
       })
       .attr("text-anchor", "middle")
-      .attr("fill", "black")
-      .style("font-size", "12px");
+      .attr("fill", "white")
+      .attr("stroke", "black")
+      .attr("stroke-width", 2)
+      .attr("paint-order", "stroke")
+      .style("font-size", "18px")
+      .style("font-weight", "bold")
+      .style("pointer-events", "none");
   }
 }
-
 function addTooltip(selection) {
   const tooltip = d3.select(".tooltip");
 
@@ -323,6 +414,7 @@ function cleanup() {
     ".sales-label", // sales labels
     "wall", // wall elements
     "g.legend-key-group", // the legend background + items
+    ".tariff-label", // tariff labels
   ];
 
   svg.selectAll(selectors.join(",")).remove();
@@ -426,7 +518,8 @@ function drawfactories(coords, opts = {}) {
     factorylocations.push([type, lon, lat]);
   }
   console.log("factorylocations", factorylocations);
-  return factorylocations;
+  factorylocationsreturn = factorylocations;
+  return factorylocationsreturn;
 }
 
 // ——— factory‐drawing function ———
@@ -626,7 +719,90 @@ function drawcomponents(componentCoords, opts = {}) {
   return componentlocations;
 }
 
-function Drawlines(componentlocations, factorylocations, materiallocations) {}
+function locationlist(componentlocations, factorylocations, materiallocations) {
+  const locationlist = [];
+
+  // Parse factory locations: [type, lon, lat]
+  for (const [type, lon, lat] of factorylocations) {
+    if (lon != null && lat != null && type) {
+      locationlist.push({
+        lon,
+        lat,
+        type,
+        source: "Factory",
+      });
+    }
+  }
+
+  // Parse material locations: {company, lon, lat, key, materialtype}
+  for (const mat of materiallocations) {
+    const { lon, lat } = mat;
+    if (lon != null && lat != null) {
+      locationlist.push({
+        ...mat,
+        type: "Material",
+        source: "Material",
+      });
+    }
+  }
+
+  // Parse component locations: {supplier, lon, lat, compkey, componenttype}
+  for (const comp of componentlocations) {
+    const { lon, lat } = comp;
+    if (lon != null && lat != null) {
+      locationlist.push({
+        ...comp,
+        type: "Component",
+        source: "Component",
+      });
+    }
+  }
+  fulllist = locationlist;
+  return fulllist;
+}
+
+function drawlines(fulllist, connections = []) {
+  // Define arrowhead marker if not already defined
+  if (svg.select("defs").empty()) {
+    svg
+      .append("defs")
+      .append("marker")
+      .attr("id", "arrow")
+      .attr("viewBox", "0 -5 10 10")
+      .attr("refX", 12)
+      .attr("refY", 0)
+      .attr("markerWidth", 6)
+      .attr("markerHeight", 6)
+      .attr("orient", "auto")
+      .append("path")
+      .attr("d", "M0,-5L10,0L0,5")
+      .attr("fill", "black");
+  }
+
+  // Loop through manual connections
+  connections.forEach(([fromIdx, toIdx]) => {
+    const from = fulllist[fromIdx];
+    const to = fulllist[toIdx];
+
+    if (!from || !to) {
+      console.warn(`Invalid index: from ${fromIdx}, to ${toIdx}`);
+      return;
+    }
+
+    const [x1, y1] = projection([from.lon, from.lat]);
+    const [x2, y2] = projection([to.lon, to.lat]);
+
+    svg
+      .append("line")
+      .attr("x1", x1)
+      .attr("y1", y1)
+      .attr("x2", x2)
+      .attr("y2", y2)
+      .attr("stroke", "black")
+      .attr("stroke-width", 2)
+      .attr("marker-end", "url(#arrow)");
+  });
+}
 
 function drawUSAwalls() {
   // Define the coordinates for the USA border
