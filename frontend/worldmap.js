@@ -93,7 +93,6 @@ let componentlocations = [];
 const tariffData = {
   156: "145%", // Kina
   276: "20%", // Tyskland
-  826: "10%", // UK
   36: "10%", // Australien
   124: "10%", // Canada
   392: "24%", // Japan
@@ -245,14 +244,14 @@ function getCountryColor(countryId, worldstate) {
       840: "rgb(166, 63, 63)", // USA
       276: "rgb(166, 63, 63)", // Tyskland
       156: "rgb(166, 63, 63)", // Kina
-      124: "rgb(101, 93, 36)", // Canada
-      484: "rgb(156, 128, 83)", // Mexico
-      32: "rgb(89, 118, 121)", // argentina
-      36: "rgb(74, 99, 141)", // Australien
+      124: "rgb(84, 85, 85)", // Canada
+      484: "rgb(49, 89, 104)", // Mexico
+      32: "rgb(84, 85, 85)", // argentina
+      36: "rgb(84, 85, 85)", // Australien
       540: "rgb(0, 0, 0)", // New Caledonia
       180: "rgb(84, 85, 85)", // Congo
-      410: "rgb(136, 110, 68)", // South Korea
-      392: "rgb(67, 48, 20)", // Japan
+      410: "rgb(84, 85, 85)", // South Korea
+      392: "rgb(84, 85, 85)", // Japan
 
       default: "darkgray",
     },
@@ -260,14 +259,14 @@ function getCountryColor(countryId, worldstate) {
       840: "rgb(166, 63, 63)", // USA
       276: "rgb(166, 63, 63)", // Tyskland
       156: "rgb(166, 63, 63)", // Kina
-      124: "rgb(101, 93, 36)", // Canada
-      484: "rgb(156, 128, 83)", // Mexico
-      32: "rgb(89, 118, 121)", // argentina
-      36: "rgb(74, 99, 141)", // Australien
+      124: "rgb(84, 85, 85)", // Canada
+      484: "rgb(49, 89, 104)", // Mexico
+      32: "rgb(84, 85, 85)", // argentina
+      36: "rgb(84, 85, 85)", // Australien
       540: "rgb(5, 4, 1)", // New Caledonia
       180: "rgb(84, 85, 85)", // Congo
-      410: "rgb(136, 110, 68)", // South Korea
-      392: "rgb(67, 48, 20)", // Japan
+      410: "rgb(84, 85, 85)", // South Korea
+      392: "rgb(84, 85, 85)", // Japan
 
       default: "darkgray",
     },
