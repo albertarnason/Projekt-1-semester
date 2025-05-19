@@ -232,6 +232,7 @@ function getCountryColor(countryId, worldstate) {
       32: "pink", // argentina
       36: "pink", // Australien
       540: "pink", // New Caledonia
+      180: "pink", // Congo
 
       default: "lightgray",
     },
@@ -244,6 +245,7 @@ function getCountryColor(countryId, worldstate) {
       32: "pink", // argentina
       36: "pink", // Australien
       540: "pink", // New Caledonia
+      180: "pink", // Congo
 
       default: "lightgray",
     },
