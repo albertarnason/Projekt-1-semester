@@ -185,11 +185,6 @@ function updateData(worldstate) {
     drawmaterials(miningpoints, { size: 12 });
     drawcomponents(componentpoints, { size: 12 });
     drawKeys();
-    console.log("factorylocationspre", factorylocationsreturn);
-    locationlist(componentlocations, factorylocationsreturn, materiallocations);
-    console.log(fulllist);
-    drawlines(fulllist, [[0, 2]]);
-  
   }
 
   if (worldstate == produktion2025) {
@@ -203,10 +198,7 @@ function updateData(worldstate) {
     drawcomponents(componentpoints, { size: 12 });
     drawUSAwalls();
     drawKeys();
-
-    locationlist(componentlocations, factorylocationsreturn, materiallocations);
-    drawlines(fulllist, [[0, 2]]);
-    showTariffs(); // <-- Tilføj denne linje
+    showTariffs();
   }
 }
 function getCountryColor(countryId, worldstate) {
@@ -291,8 +283,6 @@ function showTariffs() {
     124: [-40, 20], // Canada
     392: [0, 30], // Japan
   };
-
-  svg.selectAll(".tariff-label").remove();
 
   svg
     .selectAll(".tariff-label")
@@ -481,9 +471,6 @@ function drawfactories(coords, opts = {}) {
 
     factorylocations.push([type, lon, lat]);
   }
-  console.log("factorylocations", factorylocations);
-  factorylocationsreturn = factorylocations;
-  return factorylocationsreturn;
 }
 
 // ——— factory‐drawing function ———
@@ -579,9 +566,6 @@ function drawmaterials(rawCoords, opts = {}) {
       .style("font-size", `${iconSize * 0.4}px`)
       .style("pointer-events", "none"); // so the text doesn’t block tooltips
   });
-  console.log("Materials", points);
-  materiallocations = points;
-  return materiallocations;
 }
 
 // ——— component‐drawing function ———
@@ -677,94 +661,6 @@ function drawcomponents(componentCoords, opts = {}) {
       .text(supplier)
       .style("font-size", `${iconSize * 0.4}px`)
       .style("pointer-events", "none"); // so the text doesn’t block tooltips
-  });
-  console.log("points:", points);
-  componentlocations = points;
-  return componentlocations;
-}
-
-function locationlist(componentlocations, factorylocations, materiallocations) {
-  const locationlist = [];
-
-  // Parse factory locations: [type, lon, lat]
-  for (const [type, lon, lat] of factorylocations) {
-    if (lon != null && lat != null && type) {
-      locationlist.push({
-        lon,
-        lat,
-        type,
-        source: "Factory",
-      });
-    }
-  }
-
-  // Parse material locations: {company, lon, lat, key, materialtype}
-  for (const mat of materiallocations) {
-    const { lon, lat } = mat;
-    if (lon != null && lat != null) {
-      locationlist.push({
-        ...mat,
-        type: "Material",
-        source: "Material",
-      });
-    }
-  }
-
-  // Parse component locations: {supplier, lon, lat, compkey, componenttype}
-  for (const comp of componentlocations) {
-    const { lon, lat } = comp;
-    if (lon != null && lat != null) {
-      locationlist.push({
-        ...comp,
-        type: "Component",
-        source: "Component",
-      });
-    }
-  }
-  fulllist = locationlist;
-  return fulllist;
-}
-
-function drawlines(fulllist, connections = []) {
-  // Define arrowhead marker if not already defined
-  if (svg.select("linedefs").empty()) {
-    svg
-      .append("linedefs")
-      .append("marker")
-      .attr("id", "arrowline")
-      .attr("viewBox", "0 -5 10 10")
-      .attr("refX", 12)
-      .attr("refY", 0)
-      .attr("markerWidth", 6)
-      .attr("markerHeight", 6)
-      .attr("orient", "auto")
-      .append("path")
-      .attr("d", "M0,-5L10,0L0,5")
-      .attr("fill", "black");
-  }
-
-  // Loop through manual connections
-  connections.forEach(([fromIdx, toIdx]) => {
-    const from = fulllist[fromIdx];
-    const to = fulllist[toIdx];
-
-    if (!from || !to) {
-      console.warn(`Invalid index: from ${fromIdx}, to ${toIdx}`);
-      return;
-    }
-
-    const [x1, y1] = projection([from.lon, from.lat]);
-    const [x2, y2] = projection([to.lon, to.lat]);
-
-    svg
-      .append("line")
-      .attr("x1", x1)
-      .attr("y1", y1)
-      .attr("x2", x2)
-      .attr("y2", y2)
-      .attr("stroke", "black")
-      .attr("stroke-width", 2)
-      .attr("marker-end", "url(#arrowline)");
   });
 }
 
