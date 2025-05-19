@@ -415,51 +415,14 @@ function cleanup() {
     "wall", // wall elements
     "g.legend-key-group", // the legend background + items
     ".tariff-label", // tariff labels
+    "linedefs #arrowline", //lines between components/factories
+      "linedefs",          // remove entire <linedefs> container
+    "line",              // REMOVE THIS: <line> elements created by drawlines
   ];
 
   svg.selectAll(selectors.join(",")).remove();
 
   //Hvis det går galt så bare tilføj den gamle funktion over^
-}
-
-function linefromUSAtoChina() {
-  svg
-    .append("defs")
-    .append("marker")
-    .attr("id", "arrow")
-    .attr("viewBox", "0 -5 10 10")
-    .attr("refX", 10)
-    .attr("refY", 0)
-    .attr("markerWidth", 6)
-    .attr("markerHeight", 6)
-    .attr("orient", "auto")
-    .append("path")
-    .attr("d", "M0,-5L10,0L0,5")
-    .attr("fill", "black"); // Sort pil
-
-  // Tegn pil fra USA til Beijing
-  const from = [
-    filteredCountries[4].geometry.coordinates[0][0][0][0],
-    filteredCountries[4].geometry.coordinates[0][0][0][1],
-  ];
-
-  console.log(from);
-  const to = [-119.7527, 39.5349]; // gigafactory nevada
-
-  const line = {
-    type: "LineString",
-    coordinates: [from, to],
-  };
-
-  svg
-    .append("path")
-    .datum(line)
-    .attr("class", "flight-path")
-    .attr("fill", "none")
-    .attr("stroke", "black")
-    .attr("stroke-width", 2)
-    .attr("d", path)
-    .attr("marker-end", "url(#arrow)");
 }
 
 // ——— factory‐drawing function ———
@@ -763,11 +726,11 @@ function locationlist(componentlocations, factorylocations, materiallocations) {
 
 function drawlines(fulllist, connections = []) {
   // Define arrowhead marker if not already defined
-  if (svg.select("defs").empty()) {
+  if (svg.select("linedefs").empty()) {
     svg
-      .append("defs")
+      .append("linedefs")
       .append("marker")
-      .attr("id", "arrow")
+      .attr("id", "arrowline")
       .attr("viewBox", "0 -5 10 10")
       .attr("refX", 12)
       .attr("refY", 0)
@@ -800,7 +763,7 @@ function drawlines(fulllist, connections = []) {
       .attr("y2", y2)
       .attr("stroke", "black")
       .attr("stroke-width", 2)
-      .attr("marker-end", "url(#arrow)");
+      .attr("marker-end", "url(#arrowline)");
   });
 }
 
