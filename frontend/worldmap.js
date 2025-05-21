@@ -425,7 +425,7 @@ function addTooltip(selection) {
     .on("mouseover", (event, d) => {
       tooltip
         .style("display", "block")
-        .html(`Country: ${d.properties.name || "Unknown"} (ID: ${d.id})`);
+        .html(`Country: ${d.properties.name || "Unknown"}`);
     })
     .on("mousemove", (event) => {
       tooltip
@@ -459,13 +459,16 @@ function cleanup() {
   ];
 
   svg.selectAll(selectors.join(",")).remove();
-
-
-  //Hvis det går galt så bare tilføj den gamle funktion over^
 }
 
 // ——— factory‐drawing function ———
-function drawfactories(factorycoords, opts = {}) {
+function drawfactories(factoryCoords, opts = {}) {
+  //Skips function if there is no data, mostly to avoid error on first load if database hasn't returned data yet
+  if (!Array.isArray(factoryCoords) || factoryCoords.length === 0) {
+    return;
+  }
+
+  
   const { className = "logo-marker" } = opts;
 
   // sizes & offsets scale with the map
@@ -480,16 +483,16 @@ function drawfactories(factorycoords, opts = {}) {
     "Gigafactory": "Images/tesla_gigafactory_logo.png",
     "Battery Factory": "Images/battery_factory.png",
   };
-  // first pass: record longitudes of all Gigafactories
+  // first pass: record longitudes of all Gigafactories to check for overlap later by looping through factorycoords and adding to gfLons
   const gfLons = new Set();
-  for (let i = 0; i < factorycoords.length && i < 11; i++) {
-    const [lon, , type] = factorycoords[i];
+  for (let i = 0; i < factoryCoords.length; i++) {
+    const [lon, , type] = factoryCoords[i];
     if (type === "Gigafactory") gfLons.add(lon);
   }
 
   // second pass: draw only Giga + Battery (offset if overlapping)
-  for (let d = 0; d < factorycoords.length && d < 11; d++) {
-    const [lon, lat, type] = factorycoords[d];
+  for (let d = 0; d < factoryCoords.length; d++) {
+    const [lon, lat, type] = factoryCoords[d];
     const src = logoMap[type];
     if (!src) continue;
 
@@ -515,6 +518,7 @@ function drawfactories(factorycoords, opts = {}) {
 
 // ——— factory‐drawing function ———
 function drawmaterials(materialCoords, opts = {}) {
+//Skips function if there is no data, mostly to avoid error on first load if database hasn't returned data yet
   if (!Array.isArray(materialCoords) || materialCoords.length === 0) {
     return;
   }
@@ -543,7 +547,7 @@ function drawmaterials(materialCoords, opts = {}) {
 
   // reformats the data/normalizes data into const points with keys fo each material
   const points = materialCoords
-    .slice(0, 11)
+    .slice(0, 13)
     .map(([company, materialType, lon, lat]) => {
       const m = materialType.toLowerCase();
       let key;
@@ -561,7 +565,7 @@ function drawmaterials(materialCoords, opts = {}) {
 
   // now draw each:
   points.forEach((pt, i) => {
-    const { company, lon, lat, key } = pt;
+    const { lon, lat, key } = pt;
     const src = materialMap[key];
     if (!src) return;
 
@@ -592,26 +596,18 @@ function drawmaterials(materialCoords, opts = {}) {
 
 // ——— component‐drawing function ———
 function drawcomponents(componentCoords, opts = {}) {
+//Skips function if there is no data, mostly to avoid error on first load 
   if (!Array.isArray(componentCoords) || componentCoords.length === 0) {
-    // no data yet; nothing to draw
     return;
   }
 
-  console.log("Drawing materials for components:", componentCoords);
-
   const {
     className = "components-marker",
-    lonThreshold = 1, // degrees of longitude
-    latThreshold = 1, // degrees of latitude
-    size = 12, //
+    size = 12,
   } = opts;
 
   // sizes & offsets scale with the map
   const iconSize = size
-  const componentOffset = {
-    x: 8,
-    y: 10
-  };
 
   const componentMap = {
     batterycell: "Images/component_icons/battery_cell.png",
@@ -620,45 +616,30 @@ function drawcomponents(componentCoords, opts = {}) {
     powerelectronics: "Images/component_icons/tesla_powerelectronics.png",
   };
 
+
+  //Maps data and removes unwanted data
   const points = componentCoords
     .slice(0, 62)
     .map(([componentType, supplier, lat, lon]) => {
       const m = componentType.toLowerCase();
       let compkey = null;
-
       if (m.includes("battery cell")) compkey = "batterycell";
       else if (m.includes("electronic control unit")) compkey = "ecu";
       else if (m.includes("power electronics")) compkey = "powerelectronics";
       else if (m.includes("infotainment")) compkey = "infotainment";
-
-      // only keep the ones we recognized
-      if (!compkey) {
-        return null;
-      }
       return { supplier, lon, lat, compkey };
     })
     .filter((pt) => pt !== null);
 
-  // now draw each:
-  points.forEach((pt, i) => {
+  // checks for overlap and adds offset
+  points.forEach((pt) => {
     const { compkey, supplier, lon, lat } = pt;
     const src = componentMap[compkey];
     if (!src) return;
 
     let [x, y] = projection([lon, lat]);
 
-    const overlap = points.some((other, j) => {
-      if (i === j) return false;
-      return (
-        Math.abs(lon - other.lon) <= lonThreshold &&
-        Math.abs(lat - other.lat) <= latThreshold
-      );
-    });
-    if (overlap) {
-      x += componentOffset.x;
-      y += componentOffset.y;
-    }
-
+    //draw component icon 
     svg
       .append("image")
       .attr("class", className)
@@ -667,7 +648,18 @@ function drawcomponents(componentCoords, opts = {}) {
       .attr("height", iconSize)
       .attr("x", x - iconSize / 2)
       .attr("y", y - iconSize / 2);
+
+    // draw company/supplier name
+    svg
+      .append("text")
+      .attr("class", "component-label")
+      .attr("x", x + iconSize / 2 + 4)
+      .attr("y", y + iconSize / 4)
+      .text(supplier)
+      .style("font-size", `${iconSize * 0.4}px`);
   });
+
+  
 }
 
 function drawUSAwalls() {
