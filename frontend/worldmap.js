@@ -178,10 +178,7 @@ function updateData(worldstate) {
   }
 
   if (worldstate === produktion2024) {
-    drawfactories(points, {
-      size: 36,
-      src: "Images/tesla_gigafactory_logo.png",
-    });
+    drawfactories(points, {});
     drawmaterials(miningpoints, { size: 12 });
     drawcomponents(componentpoints, { size: 12 });
     drawKeys();
@@ -189,12 +186,7 @@ function updateData(worldstate) {
   }
 
   if (worldstate == produktion2025) {
-    drawfactories(points, {
-      className: "materials-marker",
-      lonThreshold: 3,
-      latThreshold: 3,
-      size: 36,
-    });
+    drawfactories(points, {});
     drawmaterials(miningpoints, { size: 12 });
     drawcomponents(componentpoints, { size: 12 });
     drawUSAwalls();
@@ -473,37 +465,31 @@ function cleanup() {
 }
 
 // ——— factory‐drawing function ———
-function drawfactories(coords, opts = {}) {
+function drawfactories(factorycoords, opts = {}) {
   const { className = "logo-marker" } = opts;
 
-  // get current projection scale (if you re‐zoom or resize)
-  const currentScale = projection.scale();
-  const scaleRatio = currentScale / baseScale;
-
   // sizes & offsets scale with the map
-  const gigSize = 32 * scaleRatio;
-  const batterySize = 16 * scaleRatio;
+  const gigSize = 32
+  const batterySize = 16
   const batteryOffset = {
-    x: 8 * scaleRatio,
-    y: 10 * scaleRatio,
+    x: 8,
+    y: 10,
   };
 
   const logoMap = {
-    Gigafactory: "Images/tesla_gigafactory_logo.png",
+    "Gigafactory": "Images/tesla_gigafactory_logo.png",
     "Battery Factory": "Images/battery_factory.png",
   };
-
-  const factorylocations = [];
   // first pass: record longitudes of all Gigafactories
   const gfLons = new Set();
-  for (let i = 0; i < coords.length && i < 11; i++) {
-    const [lon, , type] = coords[i];
+  for (let i = 0; i < factorycoords.length && i < 11; i++) {
+    const [lon, , type] = factorycoords[i];
     if (type === "Gigafactory") gfLons.add(lon);
   }
 
   // second pass: draw only Giga + Battery (offset if overlapping)
-  for (let d = 0; d < coords.length && d < 11; d++) {
-    const [lon, lat, type] = coords[d];
+  for (let d = 0; d < factorycoords.length && d < 11; d++) {
+    const [lon, lat, type] = factorycoords[d];
     const src = logoMap[type];
     if (!src) continue;
 
@@ -524,34 +510,27 @@ function drawfactories(coords, opts = {}) {
       .attr("height", size)
       .attr("x", x - size / 2)
       .attr("y", y - size / 2);
-
-    factorylocations.push([type, lon, lat]);
   }
 }
 
 // ——— factory‐drawing function ———
-function drawmaterials(rawCoords, opts = {}) {
-  if (!Array.isArray(rawCoords) || rawCoords.length === 0) {
-    // no data yet; nothing to draw
+function drawmaterials(materialCoords, opts = {}) {
+  if (!Array.isArray(materialCoords) || materialCoords.length === 0) {
     return;
   }
 
   const {
     className = "materials-marker",
-    lonThreshold = 1, // degrees of longitude
-    latThreshold = 1, // degrees of latitude
-    size = 12, //
+    lonThreshold = 1, // degrees of longitude for offset to avoid some overlap
+    latThreshold = 1, // degrees of latitude for offset to avoid some overlap
+    size = 12,
   } = opts;
 
-  // get current projection scale (if you re‐zoom or resize)
-  const currentScale = projection.scale();
-  const scaleRatio = currentScale / baseScale;
-
   // sizes & offsets scale with the map
-  const iconSize = size * scaleRatio;
+  const iconSize = size
   const materialOffset = {
-    x: 8 * scaleRatio,
-    y: 10 * scaleRatio,
+    x: 8,
+    y: 10,
   };
 
   const materialMap = {
@@ -562,12 +541,10 @@ function drawmaterials(rawCoords, opts = {}) {
     nickel: "Images/material_icons/nickel_ingot.png",
   };
 
-  // collect up to the first 11 points
-  const points = rawCoords
+  // reformats the data/normalizes data into const points with keys fo each material
+  const points = materialCoords
     .slice(0, 11)
     .map(([company, materialType, lon, lat]) => {
-      // normalize materialType → key (as before)…
-      // …
       const m = materialType.toLowerCase();
       let key;
       if (m.includes("lithium")) key = "lithium";
@@ -610,17 +587,6 @@ function drawmaterials(rawCoords, opts = {}) {
       .attr("height", iconSize)
       .attr("x", x - iconSize / 2)
       .attr("y", y - iconSize / 2);
-
-    // draw the label
-    svg
-      .append("text")
-      .attr("class", "material-label")
-      // put it just to the right of the icon, vertically centered
-      .attr("x", x + iconSize / 2 + 4)
-      .attr("y", y + iconSize / 4) // tweak .25 vs .5 of iconSize to best align
-      .text(company)
-      .style("font-size", `${iconSize * 0.4}px`)
-      .style("pointer-events", "none"); // so the text doesn’t block tooltips
   });
 }
 
@@ -640,15 +606,11 @@ function drawcomponents(componentCoords, opts = {}) {
     size = 12, //
   } = opts;
 
-  // get current projection scale (if you re‐zoom or resize)
-  const currentScale = projection.scale();
-  const scaleRatio = currentScale / baseScale;
-
   // sizes & offsets scale with the map
-  const iconSize = size * scaleRatio;
+  const iconSize = size
   const componentOffset = {
-    x: 8 * scaleRatio,
-    y: 10 * scaleRatio,
+    x: 8,
+    y: 10
   };
 
   const componentMap = {
@@ -668,7 +630,6 @@ function drawcomponents(componentCoords, opts = {}) {
       else if (m.includes("electronic control unit")) compkey = "ecu";
       else if (m.includes("power electronics")) compkey = "powerelectronics";
       else if (m.includes("infotainment")) compkey = "infotainment";
-      // **no else** → everything else stays key===null
 
       // only keep the ones we recognized
       if (!compkey) {
@@ -706,17 +667,6 @@ function drawcomponents(componentCoords, opts = {}) {
       .attr("height", iconSize)
       .attr("x", x - iconSize / 2)
       .attr("y", y - iconSize / 2);
-
-    // draw the label
-    svg
-      .append("text")
-      .attr("class", "component-label")
-      // put it just to the right of the icon, vertically centered
-      .attr("x", x + iconSize / 2 + 4)
-      .attr("y", y + iconSize / 4) // tweak .25 vs .5 of iconSize to best align
-      .text(supplier)
-      .style("font-size", `${iconSize * 0.4}px`)
-      .style("pointer-events", "none"); // so the text doesn’t block tooltips
   });
 }
 
