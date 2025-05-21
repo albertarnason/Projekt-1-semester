@@ -432,7 +432,7 @@ function cleanup() {
     "path", // all map paths (includes flight‐path)
     "defs marker#arrow", // the arrow marker
     "image.logo-marker", // gigafactory logos
-    "image.materials-marker", // material icons
+    "image.material-marker", // material icons
     "image.components-marker", // component icons
     "text.material-label", // material labels
     "text.component-label", // component labels
@@ -458,8 +458,8 @@ function drawfactories(factoryCoords) {
   }
   
   // sizes & offsets scale with the map
-  const gigSize = 32
-  const batterySize = 16
+  const gigSize = 48
+  const batterySize = 24
   const batteryOffset = {
     x: 8,
     y: 10,
@@ -512,7 +512,7 @@ function drawmaterials(materialCoords, opts = {}) {
   const {
     lonThreshold = 1, // degrees of longitude for offset to avoid some overlap
     latThreshold = 1, // degrees of latitude for offset to avoid some overlap
-    iconSize = 12,
+    iconSize = 20,
   } = opts;
 
   // sizes & offsets scale with the map
@@ -583,7 +583,7 @@ function drawcomponents(componentCoords) {
     return;
   }
 
-  const iconSize = 12
+  const iconSize = 20
   const componentMap = {
     batterycell: "Images/component_icons/battery_cell.png",
     ecu: "Images/component_icons/tesla_ecu.png",
