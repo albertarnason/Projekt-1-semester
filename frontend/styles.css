@@ -4,7 +4,7 @@ body {
   background: rgb(242, 241, 239);
   color: rgb(114, 29, 29);
   font-family: "Cinzel", serif;
-}
+  }
 
 h1 {
   margin: 20px 0;
@@ -164,7 +164,7 @@ svg.map-svg {
 .bubble-container {
   display: flex; /* Fortælle browseren, at elementerne indeni bubble-container (de to bubbler), skal ligge ved siden af hinanden og ikke ovenpå hinanden.*/
   justify-content: center; /* Sørger for, at boblerne er ved siden af hinanden centreret på midten af siden */
-  gap: 0px; /* Mellemrum mellem boblerne */
+  gap: 20px; /* Mellemrum mellem boblerne */
   width: 80%; /* Angiver hvor meget af bredden på siden, containeren skal fylde */
   margin-top: 100px; /* Afstanden fra top til containeren */
 }
