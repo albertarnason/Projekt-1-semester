@@ -215,10 +215,10 @@ function trumpimage() {
   let imgSrc = null;
   let imgAlt = "";
   if (worldstate === produktion2024) {
-    imgSrc = "Images/trump_sad.png";
+    imgSrc = "Images/trump_nice.png";
     imgAlt = "Sad Trump";
   } else if (worldstate === produktion2025) {
-    imgSrc = "Images/trump_nice.png";
+    imgSrc = "Images/trump_sad.png";
     imgAlt = "Nice Trump";
   } else {
     return;
@@ -238,11 +238,11 @@ function trumpimage() {
     const canadaCentroid = path.centroid(canada);
     // Midpoint between centroids
     imgX = (usaCentroid[0] + canadaCentroid[0]) / 2;
-    imgY = (usaCentroid[1] + canadaCentroid[1]) / 2 - 60; // move up a bit above the border
+    imgY = (usaCentroid[1] + canadaCentroid[1]) / 2 + 30; // move down a bit below the border
   }
 
-  const imgWidth = 120;
-  const imgHeight = 120;
+  const imgWidth = 110;
+  const imgHeight = 150;
 
   svg
     .append("image")
