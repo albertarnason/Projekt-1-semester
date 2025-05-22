@@ -651,6 +651,7 @@ function drawUSAwalls() {
   // Ddefinerer væggen som en grænse for USA
   const usaBorder = filteredCountries.find((country) => country.id === "840"); // USA's land kode er 840
 
+  // kalder path-funktionen for at få den rigtige form
   svg
     .append("g")
     .attr("transform", "translate(3,3)")
