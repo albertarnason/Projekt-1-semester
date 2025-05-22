@@ -344,7 +344,7 @@ function drawCountryColorLegend(opts = {}) {
   // Flyt gruppen til den centrerede position inde i kortet, rykket mere til venstre
   legendG.attr("transform", `translate(${centerX - bbox.x - shiftLeft}, ${insideMapY - bbox.y})`);
 }
-
+//Funktionen bestemmer, hvilken farve hvert land skal have på verdenskortet, afhængigt af hvilket "worldstate" der er valgt.
 function getCountryColor(countryId, worldstate) {
   // Tving ID til at være et tal
   countryId = parseInt(countryId, 10);
