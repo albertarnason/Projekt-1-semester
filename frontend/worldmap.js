@@ -320,7 +320,7 @@ function drawCountryColorLegend(opts = {}) {
 
   // Center the legend horizontally, place it near the bottom of the SVG (but inside)
   const centerX = width / 2 - bbox.width / 2;
-  const insideMapY = height - bbox.height - 105; // 30px above the bottom edge
+  const insideMapY = height - bbox.height - 100; // 30px above the bottom edge
 
   // Move the group to the centered position inside the map, rykket mere til venstre
   legendG.attr("transform", `translate(${centerX - bbox.x - shiftLeft}, ${insideMapY - bbox.y})`);

@@ -199,6 +199,7 @@ h2 {
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
   width: fit-content;
   margin-top: 151px; /* afstanden fra top til grafen */
+  margin-left: 50px;
 }
 
 svg {
