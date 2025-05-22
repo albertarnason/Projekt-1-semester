@@ -45,12 +45,11 @@ buttons.forEach((btn) => {
     // Tilføj 'active' til den klikkede
     btn.classList.add("active");
 
-    // Sæt buttonYear til det tal, der står i data-year
+    // Sæt buttonYear til det tal, der står i data-year i index.html
     buttonyear = parseInt(btn.dataset.year, 10);
-    //console.log('Valgt år:', buttonYear);
 
-    // Her kan du nu viderebehandle buttonYear,
-    // f.eks. opdatere en graf, lave et API-kald osv.
+
+    //Kode til at skifte til korrekt worldstate baseret på produktion/salg + 2024/2025
     if (buttonyear == 2024 && produktion_or_sale == "salg") {
       worldstate = salg2024;
     } else if (buttonyear == 2025 && produktion_or_sale == "salg") {
@@ -64,8 +63,8 @@ buttons.forEach((btn) => {
   });
 });
 
-let salg2024 = "land";
-worldstate = salg2024;
+let salg2024 = "land"; //worldstate bliver brugt til at bestemme hvilken styles.css der bliver brugt så derfor bliver state sat til "land"
+worldstate = salg2024; //sætter worldstate som default til salg2024 da der er her vi starter på siden
 let salg2025 = "land2";
 let produktion2024 = "land3";
 let produktion2025 = "land4";
@@ -82,11 +81,11 @@ const baseScale = projection.scale();
 let countries = null;
 let filteredCountries = null;
 let path = null;
-let points = null;
+let factorypoints = null;
 let miningpoints = null;
 let materialpoints = null;
 let componentpoints = null;
-let factorylocations = []; // Or load real data
+let factorylocations = []; 
 let materiallocations = [];
 let componentlocations = [];
 
@@ -131,15 +130,12 @@ const salesData2025 = {
 };
 async function main(worldstate) {
   const world = await d3.json("countries-110m.json");
-  console.log(world);
   countries = topojson.feature(world, world.objects.countries).features;
 
-  // Filter out Antarctica safely
+  // Filter out Antarctica 
   filteredCountries = countries.filter(
     (country) => country.properties.name !== "Antarctica"
   );
-
-  // Set up projection
 
   // Apply fitSize to automatically adjust the projection
   projection.fitSize([width, height], {
@@ -178,25 +174,17 @@ function updateData(worldstate) {
   }
 
   if (worldstate === produktion2024) {
-    drawfactories(points, {
-      size: 36,
-      src: "Images/tesla_gigafactory_logo.png",
-    });
+    drawfactories(factorypoints);
     drawmaterials(miningpoints, { size: 12 });
-    drawcomponents(componentpoints, { size: 12 });
+    drawcomponents(componentpoints);
     drawKeys();
     trumpimage();
   }
 
   if (worldstate == produktion2025) {
-    drawfactories(points, {
-      className: "materials-marker",
-      lonThreshold: 3,
-      latThreshold: 3,
-      size: 36,
-    });
+    drawfactories(factorypoints);
     drawmaterials(miningpoints, { size: 12 });
-    drawcomponents(componentpoints, { size: 12 });
+    drawcomponents(componentpoints);
     drawUSAwalls();
     drawKeys();
     showTariffs();
@@ -205,13 +193,6 @@ function updateData(worldstate) {
 
 }
 function trumpimage() {
-  // Always remove any existing Trump images, regardless of state
-
-  // Only show Trump image for production states
-  if (worldstate !== produktion2024 && worldstate !== produktion2025) {
-    return; // Do not show image for sales states
-  }
-
   let imgSrc = null;
   let imgAlt = "";
   if (worldstate === produktion2024) {
@@ -433,7 +414,7 @@ function addTooltip(selection) {
     .on("mouseover", (event, d) => {
       tooltip
         .style("display", "block")
-        .html(`Country: ${d.properties.name || "Unknown"} (ID: ${d.id})`);
+        .html(`Country: ${d.properties.name || "Unknown"}`);
     })
     .on("mousemove", (event) => {
       tooltip
@@ -451,7 +432,7 @@ function cleanup() {
     "path", // all map paths (includes flight‐path)
     "defs marker#arrow", // the arrow marker
     "image.logo-marker", // gigafactory logos
-    "image.materials-marker", // material icons
+    "image.material-marker", // material icons
     "image.components-marker", // component icons
     "text.material-label", // material labels
     "text.component-label", // component labels
@@ -467,43 +448,37 @@ function cleanup() {
   ];
 
   svg.selectAll(selectors.join(",")).remove();
-
-
-  //Hvis det går galt så bare tilføj den gamle funktion over^
 }
 
 // ——— factory‐drawing function ———
-function drawfactories(coords, opts = {}) {
-  const { className = "logo-marker" } = opts;
-
-  // get current projection scale (if you re‐zoom or resize)
-  const currentScale = projection.scale();
-  const scaleRatio = currentScale / baseScale;
-
+function drawfactories(factoryCoords) {
+  //Skips function if there is no data, mostly to avoid error on first load if database hasn't returned data yet
+  if (!Array.isArray(factoryCoords) || factoryCoords.length === 0) {
+    return;
+  }
+  
   // sizes & offsets scale with the map
-  const gigSize = 32 * scaleRatio;
-  const batterySize = 16 * scaleRatio;
+  const gigSize = 48
+  const batterySize = 24
   const batteryOffset = {
-    x: 8 * scaleRatio,
-    y: 10 * scaleRatio,
+    x: 8,
+    y: 10,
   };
 
   const logoMap = {
-    Gigafactory: "Images/tesla_gigafactory_logo.png",
+    "Gigafactory": "Images/tesla_gigafactory_logo.png",
     "Battery Factory": "Images/battery_factory.png",
   };
-
-  const factorylocations = [];
-  // first pass: record longitudes of all Gigafactories
+  // first pass: record longitudes of all Gigafactories to check for overlap later by looping through factorycoords and adding to gfLons
   const gfLons = new Set();
-  for (let i = 0; i < coords.length && i < 11; i++) {
-    const [lon, , type] = coords[i];
+  for (let i = 0; i < factoryCoords.length; i++) {
+    const [lon, , type] = factoryCoords[i];
     if (type === "Gigafactory") gfLons.add(lon);
   }
 
-  // second pass: draw only Giga + Battery (offset if overlapping)
-  for (let d = 0; d < coords.length && d < 11; d++) {
-    const [lon, lat, type] = coords[d];
+  // second pass: draw Giga + Battery (offset if overlapping)
+  for (let d = 0; d < factoryCoords.length; d++) {
+    const [lon, lat, type] = factoryCoords[d];
     const src = logoMap[type];
     if (!src) continue;
 
@@ -518,40 +493,32 @@ function drawfactories(coords, opts = {}) {
 
     svg
       .append("image")
-      .attr("class", className)
+      .attr("class", "logo-marker")
       .attr("href", src)
       .attr("width", size)
       .attr("height", size)
       .attr("x", x - size / 2)
       .attr("y", y - size / 2);
-
-    factorylocations.push([type, lon, lat]);
   }
 }
 
 // ——— factory‐drawing function ———
-function drawmaterials(rawCoords, opts = {}) {
-  if (!Array.isArray(rawCoords) || rawCoords.length === 0) {
-    // no data yet; nothing to draw
+function drawmaterials(materialCoords, opts = {}) {
+//Skips function if there is no data, mostly to avoid error on first load if database hasn't returned data yet
+  if (!Array.isArray(materialCoords) || materialCoords.length === 0) {
     return;
   }
 
   const {
-    className = "materials-marker",
-    lonThreshold = 1, // degrees of longitude
-    latThreshold = 1, // degrees of latitude
-    size = 12, //
+    lonThreshold = 1, // degrees of longitude for offset to avoid some overlap
+    latThreshold = 1, // degrees of latitude for offset to avoid some overlap
+    iconSize = 20,
   } = opts;
 
-  // get current projection scale (if you re‐zoom or resize)
-  const currentScale = projection.scale();
-  const scaleRatio = currentScale / baseScale;
-
   // sizes & offsets scale with the map
-  const iconSize = size * scaleRatio;
   const materialOffset = {
-    x: 8 * scaleRatio,
-    y: 10 * scaleRatio,
+    x: 8,
+    y: 10,
   };
 
   const materialMap = {
@@ -562,12 +529,10 @@ function drawmaterials(rawCoords, opts = {}) {
     nickel: "Images/material_icons/nickel_ingot.png",
   };
 
-  // collect up to the first 11 points
-  const points = rawCoords
-    .slice(0, 11)
+  // reformats the data from materialCoords which is an Array of Arrays 
+  // and normalizes into const points as an Array of Objects that forEach can iterate through
+  const points = materialCoords
     .map(([company, materialType, lon, lat]) => {
-      // normalize materialType → key (as before)…
-      // …
       const m = materialType.toLowerCase();
       let key;
       if (m.includes("lithium")) key = "lithium";
@@ -576,15 +541,13 @@ function drawmaterials(rawCoords, opts = {}) {
       else if (m.includes("nickel")) key = "nickel";
       else if (m.includes("cobalt")) key = "cobalt";
       else if (m.includes("manganese")) key = "manganese";
-      else return null; // skip anything else
+      return { lon, lat, key };
+    });
 
-      return { company, lon, lat, key };
-    })
-    .filter((pt) => pt !== null);
-
-  // now draw each:
+  // points.forEach loops through points, which is an Array of Objects
+  // forEach is a method that iterates through an array and in this case checks for overlap and draws materialicons onto the worldmap
   points.forEach((pt, i) => {
-    const { company, lon, lat, key } = pt;
+    const { lon, lat, key } = pt;
     const src = materialMap[key];
     if (!src) return;
 
@@ -604,53 +567,23 @@ function drawmaterials(rawCoords, opts = {}) {
 
     svg
       .append("image")
-      .attr("class", className)
+      .attr("class", "material-marker")
       .attr("href", src)
       .attr("width", iconSize)
       .attr("height", iconSize)
       .attr("x", x - iconSize / 2)
       .attr("y", y - iconSize / 2);
-
-    // draw the label
-    svg
-      .append("text")
-      .attr("class", "material-label")
-      // put it just to the right of the icon, vertically centered
-      .attr("x", x + iconSize / 2 + 4)
-      .attr("y", y + iconSize / 4) // tweak .25 vs .5 of iconSize to best align
-      .text(company)
-      .style("font-size", `${iconSize * 0.4}px`)
-      .style("pointer-events", "none"); // so the text doesn’t block tooltips
   });
 }
 
 // ——— component‐drawing function ———
-function drawcomponents(componentCoords, opts = {}) {
+function drawcomponents(componentCoords) {
+//Skips function if there is no data, mostly to avoid error on first load 
   if (!Array.isArray(componentCoords) || componentCoords.length === 0) {
-    // no data yet; nothing to draw
     return;
   }
 
-  console.log("Drawing materials for components:", componentCoords);
-
-  const {
-    className = "components-marker",
-    lonThreshold = 1, // degrees of longitude
-    latThreshold = 1, // degrees of latitude
-    size = 12, //
-  } = opts;
-
-  // get current projection scale (if you re‐zoom or resize)
-  const currentScale = projection.scale();
-  const scaleRatio = currentScale / baseScale;
-
-  // sizes & offsets scale with the map
-  const iconSize = size * scaleRatio;
-  const componentOffset = {
-    x: 8 * scaleRatio,
-    y: 10 * scaleRatio,
-  };
-
+  const iconSize = 20
   const componentMap = {
     batterycell: "Images/component_icons/battery_cell.png",
     ecu: "Images/component_icons/tesla_ecu.png",
@@ -658,76 +591,53 @@ function drawcomponents(componentCoords, opts = {}) {
     powerelectronics: "Images/component_icons/tesla_powerelectronics.png",
   };
 
+  //Takes componentCoords which is an Array of Arrays and normalizes the data with toLowerCase()
+  // and adds a key value pair 'compkey = "component"' and makes into an Array of Objects
   const points = componentCoords
-    .slice(0, 62)
     .map(([componentType, supplier, lat, lon]) => {
       const m = componentType.toLowerCase();
       let compkey = null;
-
       if (m.includes("battery cell")) compkey = "batterycell";
       else if (m.includes("electronic control unit")) compkey = "ecu";
       else if (m.includes("power electronics")) compkey = "powerelectronics";
       else if (m.includes("infotainment")) compkey = "infotainment";
-      // **no else** → everything else stays key===null
-
-      // only keep the ones we recognized
-      if (!compkey) {
-        return null;
-      }
       return { supplier, lon, lat, compkey };
     })
-    .filter((pt) => pt !== null);
 
-  // now draw each:
-  points.forEach((pt, i) => {
+  // checks for overlap and adds offset
+  points.forEach((pt) => {
     const { compkey, supplier, lon, lat } = pt;
     const src = componentMap[compkey];
     if (!src) return;
 
     let [x, y] = projection([lon, lat]);
 
-    const overlap = points.some((other, j) => {
-      if (i === j) return false;
-      return (
-        Math.abs(lon - other.lon) <= lonThreshold &&
-        Math.abs(lat - other.lat) <= latThreshold
-      );
-    });
-    if (overlap) {
-      x += componentOffset.x;
-      y += componentOffset.y;
-    }
-
+    //draw component icon 
     svg
       .append("image")
-      .attr("class", className)
+      .attr("class", "components-marker")
       .attr("href", src)
       .attr("width", iconSize)
       .attr("height", iconSize)
       .attr("x", x - iconSize / 2)
       .attr("y", y - iconSize / 2);
 
-    // draw the label
+    // draw company/supplier name next to the icon
     svg
       .append("text")
       .attr("class", "component-label")
-      // put it just to the right of the icon, vertically centered
       .attr("x", x + iconSize / 2 + 4)
-      .attr("y", y + iconSize / 4) // tweak .25 vs .5 of iconSize to best align
+      .attr("y", y + iconSize / 4)
       .text(supplier)
-      .style("font-size", `${iconSize * 0.4}px`)
-      .style("pointer-events", "none"); // so the text doesn’t block tooltips
+      .style("font-size", `${iconSize * 0.4}px`);
   });
+
+  
 }
 
 function drawUSAwalls() {
   // Define the coordinates for the USA border
   const usaBorder = filteredCountries.find((country) => country.id === "840"); // USA's country code is 840
-
-  if (!usaBorder) {
-    console.error("USA border not found in the data.");
-    return;
-  }
 
   // Draw the wall along the USA border
   // Draw a "3D" effect by layering two lines: a thick dark shadow and a thinner bright line on top
@@ -759,10 +669,10 @@ function drawUSAwalls() {
     .attr("stroke-linecap", "round");
 }
 
-//data fra databasen
 
+//Funktion til at tegne boksen nede i venstre hjørne, som fortæller hvad de forskellige ikoner på worldmap produktion er 
 function drawKeys(opts = {}) {
-  // ——— define your icons & labels here ———
+  // List of image sources and labels for the image
   const items = [
     { src: "Images/material_icons/cobalt_ingot.png", label: "Cobalt" },
     { src: "Images/material_icons/graphite_ingot.png", label: "Graphite" },
@@ -782,7 +692,7 @@ function drawKeys(opts = {}) {
     { src: "Images/tesla_gigafactory_logo.png", label: "Gigafactory" },
     { src: "Images/battery_factory.png", label: "Battery Factory" },
   ];
-  // ——— pull defaults for your layout, then allow overrides ———
+  // Række justerbar information som bliver brugt til at tegne boksen
   const {
     marginx = 100,
     marginy = 100,
@@ -790,7 +700,7 @@ function drawKeys(opts = {}) {
     spacing = 4,
     fontSize = 14,
     className = "legend-key",
-    bgPadding = 6, // padding inside the background rect
+    bgPadding = 6,
     bgFill = "white",
     bgStroke = "black",
     bgStrokeWidth = 1,
@@ -853,9 +763,9 @@ async function fetchTeslaFactories() {
 }
 
 fetchTeslaFactories().then((data) => {
-  points = data.map((item) => [item.longitude, item.latitude, item.type]);
+  factorypoints = data.map((item) => [item.longitude, item.latitude, item.type]);
   //Returnerer værdierne til variablen points
-  return points;
+  return factorypoints;
 });
 
 async function fetchMiningPartners() {
@@ -896,7 +806,7 @@ fetchComponentSuppliers().then((componentdata) => {
     item.latitude,
     item.longitude,
   ]);
-  console.log(componentpoints);
+
   //Returnerer værdierne til variablen points
   return componentpoints;
 });

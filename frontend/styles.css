@@ -169,10 +169,10 @@ svg.map-svg {
   margin-top: 100px; /* Afstanden fra top til containeren */
 }
 
-.bubble {
-  height: 400px;
+.bubble { 
   width: 600px;
-  min-width: 400px;
+  min-height: 200px;            /* optional, a sensible minimum */
+  height: auto;                 /* let it expand with its text */
   background: rgb(255, 255, 255);
   margin: 0px auto 0 auto; /* centreret og med topafstand */
   border-radius: 10px; /* mindre runding hvis du vil have det firkantet-ish */
