@@ -180,6 +180,7 @@ function updateData(worldstate) {
     drawmaterials(miningpoints, { size: 12 });
     drawcomponents(componentpoints);
     drawKeys();
+    drawCountryColorLegend();
     trumpimage();
   }
 
@@ -190,6 +191,7 @@ function updateData(worldstate) {
     drawUSAwalls();
     drawKeys();
     showTariffs();
+    drawCountryColorLegend();
     trumpimage();
   }
 
@@ -244,6 +246,82 @@ function trumpimage() {
     .attr("x", imgX - imgWidth / 2)
     .attr("y", imgY - imgHeight / 2)
     .attr("alt", imgAlt);
+}
+
+function drawCountryColorLegend(opts = {}) {
+  // Farveforklaring for produktion 2024 og 2025
+  const items = [
+    { color: "rgb(166, 63, 63)", label: "Gigafactory" },
+    { color: "rgb(49, 89, 104)", label: "Battery Factory" },
+    { color: "rgb(84, 85, 85)", label: "Materialer" },
+  ];
+
+  const {
+    marginx = 100,
+    marginy = 30,
+    boxSize = 22,
+    spacing = 4,
+    fontSize = 14,
+    className = "legend-country-color",
+    bgPadding = 6,
+    bgFill = "white",
+    bgStroke = "black",
+    bgStrokeWidth = 1,
+    bgRadius = 4,
+  } = opts;
+
+  // anchor at bottom-left, over drawKeys
+  const startX = marginx;
+  const startY = height - marginy;
+
+  // create a group for the legend
+  const legendG = svg.append("g").attr("class", className + "-group");
+
+  // draw color boxes & labels into the group
+  items.forEach((item, i) => {
+    const entryY = startY - i * (boxSize + spacing);
+
+    legendG
+      .append("rect")
+      .attr("x", startX)
+      .attr("y", entryY - boxSize)
+      .attr("width", boxSize)
+      .attr("height", boxSize)
+      .attr("fill", item.color)
+      .attr("stroke", "black")
+      .attr("stroke-width", 1);
+
+    legendG
+      .append("text")
+      .attr("x", startX + boxSize + spacing)
+      .attr("y", entryY - boxSize / 2)
+      .text(item.label)
+      .style("font-size", `${fontSize}px`)
+      .style("alignment-baseline", "middle");
+  });
+
+  // once drawn, measure the group’s bounding box
+  const bbox = legendG.node().getBBox();
+
+  // insert a background rect at the very back of the group
+  legendG
+    .insert("rect", ":first-child")
+    .attr("x", bbox.x - bgPadding)
+    .attr("y", bbox.y - bgPadding)
+    .attr("width", bbox.width + bgPadding * 2)
+    .attr("height", bbox.height + bgPadding * 2)
+    .attr("fill", bgFill)
+    .attr("stroke", bgStroke)
+    .attr("stroke-width", bgStrokeWidth)
+    .attr("rx", bgRadius)
+    .attr("ry", bgRadius);
+
+  // Center the legend horizontally, place it near the bottom of the SVG (but inside)
+  const centerX = width / 2 - bbox.width / 2;
+  const insideMapY = height - bbox.height - 30; // 30px above the bottom edge
+
+  // Move the group to the centered position inside the map
+  legendG.attr("transform", `translate(${centerX - bbox.x}, ${insideMapY - bbox.y})`);
 }
 
 function getCountryColor(countryId, worldstate) {
@@ -455,6 +533,7 @@ function cleanup() {
       "linedefs",          // remove entire <linedefs> container
     "line",              // REMOVE THIS: <line> elements created by drawlines
     "image.trump-image", // trump image
+    "g.legend-country-color-group", // the legend background + items
   ];
 
   svg.selectAll(selectors.join(",")).remove();
