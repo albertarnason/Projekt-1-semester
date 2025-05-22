@@ -333,7 +333,7 @@ function drawCountryColorLegend(opts = {}) {
 
   // Centrer legenden vandret og placer den tæt på bunden af SVG'en (men indenfor)
   const centerX = width / 2 - bbox.width / 2;
-
+  const insideMapY = height - bbox.height - 100; // 30px above the bottom edge
   // Flyt gruppen til den centrerede position inde i kortet, rykket mere til venstre
   legendG.attr("transform", `translate(${centerX - bbox.x - shiftLeft}, ${insideMapY - bbox.y})`);
 }
