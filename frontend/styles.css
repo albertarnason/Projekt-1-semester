@@ -164,17 +164,17 @@ svg.map-svg {
 .bubble-container {
   display: flex; /* Fortælle browseren, at elementerne indeni bubble-container (de to bubbler), skal ligge ved siden af hinanden og ikke ovenpå hinanden.*/
   justify-content: center; /* Sørger for, at boblerne er ved siden af hinanden centreret på midten af siden */
-  gap: 250px; /* Mellemrum mellem boblerne */
-  width: 100%; /* Angiver hvor meget af bredden på siden, containeren skal fylde */
+  gap: 0px; /* Mellemrum mellem boblerne */
+  width: 80%; /* Angiver hvor meget af bredden på siden, containeren skal fylde */
   margin-top: 100px; /* Afstanden fra top til containeren */
 }
 
-.bubble {
-  height: 500px;
-  width: 550px;
-  min-width: 400px;
+.bubble { 
+  width: 600px;
+  min-height: 200px;            /* optional, a sensible minimum */
+  height: auto;                 /* let it expand with its text */
   background: rgb(255, 255, 255);
-  margin: 50px auto 0 auto; /* centreret og med topafstand */
+  margin: 0px auto 0 auto; /* centreret og med topafstand */
   border-radius: 10px; /* mindre runding hvis du vil have det firkantet-ish */
   font-size: 24px;
   text-align: center;
