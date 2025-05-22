@@ -645,7 +645,7 @@ function drawcomponents(componentCoords) {
 }
 
 //Funktion til at tegne muren langs USA's grænse
-// Denne funktion tegner en "3D" effekt ved at tegne to linjer: en tykkere mørk skygge og en tyndere lysere linje ovenpå
+//funktionen tegner en "3D" effekt ved at tegne to linjer. En tykkere mørk skygge og en tyndere lysere linje ovenpå
 // Den første linje er skyggen (forskydt, mørkere farve) og den anden linje er den primære væg (ovenpå, lysere farve)
 function drawUSAwalls() {
   // Ddefinerer væggen som en grænse for USA
