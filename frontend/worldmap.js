@@ -251,12 +251,13 @@ function trumpimage() {
 
 function drawCountryColorLegend(opts = {}) {
   // Farveforklaring for produktion 2024 og 2025
+  // Farverne er defineret i getCountryColor funktionen
   const items = [
     { color: "rgb(166, 63, 63)", label: "Gigafactory" },
     { color: "rgb(49, 89, 104)", label: "Battery Factory" },
     { color: "rgb(84, 85, 85)", label: "Komponenter" },
   ];
-
+  // definerer positionen og størrelsen af boksen
   const {
     marginx = 100,
     marginy = 30,
@@ -272,17 +273,17 @@ function drawCountryColorLegend(opts = {}) {
     shiftLeft = 55, // Tilføj denne for at kunne rykke til venstre
   } = opts;
 
-  // anchor at bottom-left, over drawKeys
   const startX = marginx;
   const startY = height - marginy;
 
-  // create a group for the legend
+  // Opretter en gruppe (<g>) i SVG'en til farveforklaringen, så alle elementer kan flyttes og styles samlet
   const legendG = svg.append("g").attr("class", className + "-group");
 
-  // draw color boxes & labels into the group
+  // items er en liste af objekter med farve og label
   items.forEach((item, i) => {
     const entryY = startY - i * (boxSize + spacing);
 
+    // Tegner boksen 
     legendG
       .append("rect")
       .attr("x", startX)
@@ -293,6 +294,10 @@ function drawCountryColorLegend(opts = {}) {
       .attr("stroke", "black")
       .attr("stroke-width", 1);
 
+    // Laver teksten tilhørende boksen
+    /* LegendG er en variabel der indeholder gruppen af elementer i SVG'en. legend bruges til at vise hvad 
+    farve, ikon eller billede betyder på et kort eller i en graf. 
+    */
     legendG
       .append("text")
       .attr("x", startX + boxSize + spacing)
@@ -302,10 +307,18 @@ function drawCountryColorLegend(opts = {}) {
       .style("alignment-baseline", "middle");
   });
 
-  // once drawn, measure the group’s bounding box
+  // bbox er et objekt der indeholder x, y, width og height
   const bbox = legendG.node().getBBox();
 
-  // insert a background rect at the very back of the group
+  // Det er vigtigt at indsætte baggrunden først, så den ikke dækker over teksten
+  // Tegner baggrunden for farveforklaringen
+  // bbox.x og bbox.y er de øverste venstre hjørner af boksen
+  // bbox.width og bbox.height er bredden og højden af boksen
+  // bgPadding er padding omkring boksen
+  // bgFill er farven på baggrunden
+  // bgStroke er farven på kanten af boksen
+  // bgStrokeWidth er tykkelsen på kanten af boksen
+  // bgRadius er radiusen på hjørnerne af boksen
   legendG
     .insert("rect", ":first-child")
     .attr("x", bbox.x - bgPadding)
@@ -318,11 +331,10 @@ function drawCountryColorLegend(opts = {}) {
     .attr("rx", bgRadius)
     .attr("ry", bgRadius);
 
-  // Center the legend horizontally, place it near the bottom of the SVG (but inside)
+  // Centrer legenden vandret og placer den tæt på bunden af SVG'en (men indenfor)
   const centerX = width / 2 - bbox.width / 2;
-  const insideMapY = height - bbox.height - 100; // 30px above the bottom edge
 
-  // Move the group to the centered position inside the map, rykket mere til venstre
+  // Flyt gruppen til den centrerede position inde i kortet, rykket mere til venstre
   legendG.attr("transform", `translate(${centerX - bbox.x - shiftLeft}, ${insideMapY - bbox.y})`);
 }
 
