@@ -475,8 +475,6 @@ function salesData(worldstate) {
       // Tilføj flere hvis nødvendigt
     };
 
-    svg.selectAll(".sales-label").remove(); // Fjern gamle tekster
-
     svg
       .selectAll(".sales-label")
       .data(filteredCountries)
@@ -551,6 +549,7 @@ function cleanup() {
     "line",              // REMOVE THIS: <line> elements created by drawlines
     "image.trump-image", // trump image
     "g.legend-country-color-group", // the legend background + items
+    ".sales-label" //fjerner salgs tal
   ];
 
   svg.selectAll(selectors.join(",")).remove();
