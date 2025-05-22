@@ -1,6 +1,13 @@
+// Binder vindue størrelsen på browseren til const width og const height
+// Så vi senere hen kan justere på størrelsen af worldmap og elementer derpå baseret på størrelsen af browser vinduet
 const width = window.innerWidth;
 const height = window.innerHeight;
 
+
+// Starten på vores d3 metode kæde for worldmap. 
+// Den vælger DOM elementet #map med .select(#map)
+// Tilføjer et svg element med .append("svg")
+// Sætter størrelsen på svg elementet til browser vindue størrelsen via width og height med .attr("width", width) og .attr("height", height)
 const svg = d3
   .select("#map")
   .append("svg")
@@ -139,6 +146,7 @@ async function main(worldstate) {
   );
 
   // Sætter fornuftig størrelse på kortet så den ikke fylder hele skærmen
+  // Sørger for at den passer indenfor konstanterne width og height, som er deklareret i toppen af worldmap.js
   projection.fitSize([width, height], {
     type: "FeatureCollection",
     features: filteredCountries,
@@ -155,7 +163,6 @@ function updateData(worldstate) {
   cleanup();
 
   const paths = svg
-
     .selectAll("." + worldstate)
     .data(filteredCountries)
     .enter()
@@ -510,6 +517,9 @@ function salesData(worldstate) {
       .style("pointer-events", "none");
   }
 }
+
+//Tager const paths fra funktion updatedata som er den primære d3 metode kæde også tilføjer den en række d3 metoder og callback funktioner, som 
+// sørger for at man kan se navnet på de forskellige lande, samt at den boks følger musen og forsvinder igen når man stopper med at hover et givent land
 function addTooltip(selection) {
   const tooltip = d3.select(".tooltip");
 
