@@ -132,12 +132,12 @@ async function main(worldstate) {
   const world = await d3.json("countries-110m.json");
   countries = topojson.feature(world, world.objects.countries).features;
 
-  // Filter out Antarctica 
+  // Filtrer Antarktis ud fra worldmap 
   filteredCountries = countries.filter(
     (country) => country.properties.name !== "Antarctica"
   );
 
-  // Apply fitSize to automatically adjust the projection
+  // Sætter fornuftig størrelse på kortet så den ikke fylder hele skærmen
   projection.fitSize([width, height], {
     type: "FeatureCollection",
     features: filteredCountries,
@@ -148,6 +148,8 @@ async function main(worldstate) {
   updateData(worldstate);
 }
 
+/*Funktion til at opdatere daten på kortet, med cleanup til at fjerne gamle data
+  og tilføje nye data */
 function updateData(worldstate) {
   cleanup();
 
@@ -192,6 +194,11 @@ function updateData(worldstate) {
   }
 
 }
+
+//Funktion til at tegne trump billedet på kortet
+//Billedet bliver tegnet på kortet i forhold til hvor USA og Canada ligger
+// sørger for at trump dukker op på produktionskortet
+// og at han skifter billede alt efter hvilken worldstate der er valgt
 function trumpimage() {
   let imgSrc = null;
   let imgAlt = "";
@@ -205,7 +212,7 @@ function trumpimage() {
     return;
   }
 
-  // Find the USA-Canada border midpoint
+  // Find midtpunktet mellem USA og Canada
   // USA: 840, Canada: 124
   const usa = filteredCountries.find((c) => parseInt(c.id, 10) === 840);
   const canada = filteredCountries.find((c) => parseInt(c.id, 10) === 124);
@@ -214,17 +221,19 @@ function trumpimage() {
   let imgY = 100;
 
   if (usa && canada) {
-    // Get centroids
+    // Hent geometriske centre for begge lande
     const usaCentroid = path.centroid(usa);
     const canadaCentroid = path.centroid(canada);
-    // Midpoint between centroids
+    // Midtpunkt mellem geometriske centre
+    // Billedet placeres lidt under grænsen mellem de to lande
     imgX = (usaCentroid[0] + canadaCentroid[0]) / 2;
-    imgY = (usaCentroid[1] + canadaCentroid[1]) / 2 + 30; // move down a bit below the border
+    imgY = (usaCentroid[1] + canadaCentroid[1]) / 2 + 30; 
   }
 
   const imgWidth = 110;
   const imgHeight = 150;
 
+  // svg bruges til at tegne billede
   svg
     .append("image")
     .attr("class", "trump-image")
@@ -635,13 +644,13 @@ function drawcomponents(componentCoords) {
   
 }
 
+//Funktion til at tegne muren langs USA's grænse
+// Denne funktion tegner en "3D" effekt ved at tegne to linjer: en tykkere mørk skygge og en tyndere lysere linje ovenpå
+// Den første linje er skyggen (forskydt, mørkere farve) og den anden linje er den primære væg (ovenpå, lysere farve)
 function drawUSAwalls() {
-  // Define the coordinates for the USA border
-  const usaBorder = filteredCountries.find((country) => country.id === "840"); // USA's country code is 840
+  // Ddefinerer væggen som en grænse for USA
+  const usaBorder = filteredCountries.find((country) => country.id === "840"); // USA's land kode er 840
 
-  // Draw the wall along the USA border
-  // Draw a "3D" effect by layering two lines: a thick dark shadow and a thinner bright line on top
-  // 1. Draw the shadow (offset, darker color) using a group with translate
   svg
     .append("g")
     .attr("transform", "translate(3,3)")
@@ -656,7 +665,7 @@ function drawUSAwalls() {
     .attr("stroke-linecap", "round")
     .attr("opacity", 0.5);
 
-  // 2. Draw the main wall line (on top, lighter color)
+  // tegner den primære væg ovenpå skyggen
   svg
     .append("path")
     .datum(usaBorder)
