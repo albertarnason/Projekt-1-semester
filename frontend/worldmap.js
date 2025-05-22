@@ -99,6 +99,7 @@ const tariffData = {
   180: "10%", // Congo
   410: "25%", // Sydkorea
   540: "10%", // New Caledonia
+  834: "10%", // Tanzania
   // Tilføj flere lande hvis nødvendigt
 };
 
@@ -354,6 +355,7 @@ function getCountryColor(countryId, worldstate) {
       528: "rgb(243, 159, 159)", // Holland
       578: "rgb(207, 139, 139)", // Norge
       392: "rgb(243, 122, 122)", // Japan
+
       default: "darkgray",
     },
 
@@ -369,6 +371,7 @@ function getCountryColor(countryId, worldstate) {
       180: "rgb(84, 85, 85)", // Congo
       410: "rgb(84, 85, 85)", // South Korea
       392: "rgb(84, 85, 85)", // Japan
+      834: "rgb(84, 85, 85)", // tanzania
 
       default: "darkgray",
     },
@@ -384,6 +387,7 @@ function getCountryColor(countryId, worldstate) {
       180: "rgb(84, 85, 85)", // Congo
       410: "rgb(84, 85, 85)", // South Korea
       392: "rgb(84, 85, 85)", // Japan
+      834: "rgb(84, 85, 85)", // tanzania
 
       default: "darkgray",
     },
