@@ -234,6 +234,7 @@ function trumpimage() {
   const imgHeight = 150;
 
   // svg bruges til at tegne billede
+  // billedet bliver centreret i forhold til midten af billedet
   svg
     .append("image")
     .attr("class", "trump-image")
