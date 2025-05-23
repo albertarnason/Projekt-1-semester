@@ -47,7 +47,7 @@ await db.query(`
 
 await upload(
   db,
-  "frontend/data/tesla_factories.csv",
+  "backend/data/tesla_factories.csv",
   "copy tesla_factories from stdin with csv header"
 );
 
@@ -60,7 +60,7 @@ await db.query(`
 
 await upload(
   db,
-  "frontend/data/tesla_stock.csv",
+  "backend/data/tesla_stock.csv",
   "copy tesla_stock from stdin with csv header"
 );
 
@@ -76,7 +76,7 @@ await db.query(`
 
 await upload(
   db,
-  "frontend/data/tariffs_trump.csv",
+  "backend/data/tariffs_trump.csv",
   "copy tariffs_trump from stdin with csv header"
 );
 
@@ -93,7 +93,7 @@ await db.query(`
 
 await upload(
   db,
-  "frontend/data/tesla_mining_partners.csv",
+  "backend/data/tesla_mining_partners.csv",
   "copy tesla_mining_partners from stdin with csv header"
 );
 
@@ -108,7 +108,7 @@ sales_year integer
 
 await upload(
   db,
-  "frontend/data/tesla_sales.csv",
+  "backend/data/tesla_sales.csv",
   "copy tesla_sales from stdin with csv header"
 );
 
@@ -125,6 +125,6 @@ Origin text,
 
 await upload(
   db,
-  "frontend/data/tesla_component_supplier.csv",
+  "backend/data/tesla_component_supplier.csv",
   "copy tesla_component_supplier from stdin with csv header"
 );

@@ -1,6 +1,13 @@
+// Binder vindue størrelsen på browseren til const width og const height
+// Så vi senere hen kan justere på størrelsen af worldmap og elementer derpå baseret på størrelsen af browser vinduet
 const width = window.innerWidth;
 const height = window.innerHeight;
 
+
+// Starten på vores d3 metode kæde for worldmap. 
+// Den vælger DOM elementet #map med .select(#map)
+// Tilføjer et svg element med .append("svg")
+// Sætter størrelsen på svg elementet til browser vindue størrelsen via width og height med .attr("width", width) og .attr("height", height)
 const svg = d3
   .select("#map")
   .append("svg")
@@ -139,6 +146,7 @@ async function main(worldstate) {
   );
 
   // Sætter fornuftig størrelse på kortet så den ikke fylder hele skærmen
+  // Sørger for at den passer indenfor konstanterne width og height, som er deklareret i toppen af worldmap.js
   projection.fitSize([width, height], {
     type: "FeatureCollection",
     features: filteredCountries,
@@ -155,7 +163,6 @@ function updateData(worldstate) {
   cleanup();
 
   const paths = svg
-
     .selectAll("." + worldstate)
     .data(filteredCountries)
     .enter()
@@ -337,7 +344,7 @@ function drawCountryColorLegend(opts = {}) {
   // Flyt gruppen til den centrerede position inde i kortet, rykket mere til venstre
   legendG.attr("transform", `translate(${centerX - bbox.x - shiftLeft}, ${insideMapY - bbox.y})`);
 }
-
+//Funktionen bestemmer, hvilken farve hvert land skal have på verdenskortet, afhængigt af hvilket "worldstate" der er valgt.
 function getCountryColor(countryId, worldstate) {
   // Tving ID til at være et tal
   countryId = parseInt(countryId, 10);
@@ -510,6 +517,9 @@ function salesData(worldstate) {
       .style("pointer-events", "none");
   }
 }
+
+//Tager const paths fra funktion updatedata som er den primære d3 metode kæde også tilføjer den en række d3 metoder og callback funktioner, som 
+// sørger for at man kan se navnet på de forskellige lande, samt at den boks følger musen og forsvinder igen når man stopper med at hover et givent land
 function addTooltip(selection) {
   const tooltip = d3.select(".tooltip");
 
@@ -563,11 +573,11 @@ function drawfactories(factoryCoords) {
   }
   
   // sizes & offsets scale with the map
-  const gigSize = 48
-  const batterySize = 24
+  const gigSize = 64
+  const batterySize = 40
   const batteryOffset = {
-    x: 8,
-    y: 10,
+    x: 18,
+    y: 15,
   };
 
   const logoMap = {
@@ -615,15 +625,15 @@ function drawmaterials(materialCoords, opts = {}) {
   }
 
   const {
-    lonThreshold = 1, // degrees of longitude for offset to avoid some overlap
-    latThreshold = 1, // degrees of latitude for offset to avoid some overlap
+    lonThreshold = 3, // degrees of longitude for offset to avoid some overlap
+    latThreshold = 3, // degrees of latitude for offset to avoid some overlap
     iconSize = 20,
   } = opts;
 
   // sizes & offsets scale with the map
   const materialOffset = {
-    x: 8,
-    y: 10,
+    x: 5,
+    y: 20,
   };
 
   const materialMap = {
@@ -727,14 +737,7 @@ function drawcomponents(componentCoords) {
       .attr("x", x - iconSize / 2)
       .attr("y", y - iconSize / 2);
 
-    // draw company/supplier name next to the icon
-    svg
-      .append("text")
-      .attr("class", "component-label")
-      .attr("x", x + iconSize / 2 + 4)
-      .attr("y", y + iconSize / 4)
-      .text(supplier)
-      .style("font-size", `${iconSize * 0.4}px`);
+
   });
 
   
