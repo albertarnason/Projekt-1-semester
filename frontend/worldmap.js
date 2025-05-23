@@ -3,8 +3,7 @@
 const width = window.innerWidth;
 const height = window.innerHeight;
 
-
-// Starten på vores d3 metode kæde for worldmap. 
+// Starten på vores d3 metode kæde for worldmap.
 // Den vælger DOM elementet #map med .select(#map)
 // Tilføjer et svg element med .append("svg")
 // Sætter størrelsen på svg elementet til browser vindue størrelsen via width og height med .attr("width", width) og .attr("height", height)
@@ -55,7 +54,6 @@ buttons.forEach((btn) => {
     // Sæt buttonYear til det tal, der står i data-year i index.html
     buttonyear = parseInt(btn.dataset.year, 10);
 
-
     //Kode til at skifte til korrekt worldstate baseret på produktion/salg + 2024/2025
     if (buttonyear == 2024 && produktion_or_sale == "salg") {
       worldstate = salg2024;
@@ -92,7 +90,7 @@ let factorypoints = null;
 let miningpoints = null;
 let materialpoints = null;
 let componentpoints = null;
-let factorylocations = []; 
+let factorylocations = [];
 let materiallocations = [];
 let componentlocations = [];
 
@@ -140,7 +138,7 @@ async function main(worldstate) {
   const world = await d3.json("countries-110m.json");
   countries = topojson.feature(world, world.objects.countries).features;
 
-  // Filtrer Antarktis ud fra worldmap 
+  // Filtrer Antarktis ud fra worldmap
   filteredCountries = countries.filter(
     (country) => country.properties.name !== "Antarctica"
   );
@@ -202,7 +200,6 @@ function updateData(worldstate) {
     drawCountryColorLegend();
     trumpimage();
   }
-
 }
 
 //Funktion til at tegne trump billedet på kortet
@@ -213,11 +210,11 @@ function trumpimage() {
   let imgSrc = null;
   let imgAlt = "";
   if (worldstate === produktion2024) {
-    imgSrc = "Images/trump_nice.png";
-    imgAlt = "Sad Trump";
+    imgSrc = "Images/imageBiden.png";
+    imgAlt = "Biden happy";
   } else if (worldstate === produktion2025) {
-    imgSrc = "Images/trump_sad.png";
-    imgAlt = "Nice Trump";
+    imgSrc = "Images/imageTrump.png";
+    imgAlt = "Trump angry";
   } else {
     return;
   }
@@ -237,7 +234,7 @@ function trumpimage() {
     // Midtpunkt mellem geometriske centre
     // Billedet placeres lidt under grænsen mellem de to lande
     imgX = (usaCentroid[0] + canadaCentroid[0]) / 2;
-    imgY = (usaCentroid[1] + canadaCentroid[1]) / 2 + 30; 
+    imgY = (usaCentroid[1] + canadaCentroid[1]) / 2 + 30;
   }
 
   const imgWidth = 110;
@@ -290,7 +287,7 @@ function drawCountryColorLegend(opts = {}) {
   items.forEach((item, i) => {
     const entryY = startY - i * (boxSize + spacing);
 
-    // Tegner boksen 
+    // Tegner boksen
     legendG
       .append("rect")
       .attr("x", startX)
@@ -342,7 +339,10 @@ function drawCountryColorLegend(opts = {}) {
   const centerX = width / 2 - bbox.width / 2;
   const insideMapY = height - bbox.height - 100; // 30px above the bottom edge
   // Flyt gruppen til den centrerede position inde i kortet, rykket mere til venstre
-  legendG.attr("transform", `translate(${centerX - bbox.x - shiftLeft}, ${insideMapY - bbox.y})`);
+  legendG.attr(
+    "transform",
+    `translate(${centerX - bbox.x - shiftLeft}, ${insideMapY - bbox.y})`
+  );
 }
 //Funktionen bestemmer, hvilken farve hvert land skal have på verdenskortet, afhængigt af hvilket "worldstate" der er valgt.
 function getCountryColor(countryId, worldstate) {
@@ -427,7 +427,7 @@ function showTariffs() {
     276: [40, -10], // Tyskland
     826: [-30, -20], // UK
     36: [0, 20], // Australien
-    124: [-40, 20], // Canada
+    124: [-40, -20], // Canada
     392: [0, 30], // Japan
   };
 
@@ -518,7 +518,7 @@ function salesData(worldstate) {
   }
 }
 
-//Tager const paths fra funktion updatedata som er den primære d3 metode kæde også tilføjer den en række d3 metoder og callback funktioner, som 
+//Tager const paths fra funktion updatedata som er den primære d3 metode kæde også tilføjer den en række d3 metoder og callback funktioner, som
 // sørger for at man kan se navnet på de forskellige lande, samt at den boks følger musen og forsvinder igen når man stopper med at hover et givent land
 function addTooltip(selection) {
   const tooltip = d3.select(".tooltip");
@@ -555,11 +555,11 @@ function cleanup() {
     "g.legend-key-group", // the legend background + items
     ".tariff-label", // tariff labels
     "linedefs #arrowline", //lines between components/factories
-      "linedefs",          // remove entire <linedefs> container
-    "line",              // REMOVE THIS: <line> elements created by drawlines
+    "linedefs", // remove entire <linedefs> container
+    "line", // REMOVE THIS: <line> elements created by drawlines
     "image.trump-image", // trump image
     "g.legend-country-color-group", // the legend background + items
-    ".sales-label" //fjerner salgs tal
+    ".sales-label", //fjerner salgs tal
   ];
 
   svg.selectAll(selectors.join(",")).remove();
@@ -571,17 +571,17 @@ function drawfactories(factoryCoords) {
   if (!Array.isArray(factoryCoords) || factoryCoords.length === 0) {
     return;
   }
-  
+
   // sizes & offsets scale with the map
-  const gigSize = 64
-  const batterySize = 40
+  const gigSize = 64;
+  const batterySize = 40;
   const batteryOffset = {
     x: 18,
     y: 15,
   };
 
   const logoMap = {
-    "Gigafactory": "Images/tesla_gigafactory_logo.png",
+    Gigafactory: "Images/tesla_gigafactory_logo.png",
     "Battery Factory": "Images/battery_factory.png",
   };
   // first pass: record longitudes of all Gigafactories to check for overlap later by looping through factorycoords and adding to gfLons
@@ -619,7 +619,7 @@ function drawfactories(factoryCoords) {
 
 // ——— factory‐drawing function ———
 function drawmaterials(materialCoords, opts = {}) {
-//Skips function if there is no data, mostly to avoid error on first load if database hasn't returned data yet
+  //Skips function if there is no data, mostly to avoid error on first load if database hasn't returned data yet
   if (!Array.isArray(materialCoords) || materialCoords.length === 0) {
     return;
   }
@@ -644,20 +644,19 @@ function drawmaterials(materialCoords, opts = {}) {
     nickel: "Images/material_icons/nickel_ingot.png",
   };
 
-  // reformats the data from materialCoords which is an Array of Arrays 
+  // reformats the data from materialCoords which is an Array of Arrays
   // and normalizes into const points as an Array of Objects that forEach can iterate through
-  const points = materialCoords
-    .map(([company, materialType, lon, lat]) => {
-      const m = materialType.toLowerCase();
-      let key;
-      if (m.includes("lithium")) key = "lithium";
-      else if (m.includes("spodume")) key = "lithium";
-      else if (m.includes("graphite")) key = "graphite";
-      else if (m.includes("nickel")) key = "nickel";
-      else if (m.includes("cobalt")) key = "cobalt";
-      else if (m.includes("manganese")) key = "manganese";
-      return { lon, lat, key };
-    });
+  const points = materialCoords.map(([company, materialType, lon, lat]) => {
+    const m = materialType.toLowerCase();
+    let key;
+    if (m.includes("lithium")) key = "lithium";
+    else if (m.includes("spodume")) key = "lithium";
+    else if (m.includes("graphite")) key = "graphite";
+    else if (m.includes("nickel")) key = "nickel";
+    else if (m.includes("cobalt")) key = "cobalt";
+    else if (m.includes("manganese")) key = "manganese";
+    return { lon, lat, key };
+  });
 
   // points.forEach loops through points, which is an Array of Objects
   // forEach is a method that iterates through an array and in this case checks for overlap and draws materialicons onto the worldmap
@@ -693,12 +692,12 @@ function drawmaterials(materialCoords, opts = {}) {
 
 // ——— component‐drawing function ———
 function drawcomponents(componentCoords) {
-//Skips function if there is no data, mostly to avoid error on first load 
+  //Skips function if there is no data, mostly to avoid error on first load
   if (!Array.isArray(componentCoords) || componentCoords.length === 0) {
     return;
   }
 
-  const iconSize = 20
+  const iconSize = 20;
   const componentMap = {
     batterycell: "Images/component_icons/battery_cell.png",
     ecu: "Images/component_icons/tesla_ecu.png",
@@ -708,16 +707,15 @@ function drawcomponents(componentCoords) {
 
   //Takes componentCoords which is an Array of Arrays and normalizes the data with toLowerCase()
   // and adds a key value pair 'compkey = "component"' and makes into an Array of Objects
-  const points = componentCoords
-    .map(([componentType, supplier, lat, lon]) => {
-      const m = componentType.toLowerCase();
-      let compkey = null;
-      if (m.includes("battery cell")) compkey = "batterycell";
-      else if (m.includes("electronic control unit")) compkey = "ecu";
-      else if (m.includes("power electronics")) compkey = "powerelectronics";
-      else if (m.includes("infotainment")) compkey = "infotainment";
-      return { supplier, lon, lat, compkey };
-    })
+  const points = componentCoords.map(([componentType, supplier, lat, lon]) => {
+    const m = componentType.toLowerCase();
+    let compkey = null;
+    if (m.includes("battery cell")) compkey = "batterycell";
+    else if (m.includes("electronic control unit")) compkey = "ecu";
+    else if (m.includes("power electronics")) compkey = "powerelectronics";
+    else if (m.includes("infotainment")) compkey = "infotainment";
+    return { supplier, lon, lat, compkey };
+  });
 
   // checks for overlap and adds offset
   points.forEach((pt) => {
@@ -727,7 +725,7 @@ function drawcomponents(componentCoords) {
 
     let [x, y] = projection([lon, lat]);
 
-    //draw component icon 
+    //draw component icon
     svg
       .append("image")
       .attr("class", "components-marker")
@@ -736,11 +734,7 @@ function drawcomponents(componentCoords) {
       .attr("height", iconSize)
       .attr("x", x - iconSize / 2)
       .attr("y", y - iconSize / 2);
-
-
   });
-
-  
 }
 
 //Funktion til at tegne muren langs USA's grænse
@@ -778,8 +772,7 @@ function drawUSAwalls() {
     .attr("stroke-linecap", "round");
 }
 
-
-//Funktion til at tegne boksen nede i venstre hjørne, som fortæller hvad de forskellige ikoner på worldmap produktion er 
+//Funktion til at tegne boksen nede i venstre hjørne, som fortæller hvad de forskellige ikoner på worldmap produktion er
 function drawKeys(opts = {}) {
   // List of image sources and labels for the image
   const items = [
@@ -872,7 +865,11 @@ async function fetchTeslaFactories() {
 }
 
 fetchTeslaFactories().then((data) => {
-  factorypoints = data.map((item) => [item.longitude, item.latitude, item.type]);
+  factorypoints = data.map((item) => [
+    item.longitude,
+    item.latitude,
+    item.type,
+  ]);
   //Returnerer værdierne til variablen points
   return factorypoints;
 });
