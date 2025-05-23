@@ -4,7 +4,7 @@ body {
   background: rgb(242, 241, 239);
   color: rgb(114, 29, 29);
   font-family: "Cinzel", serif;
-}
+  }
 
 h1 {
   margin: 20px 0;
@@ -65,26 +65,25 @@ svg.map-svg {
   align-items: center;
   gap: 0px; /* mindre afstand mellem logo og tekst */
   margin-top: 125px;
-  margin-bottom: 150px;
+  margin-bottom: 125px;
   height: 100px;
 }
 
 .logo-text-container svg {
-  width: 180px;
-  height: 160px;
-  margin-right: -38px; /* afstand mellem logo og tekst */
+  width: 130px;
+  height: 100px;
+  margin-right: -28px; /* afstand mellem logo og tekst */
   margin-top: -20px; /* afstand mellem logo og tekst */
-  filter: drop-shadow(4px 4px 6px rgba(0, 0, 0, 0.5));
+  filter: drop-shadow(4px 4px 6px rgba(0, 0, 0, 0.8));
 }
 
 .esla {
-  font-family: "Cinzel", serif;
-  font-size: 83px;
-  font-weight: 900px;
+  font-family: sans-serif;
+  font-size: 65px;
   color: #e82127;
-  letter-spacing: 4px;
+  letter-spacing: 2px;
   text-transform: uppercase;
-  text-shadow: 0 0 0px #e82127, 0 0 0px #000000, 0px 4px 10px rgba(0, 0, 0, 0.5);
+  text-shadow: 0 0 0px #e82127, 0 0 0px #ff3b3b, 4px 4px 6px rgba(0, 0, 0, 0.6);
 }
 
 /* === Container til hele toggle-knappen === */
@@ -169,10 +168,10 @@ svg.map-svg {
   margin-top: 100px; /* Afstanden fra top til containeren */
 }
 
-.bubble {
+.bubble { 
   width: 600px;
-  min-height: 200px; /* optional, a sensible minimum */
-  height: auto; /* let it expand with its text */
+  min-height: 200px;            /* optional, a sensible minimum */
+  height: auto;                 /* let it expand with its text */
   background: rgb(255, 255, 255);
   margin: 0px auto 0 auto; /* centreret og med topafstand */
   border-radius: 10px; /* mindre runding hvis du vil have det firkantet-ish */
@@ -316,6 +315,7 @@ body {
 
 .wall {
   position: absolute;
-  stroke: black;
+  stroke: black ; 
   stroke-width: 5px;
+
 }
