@@ -105,7 +105,6 @@ const tariffData = {
   410: "25%", // Sydkorea
   540: "10%", // New Caledonia
   834: "10%", // Tanzania
-  // Tilføj flere lande hvis nødvendigt
 };
 
 // Salgsdata for 2024 og 2025
@@ -134,6 +133,7 @@ const salesData2025 = {
   578: 1200, // Norway ↓↓↓
   392: 2000, // Japan ↓↓↓
 };
+
 async function main(worldstate) {
   const world = await d3.json("countries-110m.json");
   countries = topojson.feature(world, world.objects.countries).features;
