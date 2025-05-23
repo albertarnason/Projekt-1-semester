@@ -15,7 +15,7 @@ g = stockSvg
 
 // loader csv og viser 2019-2024 data som default
 // d3.csv er en asynkron funktion, så vi venter på at dataen er loaded før vi fortsætter
-d3.csv("backend/data/tesla_stock.csv").then((data) => {
+d3.csv("teslamappe/tesla_stock.csv").then((data) => {
   // konverterer datoen til et Date objekt og lukke prisen til et tal
   // d3.csv loader dataen som strings, så vi skal konvertere dem til de rigtige typer
   data.forEach((d) => {

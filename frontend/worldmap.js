@@ -573,11 +573,11 @@ function drawfactories(factoryCoords) {
   }
   
   // sizes & offsets scale with the map
-  const gigSize = 48
-  const batterySize = 24
+  const gigSize = 64
+  const batterySize = 40
   const batteryOffset = {
-    x: 8,
-    y: 10,
+    x: 18,
+    y: 15,
   };
 
   const logoMap = {
@@ -625,15 +625,15 @@ function drawmaterials(materialCoords, opts = {}) {
   }
 
   const {
-    lonThreshold = 1, // degrees of longitude for offset to avoid some overlap
-    latThreshold = 1, // degrees of latitude for offset to avoid some overlap
+    lonThreshold = 3, // degrees of longitude for offset to avoid some overlap
+    latThreshold = 3, // degrees of latitude for offset to avoid some overlap
     iconSize = 20,
   } = opts;
 
   // sizes & offsets scale with the map
   const materialOffset = {
-    x: 8,
-    y: 10,
+    x: 5,
+    y: 20,
   };
 
   const materialMap = {
@@ -737,14 +737,7 @@ function drawcomponents(componentCoords) {
       .attr("x", x - iconSize / 2)
       .attr("y", y - iconSize / 2);
 
-    // draw company/supplier name next to the icon
-    svg
-      .append("text")
-      .attr("class", "component-label")
-      .attr("x", x + iconSize / 2 + 4)
-      .attr("y", y + iconSize / 4)
-      .text(supplier)
-      .style("font-size", `${iconSize * 0.4}px`);
+
   });
 
   
