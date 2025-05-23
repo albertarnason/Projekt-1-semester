@@ -206,10 +206,10 @@ function trumpimage() {
   let imgSrc = null;
   let imgAlt = "";
   if (worldstate === produktion2024) {
-    imgSrc = "Images/trump_nice.png";
+    imgSrc = "Images/Trump_neutral.png";
     imgAlt = "Sad Trump";
   } else if (worldstate === produktion2025) {
-    imgSrc = "Images/trump_sad.png";
+    imgSrc = "Images/angryTrump.png";
     imgAlt = "Nice Trump";
   } else {
     return;
